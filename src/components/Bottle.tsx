@@ -49,6 +49,8 @@ const STYLE: Record<WorldId, Style> = {
   cosmos: { cap: "#7d6bd6", capHi: "#e6dcff", paper: "#1a1646", ink: "#e8ecff", frame: "#7fe6ff" },
   alchemist: { cap: "#a8814f", capHi: "#d8b98a", paper: "#e3d3a8", ink: "#3a2412", frame: "#7a5426" },
   tiki: { cap: "#6b4a1f", capHi: "#c9a25a", paper: "#e9d8b4", ink: "#3a2210", frame: "#3a2210" },
+  boreal: { cap: "#8fa6bb", capHi: "#f2f8ff", paper: "#f3f6f8", ink: "#1f3f7a", frame: "#1f4fa8" },
+  riviera: { cap: "#7a1a26", capHi: "#c4505c", paper: "#efe2c4", ink: "#3a2414", frame: "#a8823a" },
 };
 
 function short(name: string) {
@@ -92,6 +94,21 @@ function Label({ g, world, name, sub, uid }: { g: Geo; world: WorldId; name: str
       {world === "tiki" && (
         <path d={Array.from({ length: Math.floor(w / 4) }, (_, i) => `M${x + i * 4} ${y} l2 2.6 l2 -2.6`).join(" ")} fill={st.ink} />
       )}
+      {world === "boreal" && (
+        <g>
+          <path d={`M${x} ${y + 3} ${Array.from({ length: Math.ceil(w / 4) }, (_, i) => `q1 -2.4 2 0 q1 2.4 2 0`).join(" ")}`} stroke={st.frame} strokeWidth=".7" fill="none" />
+          <path d={`M${x + w - 4.5} ${y + h - 7.5} v5 m-2.2 -3.8 l4.4 2.6 m0 -2.6 l-4.4 2.6`} stroke={st.frame} strokeWidth=".6" />
+        </g>
+      )}
+      {world === "riviera" && (
+        <g fill="none" stroke={st.frame}>
+          <rect x={x + 1.4} y={y + 1.4} width={w - 2.8} height={h - 2.8} strokeWidth=".7" rx=".6" />
+          <rect x={x + 2.6} y={y + 2.6} width={w - 5.2} height={h - 5.2} strokeWidth=".35" rx=".6" />
+          <g fill="#5a2a5f" stroke="none">
+            <circle cx={cx - 1} cy={y + 5.4} r=".9" /><circle cx={cx + 1} cy={y + 5.4} r=".9" /><circle cx={cx} cy={y + 7} r=".9" />
+          </g>
+        </g>
+      )}
       <text
         x={cx}
         y={y + h / 2 + (world === "maison" ? 2.4 : 1.2)}
@@ -114,7 +131,7 @@ function Label({ g, world, name, sub, uid }: { g: Geo; world: WorldId; name: str
 function Cap({ g, world, color, uid }: { g: Geo; world: WorldId; color?: string; uid: string }) {
   const st = STYLE[world];
   const [x, y, w, h] = g.capBox;
-  const kind = world === "alchemist" && ["screw", "crown", "stopper"].includes(g.cap) ? "cork" : g.cap;
+  const kind = (world === "alchemist" || world === "riviera") && ["screw", "crown", "stopper"].includes(g.cap) ? "cork" : g.cap;
   const c = color ?? st.cap;
   const metal = `url(#metal${uid})`;
   switch (kind) {
@@ -129,8 +146,9 @@ function Cap({ g, world, color, uid }: { g: Geo; world: WorldId; color?: string;
       return (
         <g>
           <path d={`M${x + 1} ${y + 3} H${x + w - 1} L${x + w - 2} ${y + h} H${x + 2} Z`} fill="#b8915a" />
-          <rect x={x - 1} y={y} width={w + 2} height="4" rx="1.5" fill={world === "alchemist" ? "#8a2a1f" : metal} />
+          <rect x={x - 1} y={y} width={w + 2} height="4" rx="1.5" fill={world === "alchemist" ? "#8a2a1f" : world === "riviera" ? st.cap : metal} />
           {world === "alchemist" && <path d={`M${x} ${y + 3} q2 6 4 1 q2 5 4 0`} fill="#8a2a1f" />}
+          {world === "riviera" && <path d={`M${x - 1} ${y + 3} q1.5 7 3 1 q2 4 3.5 -0.5 q1.5 6 3 0.5 q1 3 ${w - 8.5} -1`} fill={st.cap} />}
         </g>
       );
     case "stopper":
@@ -233,13 +251,19 @@ export function Bottle({ ing, size = 54, world: forced }: { ing: Ingredient; siz
       </g>
       <path d={g.body} fill="none" stroke="#fff" strokeOpacity=".45" strokeWidth=".8" />
       {/* world extras on the neck */}
+      {world === "boreal" && (
+        <g clipPath={`url(#b${uid})`}>
+          <rect x="0" y="0" width="60" height={g.top + 6} fill="#fff" opacity=".22" />
+          <path d={`M8 ${g.top + 6} ${Array.from({ length: 13 }, (_, i) => `L${8 + i * 3.6} ${g.top + 6 + (i % 2 ? 3.4 : 0)}`).join(" ")}`} stroke="#fff" strokeOpacity=".55" strokeWidth=".6" fill="none" />
+        </g>
+      )}
       {world === "tiki" && g.cap !== "none" && (
         <path d={`M${g.capBox[0]} ${g.capBox[1] + g.capBox[3] + 2} l${g.capBox[2]} 2 m-${g.capBox[2]} 1.6 l${g.capBox[2]} 2 m-${g.capBox[2]} 1.6 l${g.capBox[2]} 2`} stroke="#8a6a2f" strokeWidth="1.2" />
       )}
       {(world === "maison" || world === "anatolia") && ["decanter", "tall", "square", "round"].includes(ing.shape ?? "") && (
         <circle cx={g.label[0] + g.label[2] - 2} cy={g.label[1] + g.label[3] + 4} r="3.2" fill={world === "maison" ? "#7a1a1a" : "#7d1a16"} stroke="#5a0f0f" strokeWidth=".4" />
       )}
-      <Label g={g} world={world} name={short(pick(ing.name))} sub={ing.abv > 0 ? `${Math.round(ing.abv * 100)}% VOL` : "GARNISH"} uid={uid} />
+      <Label g={g} world={world} name={short(pick(ing.name))} sub={ing.zero ? "0.0% VOL" : ing.abv > 0 ? `${Math.round(ing.abv * 100)}% VOL` : "GARNISH"} uid={uid} />
       <Cap g={g} world={world} color={ing.cap} uid={uid} />
     </svg>
   );

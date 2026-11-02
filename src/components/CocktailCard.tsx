@@ -3,12 +3,15 @@
 import Link from "next/link";
 import { analyse } from "@/lib/balance";
 import { usePrefs } from "@/lib/prefs";
+import { isZeroCocktail, pour } from "@/lib/zero";
 import type { Cocktail } from "@/lib/types";
 import { ingredientById } from "@/data/ingredients";
 import { GlassArt } from "./GlassArt";
 
-export function CocktailCard({ c, note }: { c: Cocktail; note?: React.ReactNode }) {
-  const { pick, favourites, toggleFav, t } = usePrefs();
+export function CocktailCard({ c: original, note }: { c: Cocktail; note?: React.ReactNode }) {
+  const { pick, favourites, toggleFav, t, zero } = usePrefs();
+  const native = isZeroCocktail(original);
+  const { c, swapped } = pour(original, zero);
   const a = analyse(c.parts, c.method);
   const fav = favourites.includes(c.id);
   return (
@@ -21,6 +24,7 @@ export function CocktailCard({ c, note }: { c: Cocktail; note?: React.ReactNode 
           <GlassArt glass={c.glass} color={a.color} opaque={a.opaque} ice={c.ice} method={c.method} garnish={c.garnish} size={84} animate={false} />
         </div>
         {c.world !== "all" && <span className="badge">{c.author ? t("creations") : t("signature")}</span>}
+        {(native || swapped) && <span className="badge zero" title={native ? t("zeroNative") : t("zeroVersion")}>0%</span>}
         <h3>{pick(c.name)}</h3>
         <p className="card-ings">
           {c.parts

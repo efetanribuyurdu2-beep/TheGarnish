@@ -6,7 +6,8 @@ import type { WorldId } from "@/lib/types";
 
 /**
  * The balance dial (tart ← balanced → sweet), crafted differently in every world:
- * Art Deco sunburst, çini plate, sensu fan, VU meter, radar HUD, astrolabe, rope-bound compass.
+ * Art Deco sunburst, çini plate, sensu fan, VU meter, radar HUD, astrolabe, rope-bound compass,
+ * frosted compass (Boreal) and a limestone sundial (Riviera).
  */
 const CX = 100;
 const CY = 108;
@@ -124,6 +125,57 @@ function Face({ world, uid }: { world: WorldId; uid: string }) {
           {ticks(15, 58, 64).map((t) => <path key={t.a} d={t.d} stroke="#3a2210" strokeWidth="1.2" />)}
         </g>
       );
+    case "boreal": // frosted compass
+      return (
+        <g>
+          <path d={sector(-96, 96, 0, 98)} fill="#0b1a2b" />
+          <path d={arc(-96, 96, 96)} stroke="#b7d4ff" strokeWidth="2.4" fill="none" />
+          <path d={arc(-96, 96, 90)} stroke="#b7d4ff" strokeOpacity=".5" strokeWidth=".8" fill="none" />
+          <path d={sector(-84, 84, 66, 86)} fill={`url(#aur${uid})`} opacity=".35" />
+          {ticks(29, 80, 88).map((t, i) => <path key={t.a} d={t.d} stroke="#dfeaf2" strokeWidth={i % 7 === 0 ? 1.8 : 0.6} />)}
+          {/* compass rose */}
+          {[-90, -45, 0, 45, 90].map((a) => {
+            const [x, y] = pol(a, a % 90 === 0 ? 58 : 46);
+            const [bx, by] = pol(a - 8, 18);
+            const [cx2, cy2] = pol(a + 8, 18);
+            return <path key={a} d={`M${CX} ${CY} L${bx} ${by} L${x} ${y} L${cx2} ${cy2} Z`} fill={a === 0 ? "#dfeaf2" : "#1f4fa8"} stroke="#b7d4ff" strokeWidth=".5" />;
+          })}
+          {[-60, 60].map((a) => {
+            const [x, y] = pol(a, 70);
+            return (
+              <g key={a} transform={`translate(${x} ${y})`} stroke="#dfeaf2" strokeWidth=".9" strokeLinecap="round">
+                {[0, 60, 120].map((r) => <path key={r} transform={`rotate(${r})`} d="M0 -5 V5" />)}
+              </g>
+            );
+          })}
+        </g>
+      );
+    case "riviera": // sundial in limestone
+      return (
+        <g>
+          <path d={sector(-96, 96, 0, 98)} fill="#e8dcc4" />
+          <path d={sector(-96, 96, 0, 98)} fill={`url(#stone${uid})`} />
+          <path d={arc(-96, 96, 96)} stroke="#a8823a" strokeWidth="2" fill="none" />
+          <path d={sector(-90, 90, 86, 92)} fill="#2a4f8a" opacity=".85" />
+          {Array.from({ length: 16 }, (_, i) => -90 + i * 12 + 6).map((a) => {
+            const [x, y] = pol(a, 89);
+            return <circle key={a} cx={x} cy={y} r="1.3" fill="#e3b341" />;
+          })}
+          {["VI", "VIII", "X", "XII", "II", "IV", "VI"].map((n, i) => {
+            const a = -84 + i * 28;
+            const [x, y] = pol(a, 72);
+            return <text key={i} x={x} y={y + 3} fontSize="9" textAnchor="middle" fill="#3a2414" style={{ fontFamily: "'Italiana', serif" }} transform={`rotate(${a} ${x} ${y})`}>{n}</text>;
+          })}
+          {ticks(25, 56, 62).map((t) => <path key={t.a} d={t.d} stroke="#3a2414" strokeWidth=".8" />)}
+          {/* vine across the base */}
+          <path d={`M${CX - 50} ${CY - 4} C${CX - 30} ${CY - 20} ${CX - 12} ${CY - 2} ${CX} ${CY - 14} C${CX + 12} ${CY - 2} ${CX + 30} ${CY - 20} ${CX + 50} ${CY - 4}`} stroke="#7d8f3a" strokeWidth="1.2" fill="none" />
+          {[-32, 32].map((dx) => (
+            <g key={dx} fill="#5a2a5f">
+              <circle cx={CX + dx - 2} cy={CY - 10} r="2" /><circle cx={CX + dx + 2} cy={CY - 10} r="2" /><circle cx={CX + dx} cy={CY - 7} r="2" />
+            </g>
+          ))}
+        </g>
+      );
     default: // maison
       return (
         <g>
@@ -177,6 +229,22 @@ function Needle({ world }: { world: WorldId }) {
           <path d={`M${CX} ${CY - 70} l-5 10 h10 Z`} fill="#e2574c" />
         </g>
       );
+    case "boreal": // compass needle: red north, ice south
+      return (
+        <g>
+          <path d={`M${CX} ${CY - 84} L${CX + 5} ${CY} L${CX - 5} ${CY} Z`} fill="#c8323c" />
+          <path d={`M${CX} ${CY - 84} L${CX} ${CY}`} stroke="#ff8a8a" strokeWidth=".6" />
+          <path d={`M${CX} ${CY + 14} L${CX + 5} ${CY} L${CX - 5} ${CY} Z`} fill="#dfeaf2" />
+        </g>
+      );
+    case "riviera": // bronze gnomon shadow
+      return (
+        <g>
+          <path d={`M${CX} ${CY - 80} L${CX + 3} ${CY} L${CX - 3} ${CY} Z`} fill="#3a2414" opacity=".35" transform={`translate(3 0)`} />
+          <path d={`M${CX} ${CY - 80} L${CX + 3} ${CY} L${CX - 3} ${CY} Z`} fill="#8a5a24" />
+          <path d={`M${CX} ${CY - 80} L${CX} ${CY}`} stroke="#e3b341" strokeWidth=".7" />
+        </g>
+      );
     default:
       return (
         <g>
@@ -221,6 +289,22 @@ function Hub({ world }: { world: WorldId }) {
           <circle cx={CX} cy={CY} r="2.4" fill="#c39245" />
         </g>
       );
+    case "boreal":
+      return (
+        <g>
+          <circle cx={CX} cy={CY} r="8" fill="#1f4fa8" stroke="#dfeaf2" strokeWidth="1.2" />
+          <g stroke="#fff" strokeWidth="1" strokeLinecap="round">
+            {[0, 60, 120].map((r) => <path key={r} transform={`rotate(${r} ${CX} ${CY})`} d={`M${CX} ${CY - 5} V${CY + 5}`} />)}
+          </g>
+        </g>
+      );
+    case "riviera":
+      return (
+        <g>
+          <circle cx={CX} cy={CY} r="8" fill="#f2c94c" stroke="#a8823a" strokeWidth="1.2" />
+          <path d={`M${CX + 3} ${CY - 6} C${CX + 8} ${CY - 12} ${CX + 13} ${CY - 9} ${CX + 13} ${CY - 9} C${CX + 10} ${CY - 5} ${CX + 6} ${CY - 5} ${CX + 3} ${CY - 6}Z`} fill="#5e7a2e" />
+        </g>
+      );
     case "tiki":
       return (
         <g fill="#e2574c">
@@ -245,7 +329,7 @@ export function BalanceGauge({ balance, active }: { balance: number; active: boo
   const span = world === "jazz" ? 60 : 84;
   const angle = active ? Math.max(-1, Math.min(1, balance)) * span : world === "jazz" ? -span : 0;
   const verdict = !active ? "—" : Math.abs(balance) < 0.25 ? t("balanced") : balance < 0 ? t("tooSour") : t("tooSweet");
-  const ink = world === "jazz" || world === "sakura" || world === "tiki" || world === "anatolia" ? "#1a1612" : "currentColor";
+  const ink = world === "jazz" || world === "sakura" || world === "tiki" || world === "anatolia" || world === "riviera" ? "#1a1612" : "currentColor";
 
   return (
     <figure className={`gauge-wrap gg-${world}`}>
@@ -266,6 +350,15 @@ export function BalanceGauge({ balance, active }: { balance: number; active: boo
             <stop offset=".5" stopColor="#9b7bff" />
             <stop offset="1" stopColor="#ff7ac8" />
           </linearGradient>
+          <linearGradient id={`aur${uid}`} x1="0" x2="1">
+            <stop offset="0" stopColor="#7fe3c4" />
+            <stop offset=".5" stopColor="#5fb8e8" />
+            <stop offset="1" stopColor="#b48fd6" />
+          </linearGradient>
+          <radialGradient id={`stone${uid}`} cx=".3" cy=".2" r="1">
+            <stop offset="0" stopColor="#fff" stopOpacity=".25" />
+            <stop offset="1" stopColor="#8a7350" stopOpacity=".25" />
+          </radialGradient>
           <filter id={`glow${uid}`} x="-20%" y="-20%" width="140%" height="140%">
             <feGaussianBlur stdDeviation="3" />
           </filter>

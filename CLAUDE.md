@@ -20,14 +20,15 @@ npm install · npm run dev · npm run build · npm run lint (tsc)
 ## Map of the code
 | Path | What |
 | --- | --- |
-| `src/data/worlds.ts` | 7 worlds: name, tagline, intro, collection name, bar name, bartender greeting, Jazz password |
-| `src/data/ingredients.ts` | 61 base ingredients (full prose) + merge with `ingredientsMore.ts` (116 compact rows) = **177** |
-| `src/data/cocktails.ts` | 55 cocktails (18 classics `world:"all"` + signatures per world), garnishes, 6 families (ROOTS), moods |
+| `src/data/worlds.ts` | 9 worlds: name, tagline, intro, collection name, bar name, bartender greeting, Jazz password |
+| `src/data/ingredients.ts` | 61 base ingredients (full prose) + merge with `ingredientsMore.ts` (150 compact rows, incl. 18 `zero-*` alcohol-free stand-ins) = **211** |
+| `src/data/cocktails.ts` | 87 cocktails (21 classics `world:"all"`, 3 of them alcohol-free, + signatures per world incl. 2 alcohol-free each), garnishes, 6 families (ROOTS), moods |
 | `src/lib/balance.ts` | Drink maths: dilution (Dave Arnold formulas), final ABV, sugar/acid balance, kcal, colour mixing, tips |
 | `src/lib/themeKit.ts` | Per-world SVG motifs → CSS vars (`--band --bandV --track --thumb --c-tl.. --emblem --counter --wall`) |
 | `src/lib/music.ts` | Generative Web Audio music per world (no files). Toggled by `MusicButton` (world instrument icon) |
 | `src/lib/ui.ts` | UI translations, method steps, glass/ice labels, `WORLD_VESSELS`, `SPECIAL_VESSELS` |
-| `src/lib/prefs.tsx` | Prefs context: `t()`, `pick()`, `openGate()` |
+| `src/lib/prefs.tsx` | Prefs context: `t()`, `pick()`, `openGate()`, `zero` (alcohol-free mode) |
+| `src/lib/zero.ts` | Alcohol-free: `MAP` of every alcoholic ingredient → zero-proof stand-in(s), `toZero()`, `pour(c, zero)`, `isZeroCocktail()` |
 | `src/components/GlassArt.tsx` | Realistic glassware + world vessels; world-specific glass craft |
 | `src/components/Bottle.tsx` | 13 bottle silhouettes (by ingredient `shape`) × world label/cap styling |
 | `src/components/BalanceGauge.tsx` | Balance dial, a different design per world |
@@ -46,6 +47,13 @@ npm install · npm run dev · npm run build · npm run lint (tsc)
 | Sakura | seigaiha, kumiko, kintsugi, shoji, hinoki, tategaki, karesansui | Bar Hanami 花見 | ochoko, masu | sensu fan | fūrin | Kintsugi |
 | Alchemist | alchemy glyphs, parchment, brass | The Apothecary | beaker, flask | astrolabe | music box | Secret Elixir (mastermind) |
 | Tiki | tapa, bamboo, palm leaves, torches | The Lagoon Hut | coconut, pineapple, tiki mug | rope dial | ukulele | Fruit Rain |
+| Boreal (Scandinavia + Russia) | aurora, snow, pine ridge, Selbu star, Gzhel blue, birch bark; fonts Forum + Jost | Aurora Hall | frosted ryumka, birch kuksa, glass of ice | frosted compass | kantele | Frozen Lake (ice-slide, BFS-checked levels) |
+| Riviera (French cellars, Italian/Greek gardens) | meander, vine & grapes, lemons, majolica, cellar brick vault, wax-sealed bottles; fonts Italiana + Lora | La Cave Riviera | wine glass, kylix, terracotta cup | sundial | mandolin | Majolica (sliding tile 3×3 / 4×4) |
+
+## Alcohol-free (0%)
+- Header pill **0% Alkolsüz** toggles `prefs.zero`: cards, the bar page and "start from a classic" in the Atelier switch to zero-proof versions; zero-proof originals sort first on /cocktails.
+- Cocktail detail has an **Orijinal / Alkolsüz** switch; swapped lines say "X yerine".
+- Atelier and Cellar have an "Alkolsüz 0%" shelf/filter (`ingredient.zero`). Adding an alcoholic ingredient? Add it to `MAP` in `zero.ts` (category fallbacks exist).
 
 ## Pages
 `/` home · `/cocktails` + `/cocktails/[id]` · `/cellar` + `/cellar/[id]` · `/atelier` (the world's bar: 3D bottle shelves, counter, vessel & garnish pickers, gauge, save signature) · `/lineage` (family tree) · `/concierge` · `/bar` (what can I make) · `/glass-ice` · `/games` · `/collection` (printable menu).
@@ -61,7 +69,8 @@ npm install · npm run dev · npm run build · npm run lint (tsc)
 - SVG arcs over 180° need the large-arc flag (see `BalanceGauge`).
 - Grid children with horizontal scrollers need `min-width: 0`, or the page widens.
 - Nav collapses to the burger menu under 1320px (9 links).
-- Owner did not want: the old scale, flat bottles and glasses, the busy bright çini wall, the turquoise band on Anatolia glasses.
+- Owner did not want: the old scale, flat bottles and glasses, the busy bright çini wall, the turquoise band on Anatolia glasses. (Same reason Riviera's counter is travertine with only a thin majolica edge.)
+- Backdrops are `position: fixed`; full-page screenshots only show them in the first viewport. That is expected.
 
 ## Ideas parked for later
-Haftanın Gizli Malzemesi (weekly challenge), Kokteyl Pasaportu (world map stamps), alcohol-free toggle on every recipe, party planner (batch maths, shopping list), user accounts and sharing (would need a backend, e.g. Supabase), photo-real assets.
+Haftanın Gizli Malzemesi (weekly challenge), Kokteyl Pasaportu (world map stamps), party planner (batch maths, shopping list), user accounts and sharing (would need a backend, e.g. Supabase), photo-real assets.

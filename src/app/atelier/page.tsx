@@ -15,6 +15,7 @@ import { analyse } from "@/lib/balance";
 import { usePrefs } from "@/lib/prefs";
 import type { Cocktail, Glass, Ice, IngredientCategory, Method, Part, Root } from "@/lib/types";
 import { GLASS_LABEL, ICE_LABEL, SPECIAL_VESSELS, WORLD_VESSELS } from "@/lib/ui";
+import { pour } from "@/lib/zero";
 
 const METHODS: Method[] = ["shake", "dryshake", "stir", "build", "swizzle", "blend"];
 const METHOD_LABEL: Record<Method, { tr: string; en: string }> = {
@@ -30,7 +31,7 @@ const chunk = <T,>(a: T[], n: number) => Array.from({ length: Math.ceil(a.length
 const GARNISH_KEYS = Object.keys(GARNISHES).filter((g) => g !== "none");
 
 export default function AtelierPage() {
-  const { pick, t, lang, world, set, creations } = usePrefs();
+  const { pick, t, lang, world, set, creations, zero } = usePrefs();
   const w = worldById(world ?? "maison");
   const router = useRouter();
   const [name, setName] = useState("");
@@ -41,7 +42,7 @@ export default function AtelierPage() {
   const [garnish, setGarnish] = useState("lemon-twist");
   const [root, setRoot] = useState<Root>("daiquiri");
   const [parent, setParent] = useState<string | undefined>();
-  const [shelf, setShelf] = useState<IngredientCategory>("spirit");
+  const [shelf, setShelf] = useState<IngredientCategory | "zero">(zero ? "zero" : "spirit");
 
   const a = useMemo(() => analyse(parts, method), [parts, method]);
   const ownVessels = WORLD_VESSELS[w.id] as Glass[];
@@ -61,7 +62,7 @@ export default function AtelierPage() {
   const startFrom = (id: string) => {
     const c = COCKTAILS.find((x) => x.id === id);
     if (!c) return;
-    setParts(c.parts.map((p) => ({ ...p })));
+    setParts(pour(c, zero).parts.map(({ id, ml, top }) => ({ id, ml, ...(top ? { top } : {}) })));
     setMethod(c.method);
     setGlass(c.glass);
     setIce(c.ice);
@@ -121,9 +122,12 @@ export default function AtelierPage() {
                 {pick(CATEGORY_LABEL[c])}
               </button>
             ))}
+            <button className={`chip ${shelf === "zero" ? "on" : ""}`} onClick={() => setShelf("zero")}>
+              {t("zeroShelf")}
+            </button>
           </div>
           <div className="shelves">
-            {chunk(INGREDIENTS.filter((i) => i.category === shelf), 10).map((row, r) => (
+            {chunk(INGREDIENTS.filter((i) => (shelf === "zero" ? i.zero : i.category === shelf && !i.zero)), 10).map((row, r) => (
               <div key={r} className="shelf-row">
                 <div className="shelf-bottles">
                   {row.map((i) => (

@@ -8,7 +8,9 @@ export type WorldId =
   | "jazz"
   | "sakura"
   | "alchemist"
-  | "tiki";
+  | "tiki"
+  | "boreal"
+  | "riviera";
 
 export type PaletteId = "noir" | "midnight" | "bordeaux";
 
@@ -61,6 +63,7 @@ export interface Ingredient {
   shape?: BottleShape; // back-bar bottle silhouette (defaults by category)
   glass?: string; // bottle glass tint, e.g. green or amber glass
   cap?: string; // cap / foil colour
+  zero?: boolean; // a zero-proof (alcohol-free) alternative
 }
 
 export type Glass =
@@ -84,7 +87,12 @@ export type Glass =
   | "beaker"
   | "flask"
   | "coconut"
-  | "pineapple";
+  | "pineapple"
+  | "ryumka"
+  | "kuksa"
+  | "iceglass"
+  | "kylix"
+  | "terracotta";
 
 export type Method = "shake" | "dryshake" | "stir" | "build" | "blend" | "swizzle";
 export type Ice = "none" | "cube" | "sphere" | "crushed" | "collins";

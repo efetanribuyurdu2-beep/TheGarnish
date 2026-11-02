@@ -9,7 +9,8 @@ import type { Glass, Ice, Method, WorldId } from "@/lib/types";
  *  maison – cut crystal with a gilded rim       anatolia – Paşabahçe crystal, gold rim, çini band
  *  sakura – Edo kiriko (coloured overlay, cut)  jazz – Art Deco etching with gold rim
  *  cosmos – iridescent glass, glowing drink     alchemist – laboratory glass with graduations
- *  tiki – heavy glass wrapped in bamboo
+ *  tiki – heavy glass wrapped in bamboo        boreal – frost-etched glass, snow crystals
+ *  riviera – engraved vine with a gilded grape cluster
  */
 interface Shape {
   bowl: string; // closed silhouette of the vessel
@@ -45,9 +46,14 @@ const SHAPES: Record<Glass, Shape> = {
   teacup: { bowl: "M26 82 H94 C92 110 80 122 60 122 C40 122 28 110 26 82 Z", liquid: "M26 82 H94 C92 110 80 122 60 122 C40 122 28 110 26 82 Z", top: 83, bottom: 120, rim: [60, 82, 34], band: [90, 96] },
   coconut: { bowl: "M22 86 H98 C98 116 82 138 60 138 C38 138 22 116 22 86 Z", liquid: "M22 86 H98 C98 116 82 138 60 138 C38 138 22 116 22 86 Z", top: 86, bottom: 136, rim: [60, 86, 38], band: [96, 100] },
   pineapple: { bowl: "M30 66 C30 58 90 58 90 66 V122 C90 142 30 142 30 122 Z", liquid: "M30 66 C30 58 90 58 90 66 V122 C90 142 30 142 30 122 Z", top: 64, bottom: 140, rim: [60, 64, 30], band: [0, 0] },
+  ryumka: { bowl: "M42 52 C40 76 48 92 60 94 C72 92 80 76 78 52 Z", liquid: "M43.4 62 H76.6 C76 80 69 90 60 91 C51 90 44 80 43.4 62 Z", stem: "M58.4 94 C58.4 112 58.8 126 57.6 139 H62.4 C61.2 126 61.6 112 61.6 94 Z", foot: [60, 141, 17], top: 62, bottom: 91, rim: [60, 52, 18], band: [68, 74] },
+  iceglass: { bowl: "M28 66 H92 L88 146 H32 Z", liquid: "M38 82 H82 L80 134 H40 Z", top: 82, bottom: 134, rim: [60, 66, 32], band: [72, 78] },
+  kuksa: { bowl: "M28 84 H92 C92 112 80 130 60 130 C40 130 28 112 28 84 Z", liquid: "M28 84 H92 C92 112 80 130 60 130 C40 130 28 112 28 84 Z", top: 85, bottom: 128, rim: [60, 84, 32], band: [92, 98] },
+  kylix: { bowl: "M14 100 H106 C104 116 84 124 60 124 C36 124 16 116 14 100 Z", liquid: "M14 100 H106 C104 116 84 124 60 124 C36 124 16 116 14 100 Z", top: 101, bottom: 122, rim: [60, 100, 46], band: [106, 112] },
+  terracotta: { bowl: "M34 72 H86 L82 140 Q82 145 77 145 H43 Q38 145 38 140 Z", liquid: "M34 72 H86 L82 140 Q82 145 77 145 H43 Q38 145 38 140 Z", top: 73, bottom: 143, rim: [60, 72, 26], band: [90, 98] },
 };
 
-const OPAQUE_VESSELS = new Set<Glass>(["fincan", "ochoko", "masu", "teacup", "coconut", "pineapple"]);
+const OPAQUE_VESSELS = new Set<Glass>(["fincan", "ochoko", "masu", "teacup", "coconut", "pineapple", "kuksa", "kylix", "terracotta"]);
 
 /** Porcelain, ceramic, wood and fruit vessels: only the drink's surface shows. */
 function SolidVessel({ glass, color, empty, uid }: { glass: Glass; color: string; empty: boolean; uid: string }) {
@@ -178,6 +184,58 @@ function SolidVessel({ glass, color, empty, uid }: { glass: Glass; color: string
           <path d="M34 70 V124" stroke="#fff" strokeOpacity=".35" strokeWidth="3" strokeLinecap="round" />
         </g>
       );
+    case "kuksa":
+      return (
+        <g>
+          {/* carved handle with a thumb hole and a leather loop */}
+          <path d="M88 86 C104 84 110 98 102 108 C98 112 92 110 90 104 Z" fill="#a8743f" />
+          <circle cx="98" cy="96" r="4.2" fill="#2a1a0e" />
+          <path d="M104 106 C112 116 108 128 100 126" stroke="#5a3a1e" strokeWidth="2" fill="none" strokeLinecap="round" />
+          <path d="M28 84 H92 C92 112 80 130 60 130 C40 130 28 112 28 84 Z" fill="#b8824a" />
+          {[0, 1, 2, 3].map((i) => (
+            <ellipse key={i} cx={48 + i * 3} cy={106 + i} rx={14 - i * 3} ry={9 - i * 2} fill="none" stroke="#8a5a2e" strokeWidth=".9" opacity=".7" />
+          ))}
+          <path d="M66 96 C78 100 84 112 78 122" stroke="#8a5a2e" strokeWidth=".8" fill="none" opacity=".7" />
+          <path d="M33 92 C35 110 44 122 54 126" stroke="#e8c08a" strokeWidth="2" fill="none" opacity=".55" />
+          <ellipse cx="60" cy="84" rx="32" ry="5.4" fill="#d9a86a" />
+          {surface(60, 85, 28, 4.2)}
+          <ellipse cx="60" cy="84" rx="32" ry="5.4" fill="none" stroke="#7a4a22" strokeWidth="1.2" />
+        </g>
+      );
+    case "kylix":
+      return (
+        <g>
+          {/* stem and foot in black glaze */}
+          <path d="M53 122 L55 134 H65 L67 122 Z" fill="#141010" />
+          <ellipse cx="60" cy="138" rx="20" ry="4.4" fill="#141010" />
+          <ellipse cx="60" cy="137" rx="18" ry="2.4" fill="none" stroke="#c0643a" strokeWidth="1" />
+          {/* side handles */}
+          <path d="M14 104 C2 98 2 90 12 92" stroke="#141010" strokeWidth="3.4" fill="none" strokeLinecap="round" />
+          <path d="M106 104 C118 98 118 90 108 92" stroke="#141010" strokeWidth="3.4" fill="none" strokeLinecap="round" />
+          <path d="M14 100 H106 C104 116 84 124 60 124 C36 124 16 116 14 100 Z" fill="#141010" />
+          {/* red-figure band: meander and a tiny vine */}
+          <path d="M20 106 H100 C98 110 94 113 88 115 H32 C26 113 22 110 20 106 Z" fill="#c0643a" />
+          <path d={Array.from({ length: 8 }, (_, i) => `M${30 + i * 8} 113 V109 H${35 + i * 8} V111.5 H${32.5 + i * 8}`).join(" ")} stroke="#141010" strokeWidth=".9" fill="none" />
+          <path d="M24 102 C28 98 34 99 36 102" stroke="#fff" strokeOpacity=".35" strokeWidth="1.2" fill="none" />
+          {surface(60, 101, 42, 3.6)}
+          <ellipse cx="60" cy="100" rx="46" ry="4.6" fill="none" stroke="#c0643a" strokeWidth="1.2" />
+        </g>
+      );
+    case "terracotta":
+      return (
+        <g>
+          <path d="M34 72 H86 L82 140 Q82 145 77 145 H43 Q38 145 38 140 Z" fill="#b8603a" />
+          <path d="M35.6 90 H84.4 L83.8 98 H36.2 Z" fill="#f2e6cc" />
+          {Array.from({ length: 7 }).map((_, i) => (
+            <path key={i} transform={`translate(${41 + i * 6.4} 94)`} d="M0 -2.6 C1.4 -1 1.4 1 0 2.6 C-1.4 1 -1.4 -1 0 -2.6Z" fill="#5e7a2e" />
+          ))}
+          <path d="M37 106 L39 138" stroke="#e8946a" strokeWidth="2.4" strokeLinecap="round" opacity=".6" />
+          <path d="M40 110 C50 116 70 116 80 110" stroke="#8a4024" strokeWidth=".7" fill="none" opacity=".6" />
+          <ellipse cx="60" cy="72" rx="26" ry="4.2" fill="#d98a5e" />
+          {surface(60, 73, 23, 3.4)}
+          <ellipse cx="60" cy="72" rx="26" ry="4.2" fill="none" stroke="#8a4024" strokeWidth="1" />
+        </g>
+      );
     default:
       return null;
   }
@@ -282,10 +340,65 @@ export function GarnishIcon({ kind, x, y }: { kind: string; x: number; y: number
         ))}
       </g>
     );
+  if (kind === "spruce" || kind === "rosemary")
+    return (
+      <g transform={g} strokeLinecap="round">
+        <path d="M-4 10 C0 0 4 -10 6 -22" stroke="#5a3a1e" strokeWidth="1.4" fill="none" />
+        {Array.from({ length: 9 }).map((_, i) => {
+          const t = i / 8;
+          const x = -4 + 10 * t;
+          const y = 8 - 30 * t;
+          const len = kind === "spruce" ? 6 - t * 2 : 7 - t * 3;
+          return (
+            <g key={i} stroke={kind === "spruce" ? (i % 2 ? "#2f6b45" : "#3f8a55") : "#7f9a7a"} strokeWidth={kind === "spruce" ? 1.3 : 1.8}>
+              <path d={`M${x} ${y} l${-len} ${-len * 0.5}`} />
+              <path d={`M${x} ${y} l${len} ${-len * 0.3}`} />
+            </g>
+          );
+        })}
+      </g>
+    );
+  if (kind === "lingonberry")
+    return (
+      <g transform={g}>
+        <path d="M-2 -6 C-8 -12 -12 -10 -14 -6 C-10 -4 -6 -4 -2 -6Z" fill="#2f6b45" />
+        <path d="M2 -6 C6 -13 11 -12 13 -8 C9 -5 6 -5 2 -6Z" fill="#3f8a55" />
+        {[[-4, 0], [3, 1], [0, -5], [-1, 6]].map(([x, y], i) => (
+          <g key={i}>
+            <circle cx={x} cy={y} r="3.6" fill="#b3152c" />
+            <circle cx={x - 1.1} cy={y - 1.2} r="1" fill="#fff" opacity=".6" />
+          </g>
+        ))}
+      </g>
+    );
+  if (kind === "basil")
+    return (
+      <g transform={g}>
+        {[[-25, "#3f8a3a"], [20, "#4f9a42"]].map(([a, c], i) => (
+          <g key={i} transform={`rotate(${a})`}>
+            <path d="M0 2 C-10 -4 -9 -18 0 -22 C9 -18 10 -4 0 2Z" fill={c as string} />
+            <path d="M0 0 V-19 M0 -8 l-4 -3 M0 -8 l4 -3 M0 -14 l-3 -2 M0 -14 l3 -2" stroke="#fff" strokeOpacity=".3" strokeWidth=".6" fill="none" />
+          </g>
+        ))}
+      </g>
+    );
+  if (kind === "grapes")
+    return (
+      <g transform={g}>
+        <path d="M0 -10 C2 -16 6 -18 10 -18" stroke="#5a3a1e" strokeWidth="1.3" fill="none" />
+        <path d="M4 -14 C8 -22 16 -20 16 -14 C12 -12 8 -12 4 -14Z" fill="#5e7a2e" />
+        {[[0, -6], [-4, -6], [4, -6], [-2, -2], [2, -2], [0, 2], [-4, -10], [0, -10], [4, -10]].map(([x, y], i) => (
+          <g key={i}>
+            <circle cx={x} cy={y} r="2.6" fill="#5a2a5f" />
+            <circle cx={x - 0.8} cy={y - 0.8} r=".7" fill="#fff" opacity=".45" />
+          </g>
+        ))}
+      </g>
+    );
   return null;
 }
 
-const RIM_GOLD: Partial<Record<WorldId, string>> = { maison: "#d9b25f", anatolia: "#d9a521", jazz: "#d9b25f" };
+const RIM_GOLD: Partial<Record<WorldId, string>> = { maison: "#d9b25f", anatolia: "#d9a521", jazz: "#d9b25f", riviera: "#e3b341" };
 
 export function GlassArt({
   glass,
@@ -435,7 +548,7 @@ export function GlassArt({
       ) : (
         <g>
           {/* glass body */}
-          <path d={s.bowl} fill="#fff" fillOpacity={world === "alchemist" ? 0.1 : 0.07} />
+          <path d={s.bowl} fill="#fff" fillOpacity={glass === "iceglass" ? 0.3 : world === "alchemist" ? 0.1 : 0.07} />
           {/* liquid */}
           {!empty && (
             <g clipPath={`url(#liq${uid})`}>
@@ -541,6 +654,38 @@ export function GlassArt({
               ))}
               <rect x="0" y={s.bottom - (s.bottom - s.top) * 0.42} width="120" height="2.4" fill="#6b4a1f" />
               <rect x="0" y={s.bottom - (s.bottom - s.top) * 0.22} width="120" height="2" fill="#6b4a1f" />
+            </g>
+          )}
+
+          {world === "boreal" && (
+            <g clipPath={`url(#bowl${uid})`}>
+              <rect x="0" y={s.bottom - (s.bottom - s.top) * 0.38} width="120" height="160" fill="#fff" opacity=".18" />
+              <g stroke="#fff" strokeOpacity=".55" strokeWidth=".6" fill="none">
+                {Array.from({ length: 7 }).map((_, i) => {
+                  const x = s.rim[0] - s.rim[2] + 6 + i * ((s.rim[2] * 2 - 12) / 6);
+                  const y = s.bottom - (s.bottom - s.top) * 0.38;
+                  return <path key={i} d={`M${x} ${y + 4} v-6 m-2.4 1.4 l4.8 2.8 m0 -2.8 l-4.8 2.8`} />;
+                })}
+              </g>
+            </g>
+          )}
+          {world === "riviera" && s.stem && (
+            <g clipPath={`url(#bowl${uid})`} fill="none" stroke="#e3b341" strokeOpacity=".75" strokeWidth=".7">
+              <path d={`M${s.rim[0] - s.rim[2]} ${s.band[0] + 4} C${s.rim[0] - s.rim[2] / 2} ${s.band[0] - 2} ${s.rim[0] - 6} ${s.band[0] + 8} ${s.rim[0] + 2} ${s.band[0] + 2} S${s.rim[0] + s.rim[2] / 2} ${s.band[0] - 2} ${s.rim[0] + s.rim[2]} ${s.band[0] + 4}`} />
+              {[-0.6, 0, 0.6].map((k) => (
+                <g key={k} transform={`translate(${s.rim[0] + k * s.rim[2]} ${s.band[0] + 6})`} fill="#e3b341" fillOpacity=".55" stroke="none">
+                  <circle r="1.2" cx="-1.2" /><circle r="1.2" cx="1.2" /><circle r="1.2" cy="2" />
+                </g>
+              ))}
+            </g>
+          )}
+          {glass === "iceglass" && (
+            <g clipPath={`url(#bowl${uid})`}>
+              <path d={s.bowl} fill={`url(#ice${uid})`} opacity=".9" />
+              <path d={s.liquid} fill={empty ? "transparent" : color} opacity=".55" />
+              <g stroke="#fff" strokeOpacity=".75" strokeWidth=".7" fill="none">
+                <path d="M34 90 L42 98 L40 110 M84 76 L78 92 L86 104 M52 140 L58 132 L66 140" />
+              </g>
             </g>
           )}
 

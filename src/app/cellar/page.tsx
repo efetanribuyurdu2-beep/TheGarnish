@@ -12,12 +12,12 @@ const ORDER = Object.keys(CATEGORY_LABEL) as IngredientCategory[];
 
 export default function CellarPage() {
   const { pick, t, world } = usePrefs();
-  const [cat, setCat] = useState<IngredientCategory | null>(null);
+  const [cat, setCat] = useState<IngredientCategory | "zero" | null>(null);
   const [q, setQ] = useState("");
 
   const list = useMemo(() => {
     const needle = q.trim().toLocaleLowerCase();
-    return INGREDIENTS.filter((i) => (!cat || i.category === cat) && (!needle || `${i.name.tr} ${i.name.en}`.toLocaleLowerCase().includes(needle)))
+    return INGREDIENTS.filter((i) => (!cat || (cat === "zero" ? i.zero : i.category === cat)) && (!needle || `${i.name.tr} ${i.name.en}`.toLocaleLowerCase().includes(needle)))
       // this world's highlighted ingredients first
       .sort((a, b) => Number(b.world === world) - Number(a.world === world));
   }, [cat, q, world]);
@@ -38,6 +38,7 @@ export default function CellarPage() {
               {pick(CATEGORY_LABEL[c])}
             </button>
           ))}
+          <button className={`chip ${cat === "zero" ? "on" : ""}`} onClick={() => setCat(cat === "zero" ? null : "zero")}>{t("zeroShelf")}</button>
         </div>
       </div>
       <div className="grid wide">
@@ -48,7 +49,7 @@ export default function CellarPage() {
               {i.world === world && <span className="badge" style={{ marginBottom: 6 }}>✦</span>}
               <h3>{pick(i.name)}</h3>
               <p>
-                {pick(i.origin)} · {i.abv > 0 ? `${Math.round(i.abv * 100)}%` : "0%"}
+                {pick(i.origin)} · {i.abv > 0 ? `${Math.round(i.abv * 100)}%` : i.zero ? "0.0%" : "0%"}
               </p>
               <p style={{ marginTop: 6 }}>{pick(i.notes.nose)}</p>
             </span>

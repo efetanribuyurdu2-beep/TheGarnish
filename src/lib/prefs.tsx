@@ -11,9 +11,10 @@ interface Prefs {
   favourites: string[];
   bar: string[];
   creations: Cocktail[];
+  zero: boolean; // alcohol-free mode: every recipe shown with zero-proof alternatives
 }
 
-const DEFAULTS: Prefs = { world: null, palette: "noir", lang: "tr", favourites: [], bar: [], creations: [] };
+const DEFAULTS: Prefs = { world: null, palette: "noir", lang: "tr", favourites: [], bar: [], creations: [], zero: false };
 const KEY = "garnish:prefs:v1";
 
 interface Ctx extends Prefs {

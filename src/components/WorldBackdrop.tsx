@@ -243,10 +243,82 @@ function Maison() {
   );
 }
 
+function Boreal() {
+  const r = rand(23);
+  const pine = (x: number, h: number) => {
+    const w = h * 0.42;
+    return `M${x} ${300 - h} L${x - w * 0.45} ${300 - h * 0.62} H${x - w * 0.25} L${x - w * 0.7} ${300 - h * 0.3} H${x - w * 0.4} L${x - w} ${300 - 6} H${x + w} L${x + w * 0.4} ${300 - h * 0.3} H${x + w * 0.7} L${x + w * 0.25} ${300 - h * 0.62} H${x + w * 0.45} Z`;
+  };
+  const trees = Array.from({ length: 34 }, (_, i) => [i * 31 + r() * 18, 60 + r() * 110] as const);
+  return (
+    <>
+      <div className="bd-aurora">
+        <i />
+        <i />
+        <i />
+      </div>
+      <svg className="bd-pattern" aria-hidden>
+        {Array.from({ length: 70 }).map((_, i) => (
+          <circle key={i} cx={`${r() * 100}%`} cy={`${r() * 55}%`} r={r() * 1.2 + 0.3} fill="#fff" className={i % 4 ? "" : "twinkle"} style={{ animationDelay: `${-r() * 4}s` }} />
+        ))}
+      </svg>
+      <div className="bd-snow">
+        {Array.from({ length: 28 }).map((_, i) => (
+          <span key={i} style={{ left: `${r() * 100}%`, animationDuration: `${12 + r() * 14}s`, animationDelay: `${-r() * 20}s`, width: 2 + r() * 4, height: 2 + r() * 4 }} />
+        ))}
+      </div>
+      <svg className="bd-forest" viewBox="0 0 1060 300" preserveAspectRatio="xMidYMax slice" aria-hidden>
+        <path d="M0 250 C200 230 400 262 620 244 C800 230 960 250 1060 240 V300 H0Z" fill="#0b1826" />
+        {trees.map(([x, h], i) => (
+          <path key={i} d={pine(x, h)} fill={i % 3 ? "#08131f" : "#0a1a2a"} />
+        ))}
+        <path d="M0 282 C240 270 520 290 760 278 C900 272 1000 284 1060 280 V300 H0Z" fill="#dfeaf2" opacity=".12" />
+      </svg>
+    </>
+  );
+}
+
+function Riviera() {
+  const leaf = "M0 10 C-4 8 -12 8 -13 1 C-10 0 -12 -5 -8 -7 C-7 -10 -3 -10 0 -13 C3 -10 7 -10 8 -7 C12 -5 10 0 13 1 C12 8 4 8 0 10Z";
+  const bunch = (x: number, y: number, k: number) =>
+    [[0, 0], [-6, 0], [6, 0], [-3, 6], [3, 6], [0, 12], [-9, -6], [-3, -6], [3, -6], [9, -6]].map(([dx, dy], i) => (
+      <circle key={`${k}-${i}`} cx={x + dx} cy={y + dy} r="4" fill="#4a1f4f" />
+    ));
+  return (
+    <>
+      <div className="bd-sun" />
+      <svg className="bd-vine" viewBox="0 0 420 260" aria-hidden>
+        <path d="M0 18 C80 10 150 40 230 26 C300 14 360 30 420 20" stroke="#4a3220" strokeWidth="6" fill="none" />
+        <path d="M60 18 C70 40 60 70 72 96 M190 30 C200 60 186 90 198 120 M320 22 C326 46 318 66 330 84" stroke="#4a3220" strokeWidth="2.4" fill="none" />
+        {[[40, 30, 20], [96, 22, -30], [140, 40, 10], [230, 36, 40], [270, 24, -20], [360, 34, 15], [86, 70, -10], [214, 82, 30], [340, 70, -25]].map(([x, y, a], i) => (
+          <path key={i} d={leaf} transform={`translate(${x} ${y}) rotate(${a}) scale(1.6)`} fill={i % 2 ? "#4f6a26" : "#5e7a2e"} />
+        ))}
+        {bunch(72, 108, 1)}
+        {bunch(198, 132, 2)}
+        {bunch(330, 96, 3)}
+        <path d="M110 30 c8 -10 18 -4 12 4 c-4 4 -8 0 -5 -3" stroke="#5e7a2e" strokeWidth="1.4" fill="none" />
+      </svg>
+      <svg className="bd-lemons" viewBox="0 0 260 260" aria-hidden>
+        <path d="M260 40 C200 60 160 110 120 200" stroke="#4a3220" strokeWidth="5" fill="none" />
+        {[[220, 54, -30], [184, 84, 40], [160, 120, -50], [138, 160, 30], [200, 110, 70], [126, 198, -20]].map(([x, y, a], i) => (
+          <path key={i} d="M0 0 C10 -10 30 -12 44 -6 C30 4 12 6 0 0Z" transform={`translate(${x} ${y}) rotate(${a})`} fill={i % 2 ? "#4f6a26" : "#5e7a2e"} />
+        ))}
+        {[[176, 128, -20], [146, 182, 10], [214, 96, 30]].map(([x, y, a], i) => (
+          <g key={i} transform={`translate(${x} ${y}) rotate(${a})`}>
+            <ellipse rx="20" ry="15" fill="#f2c94c" />
+            <ellipse cx="-20" rx="3.4" ry="2.8" fill="#e0b030" />
+            <ellipse cx="-6" cy="-5" rx="8" ry="3.6" fill="#fff" opacity=".35" />
+          </g>
+        ))}
+      </svg>
+    </>
+  );
+}
+
 export function WorldBackdrop({ world }: { world: WorldId }) {
   return (
     <div className={`backdrop bd-${world}`} aria-hidden>
-      {(world === "anatolia" || world === "tiki" || world === "maison" || world === "jazz") && (
+      {(world === "anatolia" || world === "tiki" || world === "maison" || world === "jazz" || world === "boreal" || world === "riviera") && (
         <>
           <i className="bd-edge left" />
           <i className="bd-edge right" />
@@ -259,6 +331,8 @@ export function WorldBackdrop({ world }: { world: WorldId }) {
       {world === "sakura" && <Sakura />}
       {world === "alchemist" && <Alchemist />}
       {world === "tiki" && <Tiki />}
+      {world === "boreal" && <Boreal />}
+      {world === "riviera" && <Riviera />}
     </div>
   );
 }

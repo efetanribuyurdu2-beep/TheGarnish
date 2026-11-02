@@ -111,6 +111,32 @@ export const WORLDS: World[] = [
     greeting: { tr: "Aloha! Bambu tezgâha geç, meşaleler yanıyor, rom bol.", en: "Aloha! Pull up to the bamboo bar; the torches are lit and the rum is plenty." },
     swatch: ["#0c1a14", "#f0a04b", "#e2574c"],
   },
+  {
+    id: "boreal",
+    name: { tr: "Boreal", en: "Boreal" },
+    tagline: { tr: "Kuzey ışıkları, buz kristalleri ve huş ormanı.", en: "Northern lights, ice crystals and birch forest." },
+    intro: {
+      tr: "Kuzeyin sessizliğinde, karın üstünde yeşil bir ışık dans ediyor. Huş ağacından kupalar, buzdan bardaklar; İskandinav sadeliği ile Rus ihtişamı aynı sofrada.",
+      en: "In the silence of the north, a green light dances over the snow. Cups of birch, glasses of ice; Scandinavian restraint and Russian grandeur at the same table.",
+    },
+    collection: { tr: "Kutup Gecesi", en: "Polar Night" },
+    bar: { tr: "Aurora Hall", en: "Aurora Hall" },
+    greeting: { tr: "Kapıyı çabuk kapat, ayaz içeri dolmasın. Soba yanıyor, votka buz gibi; neyle ısınalım?", en: "Shut the door quick, the frost gets in. The stove is lit and the vodka ice-cold; what shall warm you?" },
+    swatch: ["#07121f", "#7fe3c4", "#dfeaf2"],
+  },
+  {
+    id: "riviera",
+    name: { tr: "Riviera", en: "Riviera" },
+    tagline: { tr: "Bağlar, mahzenler, limon ağaçları ve Akdeniz güneşi.", en: "Vineyards, cellars, lemon trees and Mediterranean sun." },
+    intro: {
+      tr: "Provence'ın lavantası, Toskana'nın bağları, Ege'nin zeytinlikleri. Gün mahzenin serinliğinde başlar, akşam limon ağaçlarının altında bir spritz ile biter.",
+      en: "The lavender of Provence, the vineyards of Tuscany, the olive groves of the Aegean. The day begins in the cool of the cellar and ends with a spritz beneath the lemon trees.",
+    },
+    collection: { tr: "Bağ Bozumu", en: "The Harvest" },
+    bar: { tr: "La Cave Riviera", en: "La Cave Riviera" },
+    greeting: { tr: "Benvenuti! Mahzen serin, bahçe güneşli. Önce bir spritz mi, yoksa fıçıdan bir şey mi?", en: "Benvenuti! The cellar is cool and the garden sunny. A spritz first, or something from the barrel?" },
+    swatch: ["#17110d", "#e3b341", "#7d8f3a"],
+  },
 ];
 
 export const PALETTES: { id: PaletteId; name: L; swatch: [string, string] }[] = [

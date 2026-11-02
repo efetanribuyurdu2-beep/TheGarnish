@@ -9,9 +9,10 @@ import { visibleCocktails } from "@/lib/catalog";
 import { usePrefs } from "@/lib/prefs";
 import type { Mood, Root } from "@/lib/types";
 import { Ornament } from "@/components/Ornament";
+import { isZeroCocktail } from "@/lib/zero";
 
 export default function CocktailsPage() {
-  const { world, creations, pick, t } = usePrefs();
+  const { world, creations, pick, t, zero, set } = usePrefs();
   const w = worldById(world ?? "maison");
   const [q, setQ] = useState("");
   const [scope, setScope] = useState<"all" | "classics" | "signature">("all");
@@ -30,8 +31,8 @@ export default function CocktailsPage() {
         .join(" ")
         .toLocaleLowerCase();
       return hay.includes(needle);
-    });
-  }, [world, creations, q, scope, root, mood]);
+    }).sort((a, b) => (zero ? Number(isZeroCocktail(b)) - Number(isZeroCocktail(a)) : 0));
+  }, [world, creations, q, scope, root, mood, zero]);
 
   return (
     <>
@@ -46,7 +47,9 @@ export default function CocktailsPage() {
           <button className={`chip ${scope === "all" ? "on" : ""}`} onClick={() => setScope("all")}>{t("all")}</button>
           <button className={`chip ${scope === "classics" ? "on" : ""}`} onClick={() => setScope("classics")}>{t("classics")}</button>
           <button className={`chip ${scope === "signature" ? "on" : ""}`} onClick={() => setScope("signature")}>{pick(w.collection)}</button>
+          <button className={`chip ${zero ? "on" : ""}`} onClick={() => set({ zero: !zero })} aria-pressed={zero}>0% · {t("zeroMode")}</button>
         </div>
+        {zero && <p className="zero-banner">{t("zeroModeOn")}</p>}
         <div className="chips">
           {ROOTS.map((r) => (
             <button key={r.id} className={`chip ${root === r.id ? "on" : ""}`} onClick={() => setRoot(root === r.id ? null : r.id)}>

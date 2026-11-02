@@ -95,6 +95,41 @@ function Instrument({ world }: { world: WorldId }) {
           </g>
         </svg>
       );
+    case "boreal": // kantele
+      return (
+        <svg viewBox="0 0 40 40" className="ins ins-kantele">
+          <path d="M4 14 L36 8 L36 30 L4 26 Z" fill="#c9965a" stroke="#5a3a1e" strokeWidth="1" />
+          <path d="M4 14 L36 8" stroke="#e8c08a" strokeWidth="1" />
+          <circle cx="22" cy="19" r="3.2" fill="#3a2410" />
+          <g className="strings" stroke="#f2f6fa" strokeWidth=".55">
+            <path d="M7 15.5 L34 11 M7 18 L34 14.5 M7 20.5 L34 18 M7 23 L34 21.5 M7 25 L34 25" />
+          </g>
+          <path d="M28 30 l2 4 l2 -4" stroke="#7fe3c4" strokeWidth="1" fill="none" />
+          <g stroke="#dfeaf2" strokeWidth=".8" strokeLinecap="round">
+            <path d="M33 1.5 v5 m-2.2 -3.8 l4.4 2.6 m0 -2.6 l-4.4 2.6" />
+          </g>
+        </svg>
+      );
+    case "riviera": // mandolin
+      return (
+        <svg viewBox="0 0 40 40" className="ins ins-mando">
+          <g transform="rotate(40 20 20)">
+            <rect x="18.4" y="1" width="3.2" height="15" fill="#5a3a1e" />
+            <path d="M17 0 H23 L22.4 4 H17.6 Z" fill="#3a2410" />
+            <path d="M20 14 C10 14 9 26 13 32 C15 36 25 36 27 32 C31 26 30 14 20 14Z" fill="#b8603a" stroke="#3a2410" strokeWidth="1" />
+            {[0, 1, 2, 3, 4].map((i) => (
+              <path key={i} d={`M${14 + i * 3} 17 C${13 + i * 3} 24 ${14 + i * 3} 30 ${15 + i * 2.5} 33`} stroke="#8a4024" strokeWidth=".5" fill="none" />
+            ))}
+            <ellipse cx="20" cy="22" rx="2.8" ry="2.4" fill="#2a1408" />
+            <rect x="16.5" y="27" width="7" height="1.4" fill="#e3b341" />
+            <g className="strings" stroke="#f2e6cc" strokeWidth=".45">
+              <path d="M19 2 V28 M19.7 2 V28 M20.3 2 V28 M21 2 V28" />
+            </g>
+          </g>
+          <circle cx="33" cy="31" r="3.4" fill="#f2c94c" />
+          <path d="M34 28 C36 25 38 26 38 26 C37 28 35.5 28.6 34 28Z" fill="#5e7a2e" />
+        </svg>
+      );
     case "tiki": // ukulele
       return (
         <svg viewBox="0 0 40 40" className="ins ins-uke">

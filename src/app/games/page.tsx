@@ -3,8 +3,10 @@
 import { useEffect, useState } from "react";
 import { BartenderRiddle } from "@/components/games/BartenderRiddle";
 import { Constellation } from "@/components/games/Constellation";
+import { FrozenLake } from "@/components/games/FrozenLake";
 import { FruitCatch } from "@/components/games/FruitCatch";
 import { Kintsugi } from "@/components/games/Kintsugi";
+import { Majolica } from "@/components/games/Majolica";
 import { NazarMemory } from "@/components/games/NazarMemory";
 import { PianoMemory } from "@/components/games/PianoMemory";
 import { SecretElixir } from "@/components/games/SecretElixir";
@@ -21,6 +23,8 @@ const GAMES: Record<WorldId, { name: L; Comp: () => React.ReactElement }> = {
   sakura: { name: { tr: "Kintsugi", en: "Kintsugi" }, Comp: Kintsugi },
   alchemist: { name: { tr: "Gizli İksir", en: "Secret Elixir" }, Comp: SecretElixir },
   tiki: { name: { tr: "Meyve Yağmuru", en: "Fruit Rain" }, Comp: FruitCatch },
+  boreal: { name: { tr: "Buz Gölü", en: "Frozen Lake" }, Comp: FrozenLake },
+  riviera: { name: { tr: "Majolika", en: "Majolica" }, Comp: Majolica },
 };
 
 export default function GamesPage() {

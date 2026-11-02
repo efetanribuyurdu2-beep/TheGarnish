@@ -264,7 +264,111 @@ const maison: Kit = {
   },
 };
 
-export const KITS: Record<WorldId, Kit> = { maison, anatolia, cosmos, jazz, sakura, alchemist, tiki };
+
+// ───────────────────────────────────────────── Boreal (Selbu star · Gzhel blue · frost · birch)
+const B = { navy: "#0d1d2e", ice: "#dfeaf2", frost: "#b7d4ff", aurora: "#7fe3c4", cobalt: "#1f4fa8", birch: "#ece6d8", bark: "#2a2622" };
+const selbu = (cx: number, cy: number, r: number, fill: string) =>
+  `<g transform="translate(${cx} ${cy})">${[0, 45, 90, 135, 180, 225, 270, 315]
+    .map((a) => `<path transform="rotate(${a})" d="M0 0 L${r * 0.26} ${-r * 0.5} L0 ${-r} L${-r * 0.26} ${-r * 0.5}Z" fill="${fill}"/>`)
+    .join("")}</g>`;
+export const snowflake = (cx: number, cy: number, r: number, stroke: string, w = 1.2) =>
+  `<g transform="translate(${cx} ${cy})" stroke="${stroke}" stroke-width="${w}" stroke-linecap="round" fill="none">${[0, 60, 120, 180, 240, 300]
+    .map((a) => `<path transform="rotate(${a})" d="M0 0 V${-r} M0 ${-r * 0.5} l${-r * 0.24} ${-r * 0.22} M0 ${-r * 0.5} l${r * 0.24} ${-r * 0.22} M0 ${-r * 0.78} l${-r * 0.15} ${-r * 0.13} M0 ${-r * 0.78} l${r * 0.15} ${-r * 0.13}"/>`)
+    .join("")}</g>`;
+const gzhel = (cx: number, cy: number, s: number) =>
+  `<g transform="translate(${cx} ${cy}) scale(${s})">${[0, 72, 144, 216, 288]
+    .map((a) => `<path transform="rotate(${a})" d="M0 -1 C-5 -4 -5 -11 0 -14 C5 -11 5 -4 0 -1Z" fill="${B.cobalt}"/><path transform="rotate(${a})" d="M0 -3 C-2 -6 -2 -9 0 -11" stroke="#fff" stroke-opacity=".6" stroke-width=".8" fill="none"/>`)
+    .join("")}<circle r="2.2" fill="#fff"/><circle r="1.2" fill="${B.cobalt}"/></g>`;
+const boreal: Kit = {
+  band: {
+    w: 48,
+    h: 20,
+    body: `<rect width="48" height="20" fill="${B.navy}"/><path d="M0 1.5 H48 M0 18.5 H48" stroke="${B.frost}" stroke-opacity=".7" stroke-width=".8"/>${selbu(24, 10, 7.5, B.ice)}<circle cx="24" cy="10" r="1.2" fill="${B.navy}"/>${[6, 42]
+      .map((x) => `<path d="M${x} 6 l4 4 l-4 4 l-4 -4Z" fill="none" stroke="${B.aurora}" stroke-width="1"/><circle cx="${x}" cy="10" r=".9" fill="${B.ice}"/>`)
+      .join("")}<path d="M12 4 v1.4 M12 14.6 v1.4 M36 4 v1.4 M36 14.6 v1.4" stroke="${B.ice}" stroke-width="1.4"/>`,
+  },
+  track: { w: 16, h: 10, body: `<rect width="16" height="10" rx="5" fill="#cfe3f2"/><rect x="0" y="1" width="16" height="3" fill="#fff" opacity=".7"/><path d="M1 8 L5 4.5 L8 6.5 L13 2.5" stroke="#86a9c6" stroke-width=".6" fill="none"/>` },
+  thumb: { w: 34, h: 34, body: `<circle cx="17" cy="17" r="15.5" fill="${B.cobalt}" stroke="${B.ice}" stroke-width="1.2"/>${snowflake(17, 17, 11, "#fff", 1.5)}` },
+  corner: {
+    w: 40,
+    h: 40,
+    body: `<path d="M2 38 V2 H38" stroke="${B.frost}" stroke-width="1.4" fill="none"/><path d="M6 32 V6 H32" stroke="${B.frost}" stroke-opacity=".6" stroke-width=".6" fill="none"/>${gzhel(14, 14, 0.42)}${snowflake(30, 11, 3.6, B.ice, 0.7)}${snowflake(11, 30, 3.6, B.ice, 0.7)}`,
+  },
+  emblem: { w: 40, h: 40, body: `<circle cx="20" cy="20" r="17" fill="${B.cobalt}" stroke="${B.frost}" stroke-width="1.2"/>${selbu(20, 20, 13, "#fff")}<circle cx="20" cy="20" r="2" fill="${B.cobalt}"/>` },
+  counter: {
+    w: 160,
+    h: 40,
+    body: `<rect width="160" height="40" fill="${B.birch}"/><path d="M0 12 C40 10 90 14 160 11 M0 29 C50 31 110 27 160 30" stroke="#d8d0bf" stroke-width="2" fill="none"/>${[
+      [8, 6, 14], [40, 9, 9], [70, 4, 18], [112, 7, 11], [138, 5, 8], [22, 19, 10], [58, 21, 6], [90, 18, 16], [128, 20, 12], [4, 33, 9], [34, 35, 15], [76, 32, 8], [104, 34, 13], [146, 33, 10],
+    ]
+      .map(([x, y, w]) => `<path d="M${x} ${y} h${w}" stroke="${B.bark}" stroke-width="${1.2 + (w % 3) * 0.5}" stroke-linecap="round" opacity=".8"/>`)
+      .join("")}<path d="M60 26 c6 -3 12 -1 14 2" stroke="#c9bfa9" stroke-width="1" fill="none"/>`,
+  },
+  wall: {
+    w: 60,
+    h: 80,
+    body: `<rect width="60" height="80" fill="#0c1824"/>${[0, 20, 40, 60]
+      .map((y) => `<rect y="${y + 1}" width="60" height="18" rx="9" fill="#12222f"/><path d="M4 ${y + 4} H56" stroke="#1d3344" stroke-width="1.2"/><path d="M0 ${y + 19.5} H60" stroke="#060d14" stroke-width="1"/>`)
+      .join("")}${selbu(30, 50, 5, "#2a4a63")}${snowflake(8, 10, 2.6, "#2a4a63", 0.6)}`,
+  },
+};
+
+// ───────────────────────────────────────────── Riviera (meander · vine · lemon · majolica · cellar vault)
+const R = { gold: "#e3b341", olive: "#7d8f3a", leaf: "#5e7a2e", grape: "#5a2a5f", terra: "#b8603a", cream: "#f2e6cc", cobalt: "#2a4f8a", cellar: "#1f1610" };
+const grapes = (cx: number, cy: number, r: number) =>
+  [
+    [0, 0], [-2, 0], [2, 0], [-1, 1.7], [1, 1.7], [0, 3.4], [-3, -1.7], [-1, -1.7], [1, -1.7], [3, -1.7],
+  ]
+    .map(([x, y]) => `<circle cx="${cx + x * r}" cy="${cy + y * r}" r="${r * 1.05}" fill="${R.grape}"/><circle cx="${cx + x * r - r * 0.35}" cy="${cy + y * r - r * 0.35}" r="${r * 0.3}" fill="#fff" opacity=".35"/>`)
+    .join("");
+const vineLeaf = (cx: number, cy: number, s: number, rot = 0, fill = R.leaf) =>
+  `<path transform="translate(${cx} ${cy}) rotate(${rot}) scale(${s})" d="M0 8 C-3 6 -9 6 -10 1 C-8 0 -9 -4 -6 -5 C-5 -8 -2 -8 0 -10 C2 -8 5 -8 6 -5 C9 -4 8 0 10 1 C9 6 3 6 0 8Z" fill="${fill}"/>`;
+const meander = (units: number) =>
+  Array.from({ length: units }, (_, u) => {
+    const x = u * 20;
+    return `M${x} 16 H${x + 16} V4 H${x + 6} V12 H${x + 11} V8 M${x + 16} 16 H${x + 20}`;
+  }).join(" ");
+const riviera: Kit = {
+  band: {
+    w: 40,
+    h: 20,
+    body: `<path d="M0 1 H40 M0 19 H40" stroke="${R.gold}" stroke-width=".7" stroke-opacity=".7"/><path d="${meander(2)}" stroke="${R.gold}" stroke-width="1.5" fill="none" stroke-linejoin="miter"/>`,
+  },
+  track: { w: 14, h: 10, body: `<rect width="14" height="10" rx="2" fill="${R.terra}"/><rect width="14" height="2.5" fill="#d98a5e" opacity=".8"/><rect x="13" width="1" height="10" fill="${R.cream}" opacity=".45"/>` },
+  thumb: {
+    w: 36,
+    h: 34,
+    body: `<path d="M24 8 C28 2 34 3 34 3 C33 8 28 11 24 10Z" fill="${R.leaf}"/><path d="M24 9 L30 5" stroke="#3f5a1e" stroke-width=".6"/><g transform="rotate(-20 17 19)"><ellipse cx="17" cy="19" rx="13.5" ry="10" fill="#f2c94c"/><ellipse cx="3.6" cy="19" rx="2.4" ry="2" fill="#e8b830"/><ellipse cx="30.4" cy="19" rx="2.4" ry="2" fill="#e8b830"/><ellipse cx="13" cy="15" rx="6" ry="3" fill="#fff" opacity=".35"/></g>`,
+  },
+  corner: {
+    w: 40,
+    h: 40,
+    body: `<path d="M3 38 C3 18 16 4 38 3" stroke="${R.olive}" stroke-width="1.6" fill="none"/><path d="M15 10 c4 -4 8 0 5 2.5 c-2 1.5 -4 -0.5 -2 -2" stroke="${R.olive}" stroke-width=".8" fill="none"/>${vineLeaf(25, 8, 0.75, 20)}${grapes(9, 21, 1.5)}<path d="M9 16 V12" stroke="${R.olive}" stroke-width="1"/>`,
+  },
+  emblem: { w: 40, h: 40, body: `${vineLeaf(24, 8, 0.8, 25)}<path d="M20 6 V12" stroke="${R.olive}" stroke-width="1.6"/>${grapes(20, 20, 2.6)}` },
+  counter: {
+    w: 60,
+    h: 60,
+    body: `<rect width="60" height="60" fill="${R.cream}"/><rect x="2" y="2" width="56" height="56" fill="none" stroke="${R.cobalt}" stroke-width="1.6"/>${[
+      [0, 0], [60, 0], [0, 60], [60, 60],
+    ]
+      .map(([x, y]) => `<circle cx="${x}" cy="${y}" r="11" fill="${R.gold}"/><circle cx="${x}" cy="${y}" r="6" fill="${R.cobalt}"/>`)
+      .join("")}${[0, 45, 90, 135, 180, 225, 270, 315]
+      .map((a) => `<path transform="translate(30 30) rotate(${a})" d="M0 -3 C-4 -8 -3 -14 0 -17 C3 -14 4 -8 0 -3Z" fill="${a % 90 ? R.olive : R.cobalt}"/>`)
+      .join("")}<circle cx="30" cy="30" r="4.4" fill="${R.gold}"/><circle cx="30" cy="30" r="1.8" fill="${R.terra}"/>`,
+  },
+  wall: {
+    w: 80,
+    h: 60,
+    body: `<rect width="80" height="60" fill="${R.cellar}"/>${Array.from({ length: 6 }, (_, r) => {
+      const y = r * 10;
+      const off = r % 2 ? 10 : 0;
+      return `<path d="M0 ${y} H80" stroke="#0e0906" stroke-width="1.4"/>${[0, 20, 40, 60, 80].map((x) => `<path d="M${x + off} ${y} V${y + 10}" stroke="#0e0906" stroke-width="1.4"/>`).join("")}<rect x="${off + 2}" y="${y + 2}" width="16" height="2" fill="#2e2118"/><rect x="${off + 42}" y="${y + 2}" width="16" height="2" fill="#2e2118"/>`;
+    }).join("")}`,
+  },
+};
+
+export const KITS: Record<WorldId, Kit> = { maison, anatolia, cosmos, jazz, sakura, alchemist, tiki, boreal, riviera };
 
 function kitVars(k: Kit) {
   const rot = (deg: number) => (b: string) => `<g transform="rotate(${deg} 20 20)">${b}</g>`;

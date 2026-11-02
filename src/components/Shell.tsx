@@ -24,7 +24,7 @@ const LINKS: [string, UIKey][] = [
 ];
 
 export function Shell({ children }: { children: React.ReactNode }) {
-  const { ready, world, gate, openGate, t, pick, palette, set } = usePrefs();
+  const { ready, world, gate, openGate, t, pick, palette, set, zero } = usePrefs();
   const path = usePathname();
   const [menu, setMenu] = useState(false);
   useEffect(() => setMenu(false), [path]);
@@ -70,6 +70,10 @@ export function Shell({ children }: { children: React.ReactNode }) {
                   ))}
                 </div>
               )}
+              <button className={`zero-toggle ${zero ? "on" : ""}`} onClick={() => set({ zero: !zero })} aria-pressed={zero} title={t("zeroToggle")}>
+                <b>0%</b>
+                <span>{t("zeroMode")}</span>
+              </button>
               <MusicButton />
               <LangToggle />
               <button className="btn ghost small" onClick={() => openGate(true)}>

@@ -15,6 +15,8 @@ const ICON: Record<string, string> = {
   sakura: "❀",
   alchemist: "☿",
   tiki: "☀",
+  boreal: "❄",
+  riviera: "❦",
 };
 
 export function LangToggle() {

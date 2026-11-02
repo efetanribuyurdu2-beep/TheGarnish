@@ -316,6 +316,63 @@ const BANDS: Record<WorldId, Band> = {
       if (s === 0 || s === 8) v.bass(ch[0] - 24, t, 0.22, sd * 6);
     },
   },
+  // Boreal: kantele in D minor pentatonic over a polar wind, a deep bell and a slow pad
+  boreal: {
+    bpm: 68,
+    steps: 16,
+    setup: (v, ctx, out) => {
+      const wind = ambience(ctx, out, 1400, "bandpass", 0.05, 0.05);
+      const dr = drone(v, ctx, out, [38, 45], 0.035, "sine", 600);
+      return () => {
+        wind();
+        dr();
+      };
+    },
+    play: (v, s, bar, t, sd) => {
+      const pent = [62, 65, 67, 69, 72, 74, 77, 79, 81];
+      const pads = [
+        [50, 57, 62, 65], // Dm
+        [46, 53, 58, 62], // Bb
+        [48, 55, 60, 64], // C
+        [45, 52, 57, 60], // Am
+      ];
+      if (s === 0 && bar % 2 === 0) v.pad(pads[(bar / 2) % 4], t, sd * 32, 0.014, 900);
+      if (s === 0 && bar % 4 === 0) v.bell(50, t, 0.06, 6);
+      if (s % 2 === 0 && chance(s === 0 ? 0.85 : 0.32)) {
+        const m = stepWalk(pent);
+        v.pluck(m, t, 0.13, 5200, 2.4);
+        if (chance(0.3)) v.pluck(m - 5, t + sd * 0.5, 0.06, 4000, 1.8);
+      }
+      if (bar % 4 >= 2 && s % 4 === 2 && chance(0.4)) v.shaker(t, 0.025); // distant sleigh bells
+    },
+  },
+  // Riviera: a mandolin tremolo over an "oom-pah-pah" waltz, cicadas in the heat
+  riviera: {
+    bpm: 112,
+    steps: 12,
+    setup: (_v, ctx, out) => ambience(ctx, out, 5200, "highpass", 0.018, 5),
+    play: (v, s, bar, t, sd) => {
+      const chords = [
+        [57, 60, 64], // Am
+        [62, 65, 69], // Dm
+        [52, 56, 59, 62], // E7
+        [57, 60, 64], // Am
+        [53, 57, 60], // F
+        [48, 52, 55], // C
+        [52, 56, 59, 62], // E7
+        [57, 60, 64], // Am
+      ];
+      const ch = chords[bar % 8];
+      if (s === 0) v.bass(ch[0] - 12, t, 0.28, sd * 3);
+      if (s === 4 || s === 8) ch.forEach((m, i) => v.pluck(m, t + i * 0.01, 0.045, 2200, 0.35));
+      if (s % 4 === 0 && chance(s === 0 ? 0.7 : 0.45)) {
+        const scale = [69, 71, 72, 74, 76, 77, 80, 81, 83];
+        const m = chance(0.5) ? stepWalk(scale, 1) : rnd(ch) + 12;
+        const n = rnd([4, 6, 8]);
+        for (let k = 0; k < n; k++) v.pluck(m, t + k * sd * 0.5, 0.05, 4800, 0.18);
+      }
+    },
+  },
   // Maison: late-night lounge piano with a soft string bed
   maison: {
     bpm: 76,

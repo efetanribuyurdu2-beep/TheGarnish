@@ -368,7 +368,8 @@ export const INGREDIENTS: Ingredient[] = [
   ...MORE_INGREDIENTS,
 ];
 
-export const ingredientById = (id: string) => INGREDIENTS.find((i) => i.id === id);
+const BY_ID = new Map(INGREDIENTS.map((i) => [i.id, i]));
+export const ingredientById = (id: string) => BY_ID.get(id);
 
 export const CATEGORY_LABEL: Record<IngredientCategory, L> = {
   spirit: { tr: "Ana İçkiler", en: "Spirits" },

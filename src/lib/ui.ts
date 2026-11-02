@@ -120,6 +120,19 @@ const dict = {
   enterWorld: { tr: "Koleksiyonu keşfet", en: "Explore the collection" },
   footer: { tr: "Lütfen sorumlu için. 18 yaş ve üzeri içindir.", en: "Please drink responsibly. For adults of legal drinking age." },
   age: { tr: "18 yaşından büyük olduğumu onaylıyorum", en: "I confirm I am of legal drinking age" },
+  // alcohol-free
+  zeroMode: { tr: "Alkolsüz", en: "Alcohol-free" },
+  zeroModeOn: { tr: "Alkolsüz mod açık: her tarif alkolsüz muadilleriyle gösteriliyor.", en: "Alcohol-free mode is on: every recipe is shown with zero-proof alternatives." },
+  zeroToggle: { tr: "Alkolsüz modu aç / kapat", en: "Toggle alcohol-free mode" },
+  original: { tr: "Orijinal", en: "Original" },
+  zeroVersion: { tr: "Alkolsüz", en: "Alcohol-free" },
+  insteadOf: { tr: "{name} yerine", en: "instead of {name}" },
+  zeroNative: { tr: "Doğuştan alkolsüz", en: "Zero-proof original" },
+  zeroNote: {
+    tr: "Alkolsüz muadiller (0,0–0,5%) ile hazırlanır. Tadı orijinaline yakındır, birebir aynı değildir.",
+    en: "Made with zero-proof alternatives (0.0–0.5%). Close to the original in taste, not identical.",
+  },
+  zeroShelf: { tr: "Alkolsüz 0%", en: "Zero-proof 0%" },
 } as const;
 
 export type UIKey = keyof typeof dict;
@@ -177,6 +190,11 @@ export const GLASS_LABEL: Record<string, { tr: string; en: string }> = {
   flask: { tr: "Balon joje", en: "Round-bottom flask" },
   coconut: { tr: "Hindistan cevizi", en: "Coconut shell" },
   pineapple: { tr: "Ananas", en: "Hollowed pineapple" },
+  ryumka: { tr: "Buzlu ryumka", en: "Frosted ryumka" },
+  kuksa: { tr: "Huş kuksa", en: "Birch kuksa" },
+  iceglass: { tr: "Buzdan bardak", en: "Glass of ice" },
+  kylix: { tr: "Kylix (Yunan kadehi)", en: "Kylix (Greek cup)" },
+  terracotta: { tr: "Terakota kupa", en: "Terracotta cup" },
 };
 
 /** Vessels that belong to a world: shown first in that world's bar. */
@@ -188,8 +206,10 @@ export const WORLD_VESSELS: Record<string, string[]> = {
   cosmos: ["orb"],
   alchemist: ["beaker", "flask"],
   tiki: ["coconut", "pineapple", "tiki"],
+  boreal: ["ryumka", "kuksa", "iceglass"],
+  riviera: ["wine", "kylix", "terracotta"],
 };
-export const SPECIAL_VESSELS = ["fincan", "istikan", "raki", "ochoko", "masu", "teacup", "orb", "beaker", "flask", "coconut", "pineapple"];
+export const SPECIAL_VESSELS = ["fincan", "istikan", "raki", "ochoko", "masu", "teacup", "orb", "beaker", "flask", "coconut", "pineapple", "ryumka", "kuksa", "iceglass", "kylix", "terracotta"];
 
 export const ICE_LABEL: Record<string, { tr: string; en: string }> = {
   none: { tr: "Buzsuz (soğutulmuş bardak)", en: "Up (chilled glass)" },
