@@ -19,6 +19,7 @@ const LINKS: [string, UIKey][] = [
   ["/concierge", "nav_concierge"],
   ["/bar", "nav_bar"],
   ["/glass-ice", "nav_glass"],
+  ["/games", "nav_games"],
   ["/collection", "nav_collection"],
 ];
 

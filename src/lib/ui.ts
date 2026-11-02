@@ -24,6 +24,8 @@ const dict = {
   nav_concierge: { tr: "Concierge", en: "Concierge" },
   nav_bar: { tr: "Barım", en: "My Bar" },
   nav_glass: { tr: "Glass & Ice", en: "Glass & Ice" },
+  nav_games: { tr: "Oyunlar", en: "Games" },
+  gamesSub: { tr: "Her dünyanın kendi oyunu var: bilmeceler, bulmacalar ve bir parça eğlence.", en: "Every world has its own game: riddles, puzzles and a little play." },
   nav_collection: { tr: "Koleksiyonum", en: "My Collection" },
   menu: { tr: "Menü", en: "Menu" },
   // sections

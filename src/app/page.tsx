@@ -16,6 +16,7 @@ const FEATURES: [string, UIKey, UIKey, string][] = [
   ["/concierge", "nav_concierge", "conciergeSub", "✧"],
   ["/bar", "nav_bar", "barSub", "◈"],
   ["/glass-ice", "nav_glass", "glassSub", "◇"],
+  ["/games", "nav_games", "gamesSub", "♠"],
 ];
 
 export default function Home() {
