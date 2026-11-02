@@ -1,0 +1,36 @@
+import type { Metadata, Viewport } from "next";
+import { PrefsProvider } from "@/lib/prefs";
+import { Shell } from "@/components/Shell";
+import "./globals.css";
+
+export const metadata: Metadata = {
+  title: "Garnish — Cocktail Worlds",
+  description: "A luxury cocktail atlas: seven worlds, a sommelier-style ingredient cellar and an atelier to design your own signature.",
+  icons: { icon: "/icon.svg" },
+};
+
+export const viewport: Viewport = { themeColor: "#0b0b0b" };
+
+const FONTS =
+  "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&family=Marcellus&family=Exo+2:wght@200;300;400;600&family=Poiret+One&family=Josefin+Sans:wght@300;400;600&family=Shippori+Mincho:wght@400;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Uncial+Antiqua&family=Yeseva+One&family=Karla:wght@300;400;600&display=swap";
+
+// Applies the saved world before first paint so there is no colour flash.
+const boot = `try{var p=JSON.parse(localStorage.getItem("garnish:prefs:v1")||"{}");var h=document.documentElement;h.dataset.world=p.world||"maison";h.dataset.palette=p.palette||"noir";if(p.lang)h.lang=p.lang;}catch(e){}`;
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="tr" data-world="maison" data-palette="noir" suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link rel="stylesheet" href={FONTS} />
+        <script dangerouslySetInnerHTML={{ __html: boot }} />
+      </head>
+      <body>
+        <PrefsProvider>
+          <Shell>{children}</Shell>
+        </PrefsProvider>
+      </body>
+    </html>
+  );
+}
