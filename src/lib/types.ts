@@ -72,7 +72,19 @@ export type Glass =
   | "nicknora"
   | "mug"
   | "tiki"
-  | "wine";
+  | "wine"
+  // world vessels
+  | "fincan"
+  | "istikan"
+  | "raki"
+  | "ochoko"
+  | "masu"
+  | "teacup"
+  | "orb"
+  | "beaker"
+  | "flask"
+  | "coconut"
+  | "pineapple";
 
 export type Method = "shake" | "dryshake" | "stir" | "build" | "blend" | "swizzle";
 export type Ice = "none" | "cube" | "sphere" | "crushed" | "collins";

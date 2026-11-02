@@ -33,7 +33,155 @@ const SHAPES: Record<Glass, Shape> = {
   wine: { bowl: "M26 22 C24 76 42 98 60 98 C78 98 96 76 94 22 Z", liquid: "M27.4 52 H92.6 C91 82 76 94 60 94 C44 94 29 82 27.4 52 Z", stem: "M58 98 V140 H62 V98 Z", foot: [60, 142, 23], top: 52, bottom: 94, rim: [60, 22, 34], band: [30, 38] },
   mug: { bowl: "M26 46 H94 L91 146 H29 Z", liquid: "M28 52 H92 L90 144 H30 Z", top: 52, bottom: 144, rim: [60, 46, 34], band: [60, 66] },
   tiki: { bowl: "M28 24 H92 L86 148 H34 Z", liquid: "M30 30 H90 L85 146 H35 Z", top: 30, bottom: 146, rim: [60, 24, 32], band: [36, 42] },
+  // ── world vessels
+  istikan: { bowl: "M42 48 C40 68 52 82 52 92 C52 104 40 118 44 140 H76 C80 118 68 104 68 92 C68 82 80 68 78 48 Z", liquid: "M43.6 60 H76.4 C76 74 66.6 84 66.6 92 C66.6 104 77.6 118 74.4 136 H45.6 C42.4 118 53.4 104 53.4 92 C53.4 84 44 74 43.6 60 Z", top: 60, bottom: 136, rim: [60, 48, 18], band: [52, 58] },
+  raki: { bowl: "M45 20 H75 L73 148 H47 Z", liquid: "M47 38 H73 L71.6 136 H48.4 Z", base: [47, 136, 26, 12], top: 38, bottom: 136, rim: [60, 20, 15], band: [26, 32] },
+  orb: { bowl: "M50 46 C30 52 20 70 20 92 C20 114 38 132 60 132 C82 132 100 114 100 92 C100 70 90 52 70 46 Z", liquid: "M24 92 H96 C96 112 80 128 60 128 C40 128 24 112 24 92 Z", stem: "M58 132 V140 H62 V132 Z", foot: [60, 142, 20], top: 92, bottom: 128, rim: [60, 46, 10], band: [60, 66] },
+  beaker: { bowl: "M30 36 H90 V138 Q90 146 82 146 H38 Q30 146 30 138 Z", liquid: "M32 72 H88 V138 Q88 144 82 144 H38 Q32 144 32 138 Z", top: 72, bottom: 144, rim: [60, 36, 30], band: [44, 50] },
+  flask: { bowl: "M52 16 H68 V60 C86 66 96 82 96 100 C96 124 80 142 60 142 C40 142 24 124 24 100 C24 82 34 66 52 60 Z", liquid: "M26 96 H94 C94 120 78 138 60 138 C42 138 26 120 26 96 Z", top: 96, bottom: 138, rim: [60, 16, 8], band: [30, 36] },
+  fincan: { bowl: "M32 70 H88 C88 100 78 112 60 112 C42 112 32 100 32 70 Z", liquid: "M32 70 H88 C88 100 78 112 60 112 C42 112 32 100 32 70 Z", top: 71, bottom: 110, rim: [60, 70, 28], band: [78, 86] },
+  ochoko: { bowl: "M30 100 H90 C90 122 78 134 60 134 C42 134 30 122 30 100 Z", liquid: "M30 100 H90 C90 122 78 134 60 134 C42 134 30 122 30 100 Z", top: 101, bottom: 132, rim: [60, 100, 30], band: [108, 114] },
+  masu: { bowl: "M30 76 H90 V140 H30 Z", liquid: "M36 74 L46 67 H98 L88 74 Z", top: 70, bottom: 140, rim: [67, 70, 34], band: [96, 104] },
+  teacup: { bowl: "M26 82 H94 C92 110 80 122 60 122 C40 122 28 110 26 82 Z", liquid: "M26 82 H94 C92 110 80 122 60 122 C40 122 28 110 26 82 Z", top: 83, bottom: 120, rim: [60, 82, 34], band: [90, 96] },
+  coconut: { bowl: "M22 86 H98 C98 116 82 138 60 138 C38 138 22 116 22 86 Z", liquid: "M22 86 H98 C98 116 82 138 60 138 C38 138 22 116 22 86 Z", top: 86, bottom: 136, rim: [60, 86, 38], band: [96, 100] },
+  pineapple: { bowl: "M30 66 C30 58 90 58 90 66 V122 C90 142 30 142 30 122 Z", liquid: "M30 66 C30 58 90 58 90 66 V122 C90 142 30 142 30 122 Z", top: 64, bottom: 140, rim: [60, 64, 30], band: [0, 0] },
 };
+
+const OPAQUE_VESSELS = new Set<Glass>(["fincan", "ochoko", "masu", "teacup", "coconut", "pineapple"]);
+
+/** Porcelain, ceramic, wood and fruit vessels: only the drink's surface shows. */
+function SolidVessel({ glass, color, empty, uid }: { glass: Glass; color: string; empty: boolean; uid: string }) {
+  const surface = (cx: number, cy: number, rx: number, ry: number) =>
+    !empty && (
+      <g>
+        <ellipse cx={cx} cy={cy} rx={rx} ry={ry} fill={color} />
+        <ellipse cx={cx - rx * 0.25} cy={cy - ry * 0.25} rx={rx * 0.45} ry={ry * 0.35} fill="#fff" opacity=".22" />
+      </g>
+    );
+  switch (glass) {
+    case "fincan":
+      return (
+        <g>
+          <ellipse cx="60" cy="136" rx="42" ry="8" fill="#f7f4ee" />
+          <ellipse cx="60" cy="136" rx="42" ry="8" fill="none" stroke="#d9a521" strokeWidth="1.2" />
+          <ellipse cx="60" cy="135" rx="30" ry="5" fill="none" stroke="#1d3f8f" strokeWidth="1.4" />
+          {/* brass zarf */}
+          <path d="M48 116 L44 132 H76 L72 116 Z" fill={`url(#brass${uid})`} />
+          <path d="M34 86 C36 108 46 118 60 118 C74 118 84 108 86 86 Z" fill={`url(#brass${uid})`} />
+          {Array.from({ length: 7 }).map((_, i) => (
+            <path key={i} transform={`translate(${40 + i * 6.6} ${100 + Math.abs(3 - i) * -1.6})`} d="M0 -4 C1.6 -2 2.4 0 0 2.6 C-2.4 0 -1.6 -2 0 -4Z" fill="#3a2410" opacity=".55" />
+          ))}
+          <path d="M36 92 H84" stroke="#fff3c9" strokeOpacity=".7" strokeWidth=".8" />
+          <path d="M86 90 C102 88 104 110 84 110" stroke={`url(#brass${uid})`} strokeWidth="3.4" fill="none" strokeLinecap="round" />
+          {/* porcelain cup */}
+          <path d="M32 70 H88 C88 82 87 88 85 92 H35 C33 88 32 82 32 70 Z" fill="#fbf9f4" />
+          <path d="M33 76 H87" stroke="#1d3f8f" strokeWidth="2.2" />
+          {Array.from({ length: 9 }).map((_, i) => (
+            <circle key={i} cx={37 + i * 5.8} cy="82" r="1.4" fill={i % 2 ? "#c8323c" : "#2fb7b0"} />
+          ))}
+          <path d="M34 72 C34 84 35 88 37 91" stroke="#fff" strokeWidth="1.6" fill="none" opacity=".8" />
+          {surface(60, 71, 27, 4)}
+          {!empty && <ellipse cx="60" cy="71" rx="22" ry="3" fill="none" stroke="#c9a27a" strokeWidth="1.4" opacity=".7" />}
+          <ellipse cx="60" cy="70" rx="28" ry="4.4" fill="none" stroke="#d9a521" strokeWidth="1.2" />
+        </g>
+      );
+    case "ochoko":
+      return (
+        <g>
+          <rect x="46" y="132" width="28" height="7" rx="2" fill="#d9d2c2" />
+          <path d="M30 100 H90 C90 122 78 134 60 134 C42 134 30 122 30 100 Z" fill="#f2efe6" />
+          <path d="M33 112 C42 120 50 116 56 124 C62 118 72 122 87 112 C84 126 74 134 60 134 C46 134 36 126 33 112 Z" fill="#1f3a6b" />
+          <path d="M33 104 C33 116 38 124 44 129" stroke="#fff" strokeWidth="1.8" fill="none" opacity=".8" />
+          {surface(60, 101, 28, 4)}
+          {!empty && (
+            <g fill="none" stroke="#1f3a8f" opacity=".45">
+              <ellipse cx="60" cy="101.4" rx="12" ry="1.8" strokeWidth="1.6" />
+              <ellipse cx="60" cy="101.4" rx="5" ry=".8" strokeWidth="1.6" />
+            </g>
+          )}
+          <ellipse cx="60" cy="100" rx="30" ry="4.4" fill="none" stroke="#1f3a6b" strokeWidth="1.4" />
+        </g>
+      );
+    case "masu":
+      return (
+        <g>
+          <path d="M90 76 L104 64 V128 L90 140 Z" fill="#c09a6a" />
+          <path d="M30 76 H90 V140 H30 Z" fill="#e3c49a" />
+          {[86, 96, 108, 118, 130].map((y, i) => (
+            <path key={y} d={`M30 ${y} C50 ${y - 2 + i} 70 ${y + 2} 90 ${y}`} stroke="#b8905f" strokeWidth=".7" fill="none" />
+          ))}
+          <path d="M30 76 L44 64 H104 L90 76 Z" fill="#d4b07e" />
+          <path d="M36 74 L46 67 H98 L88 74 Z" fill={empty ? "#8a6a42" : color} />
+          {!empty && <path d="M40 73 L47 68 H70" stroke="#fff" strokeOpacity=".35" strokeWidth="1" fill="none" />}
+          <rect x="50" y="96" width="20" height="20" rx="2" fill="none" stroke="#c8102e" strokeWidth="1.6" />
+          <path d="M55 101 H65 M60 101 V112 M55 107 H65" stroke="#c8102e" strokeWidth="1.4" />
+          <path d="M30 76 H90 M90 76 V140" stroke="#a8804f" strokeWidth=".8" />
+        </g>
+      );
+    case "teacup":
+      return (
+        <g>
+          <ellipse cx="60" cy="128" rx="46" ry="8" fill="#f7f4ee" />
+          <ellipse cx="60" cy="128" rx="46" ry="8" fill="none" stroke="#d9b25f" strokeWidth="1.2" />
+          <path d="M93 88 C110 86 110 110 90 110" stroke="#f7f4ee" strokeWidth="4.5" fill="none" strokeLinecap="round" />
+          <path d="M93 88 C110 86 110 110 90 110" stroke="#d9b25f" strokeWidth="1" fill="none" />
+          <path d="M26 82 H94 C92 110 80 122 60 122 C40 122 28 110 26 82 Z" fill="#fbf9f4" />
+          {[[40, 98], [60, 104], [80, 98]].map(([x, y], i) => (
+            <g key={i}>
+              <circle cx={x} cy={y} r="4" fill="#e2728d" />
+              <circle cx={x - 1} cy={y - 1} r="1.6" fill="#f6b8c8" />
+              <path d={`M${x + 4} ${y + 1} q4 0 6 -3 M${x - 4} ${y + 1} q-4 0 -6 -3`} stroke="#4d8f3a" strokeWidth="1.2" fill="none" />
+            </g>
+          ))}
+          <path d="M30 86 C31 100 36 110 44 116" stroke="#fff" strokeWidth="2" fill="none" />
+          {surface(60, 83, 33, 4.4)}
+          <ellipse cx="60" cy="82" rx="34" ry="4.8" fill="none" stroke="#d9b25f" strokeWidth="1.4" />
+        </g>
+      );
+    case "coconut":
+      return (
+        <g>
+          <path d="M22 86 H98 C98 116 82 138 60 138 C38 138 22 116 22 86 Z" fill="#5a3a1e" />
+          {Array.from({ length: 22 }).map((_, i) => (
+            <path key={i} d={`M${26 + i * 3.4} ${90 + (i % 3) * 4} q${2 + (i % 2)} ${10 + (i % 4) * 3} ${-1} ${18 + (i % 5) * 3}`} stroke="#3a2410" strokeWidth=".8" fill="none" opacity=".8" />
+          ))}
+          <path d="M28 92 C30 112 42 128 56 132" stroke="#8a6a42" strokeWidth="2" fill="none" opacity=".7" />
+          <ellipse cx="60" cy="86" rx="38" ry="6.4" fill="#f7f2e6" />
+          {surface(60, 86, 32, 4.6)}
+          <path d="M70 86 L84 40" stroke="#f2a7bb" strokeWidth="2" strokeLinecap="round" />
+          <path d="M84 40 L76 30 L98 34 Z" fill="#e2574c" />
+          <path d="M84 40 L76 30 L86 28 Z" fill="#f0a04b" />
+          <path d="M84 40 L86 28 L98 34 Z" fill="#f2a7bb" />
+          <path d="M80 70 L80 44" stroke="#c8a96a" strokeWidth="1" />
+        </g>
+      );
+    case "pineapple":
+      return (
+        <g>
+          <g fill="#3f8f3a">
+            <path d="M72 64 L92 18 L80 62 Z" />
+            <path d="M66 62 L70 10 L74 62 Z" fill="#4d9a3a" />
+            <path d="M56 62 L44 20 L62 60 Z" fill="#2f7a2a" />
+            <path d="M80 64 L106 34 L86 66 Z" fill="#3a7a2a" />
+          </g>
+          <path d="M30 66 C30 58 90 58 90 66 V122 C90 142 30 142 30 122 Z" fill="#e8b83a" />
+          <g stroke="#b8862a" strokeWidth="1.1" fill="none" clipPath={`url(#bowl${uid})`}>
+            {Array.from({ length: 10 }).map((_, i) => (
+              <path key={i} d={`M${20 + i * 10} 62 L${-20 + i * 10} 142 M${-20 + i * 10} 62 L${20 + i * 10} 142`} />
+            ))}
+          </g>
+          {Array.from({ length: 18 }).map((_, i) => (
+            <circle key={i} cx={36 + (i % 6) * 10 + (Math.floor(i / 6) % 2) * 5} cy={78 + Math.floor(i / 6) * 20} r="1.4" fill="#6b4a1f" />
+          ))}
+          <ellipse cx="60" cy="64" rx="30" ry="6" fill="#f8e7a0" />
+          {surface(60, 64, 25, 4.4)}
+          <path d="M34 70 V124" stroke="#fff" strokeOpacity=".35" strokeWidth="3" strokeLinecap="round" />
+        </g>
+      );
+    default:
+      return null;
+  }
+}
 
 export function GarnishIcon({ kind, x, y }: { kind: string; x: number; y: number }) {
   const g = `translate(${x} ${y})`;
@@ -214,6 +362,12 @@ export function GlassArt({
           <stop offset=".5" stopColor="#b8693a" />
           <stop offset="1" stopColor="#5a2a12" />
         </linearGradient>
+        <linearGradient id={`brass${uid}`} x1="0" x2="1">
+          <stop offset="0" stopColor="#7a5a22" />
+          <stop offset=".3" stopColor="#f3d98a" />
+          <stop offset=".6" stopColor="#c79a2a" />
+          <stop offset="1" stopColor="#5a3a12" />
+        </linearGradient>
         <pattern id={`kiriko${uid}`} width="10" height="10" patternUnits="userSpaceOnUse">
           <path d="M0 5 L5 0 L10 5 L5 10 Z" fill="none" stroke="#fff" strokeOpacity=".55" strokeWidth=".7" />
           <path d="M5 0 V10 M0 5 H10" stroke="#fff" strokeOpacity=".25" strokeWidth=".4" />
@@ -223,6 +377,14 @@ export function GlassArt({
         </filter>
       </defs>
 
+      {glass === "istikan" && (
+        <g>
+          <ellipse cx="60" cy="143" rx="30" ry="6" fill="#fbf9f4" />
+          <ellipse cx="60" cy="143" rx="30" ry="6" fill="none" stroke="#c8323c" strokeWidth="1.4" />
+          <ellipse cx="60" cy="142" rx="18" ry="3" fill="none" stroke="#d9a521" />
+        </g>
+      )}
+      {glass === "flask" && <ellipse cx="60" cy="144" rx="26" ry="5" fill="none" stroke="#a8814f" strokeWidth="4" />}
       {/* cast shadow on the counter */}
       <ellipse cx="60" cy="152" rx={glass === "highball" || glass === "tiki" ? 34 : 30} ry="4" fill="#000" opacity=".35" />
       {!empty && !opaque && <ellipse cx="60" cy="152" rx="20" ry="2.6" fill={color} opacity=".25" />}
@@ -245,7 +407,9 @@ export function GlassArt({
       )}
 
       {/* vessel */}
-      {copper ? (
+      {OPAQUE_VESSELS.has(glass) ? (
+        <SolidVessel glass={glass} color={color} empty={empty} uid={uid} />
+      ) : copper ? (
         <g>
           <path d={s.bowl} fill={`url(#cu${uid})`} />
           <path d="M94 66 C114 66 114 118 92 118" stroke={`url(#cu${uid})`} strokeWidth="6" fill="none" />
@@ -325,16 +489,10 @@ export function GlassArt({
             </g>
           )}
           {world === "anatolia" && (
-            <g clipPath={`url(#bowl${uid})`}>
-              <rect x="0" y={s.band[0]} width="120" height={s.band[1] - s.band[0]} fill="#2fb7b0" opacity=".75" />
-              {Array.from({ length: 14 }).map((_, i) => (
-                <g key={i} transform={`translate(${10 + i * 8} ${(s.band[0] + s.band[1]) / 2})`}>
-                  <path d="M0 -2.6 L2.6 0 L0 2.6 L-2.6 0Z" fill="#1d3f8f" />
-                  <circle r=".8" fill="#c8323c" />
-                </g>
+            <g clipPath={`url(#bowl${uid})`} fill="none" stroke="#d9a521" strokeWidth=".8" opacity=".9">
+              {[-1, 0, 1].map((k) => (
+                <path key={k} transform={`translate(${s.rim[0] + k * 14} ${s.band[1] + 2}) scale(.32)`} d="M0 -26 C6 -16 14 -14 14 -2 C14 8 6 12 0 12 C-6 12 -14 8 -14 -2 C-14 -14 -6 -16 0 -26Z M0 12 V26" />
               ))}
-              <rect x="0" y={s.band[0]} width="120" height=".8" fill="#d9a521" />
-              <rect x="0" y={s.band[1] - 0.8} width="120" height=".8" fill="#d9a521" />
             </g>
           )}
           {world === "jazz" && (
@@ -361,7 +519,7 @@ export function GlassArt({
               ))}
             </g>
           )}
-          {world === "alchemist" && (
+          {(world === "alchemist" || glass === "beaker" || glass === "flask") && (
             <g stroke="#fff" strokeOpacity=".7" strokeWidth=".7" fontSize="4" fill="#fff" fillOpacity=".7">
               {Array.from({ length: 5 }).map((_, i) => {
                 const y = s.bottom - 6 - i * ((s.bottom - s.top) / 5);
@@ -406,7 +564,7 @@ export function GlassArt({
       )}
 
       {/* rim */}
-      {!copper && !tikiMug && (
+      {!copper && !tikiMug && !OPAQUE_VESSELS.has(glass) && (
         <g>
           <ellipse cx={s.rim[0]} cy={s.rim[1]} rx={s.rim[2]} ry="3" fill="none" stroke={rimGold ?? (world === "cosmos" ? `url(#iri${uid})` : "#fff")} strokeOpacity={rimGold ? 1 : 0.75} strokeWidth={rimGold ? 1.6 : 1} />
           <path d={`M${s.rim[0] - s.rim[2] * 0.7} ${s.rim[1] - 1.6} Q${s.rim[0] - s.rim[2] * 0.3} ${s.rim[1] - 3} ${s.rim[0]} ${s.rim[1] - 3}`} stroke="#fff" strokeOpacity=".9" strokeWidth="1" fill="none" />

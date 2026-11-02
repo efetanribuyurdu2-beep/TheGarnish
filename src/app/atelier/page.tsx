@@ -14,7 +14,7 @@ import { worldById } from "@/data/worlds";
 import { analyse } from "@/lib/balance";
 import { usePrefs } from "@/lib/prefs";
 import type { Cocktail, Glass, Ice, IngredientCategory, Method, Part, Root } from "@/lib/types";
-import { GLASS_LABEL, ICE_LABEL } from "@/lib/ui";
+import { GLASS_LABEL, ICE_LABEL, SPECIAL_VESSELS, WORLD_VESSELS } from "@/lib/ui";
 
 const METHODS: Method[] = ["shake", "dryshake", "stir", "build", "swizzle", "blend"];
 const METHOD_LABEL: Record<Method, { tr: string; en: string }> = {
@@ -25,7 +25,6 @@ const METHOD_LABEL: Record<Method, { tr: string; en: string }> = {
   swizzle: { tr: "Swizzle", en: "Swizzle" },
   blend: { tr: "Blender", en: "Blend" },
 };
-const GLASSES = Object.keys(GLASS_LABEL) as Glass[];
 const CATS = Object.keys(CATEGORY_LABEL) as IngredientCategory[];
 const chunk = <T,>(a: T[], n: number) => Array.from({ length: Math.ceil(a.length / n) }, (_, i) => a.slice(i * n, i * n + n));
 const GARNISH_KEYS = Object.keys(GARNISHES).filter((g) => g !== "none");
@@ -37,7 +36,7 @@ export default function AtelierPage() {
   const [name, setName] = useState("");
   const [parts, setParts] = useState<Part[]>([]);
   const [method, setMethod] = useState<Method>("shake");
-  const [glass, setGlass] = useState<Glass>("coupe");
+  const [glass, setGlass] = useState<Glass>((WORLD_VESSELS[world ?? "maison"]?.[0] as Glass) ?? "coupe");
   const [ice, setIce] = useState<Ice>("none");
   const [garnish, setGarnish] = useState("lemon-twist");
   const [root, setRoot] = useState<Root>("daiquiri");
@@ -45,6 +44,8 @@ export default function AtelierPage() {
   const [shelf, setShelf] = useState<IngredientCategory>("spirit");
 
   const a = useMemo(() => analyse(parts, method), [parts, method]);
+  const ownVessels = WORLD_VESSELS[w.id] as Glass[];
+  const classic = (Object.keys(GLASS_LABEL) as Glass[]).filter((g) => !SPECIAL_VESSELS.includes(g) && !ownVessels.includes(g));
   const inRecipe = new Set(parts.map((p) => p.id));
 
   const toggleBottle = (id: string) => {
@@ -206,9 +207,18 @@ export default function AtelierPage() {
           })}
 
           <Ornament />
-          <span className="eyebrow">{t("glass")}</span>
+          <span className="eyebrow">{t("glass")} · {pick(w.name)}</span>
+          <div className="glass-picker own">
+            {ownVessels.map((g) => (
+              <button key={g} className={`pick ${glass === g ? "on" : ""}`} onClick={() => setGlass(g)} aria-pressed={glass === g}>
+                <GlassArt glass={g} color={parts.length ? a.color : "transparent"} size={52} animate={false} />
+                <span>{pick(GLASS_LABEL[g])}</span>
+              </button>
+            ))}
+          </div>
+          <span className="eyebrow">{t("classics")}</span>
           <div className="glass-picker">
-            {GLASSES.map((g) => (
+            {classic.map((g) => (
               <button key={g} className={`pick ${glass === g ? "on" : ""}`} onClick={() => setGlass(g)} aria-pressed={glass === g}>
                 <GlassArt glass={g} color={parts.length ? a.color : "transparent"} size={44} animate={false} />
                 <span>{pick(GLASS_LABEL[g])}</span>

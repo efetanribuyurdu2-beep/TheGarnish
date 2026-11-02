@@ -166,7 +166,30 @@ export const GLASS_LABEL: Record<string, { tr: string; en: string }> = {
   mug: { tr: "Bakır kupa", en: "Copper mug" },
   tiki: { tr: "Tiki kupası", en: "Tiki mug" },
   wine: { tr: "Şarap kadehi", en: "Wine glass" },
+  fincan: { tr: "Zarflı kahve fincanı", en: "Turkish coffee cup" },
+  istikan: { tr: "İnce belli çay bardağı", en: "Tulip tea glass" },
+  raki: { tr: "Rakı kadehi", en: "Rakı glass" },
+  ochoko: { tr: "Ochoko sake kâsesi", en: "Ochoko sake cup" },
+  masu: { tr: "Hinoki masu", en: "Hinoki masu box" },
+  teacup: { tr: "Porselen fincan", en: "Porcelain teacup" },
+  orb: { tr: "Küre kadeh", en: "Orb glass" },
+  beaker: { tr: "Beher", en: "Beaker" },
+  flask: { tr: "Balon joje", en: "Round-bottom flask" },
+  coconut: { tr: "Hindistan cevizi", en: "Coconut shell" },
+  pineapple: { tr: "Ananas", en: "Hollowed pineapple" },
 };
+
+/** Vessels that belong to a world: shown first in that world's bar. */
+export const WORLD_VESSELS: Record<string, string[]> = {
+  maison: ["coupe", "nicknora", "flute"],
+  anatolia: ["fincan", "istikan", "raki"],
+  sakura: ["ochoko", "masu"],
+  jazz: ["teacup", "coupe"],
+  cosmos: ["orb"],
+  alchemist: ["beaker", "flask"],
+  tiki: ["coconut", "pineapple", "tiki"],
+};
+export const SPECIAL_VESSELS = ["fincan", "istikan", "raki", "ochoko", "masu", "teacup", "orb", "beaker", "flask", "coconut", "pineapple"];
 
 export const ICE_LABEL: Record<string, { tr: string; en: string }> = {
   none: { tr: "Buzsuz (soğutulmuş bardak)", en: "Up (chilled glass)" },

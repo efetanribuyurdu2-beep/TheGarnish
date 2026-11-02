@@ -2706,3 +2706,28 @@ input[type="range"].themed:active::-webkit-slider-thumb {
 [data-world="anatolia"] .counter::after {
   bottom: 0;
 }
+
+/* Anatolia back bar: çini kept as a quiet, dimmed wall with a bright frieze, so bottles read clearly */
+[data-world="anatolia"] .backbar {
+  background:
+    linear-gradient(180deg, rgba(8, 18, 40, 0.55), rgba(8, 18, 40, 0.86) 40%, rgba(6, 12, 28, 0.92)),
+    var(--wall) repeat 0 0 / 72px;
+}
+[data-world="anatolia"] .backbar::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 26px;
+  background: var(--wall) repeat-x 0 0 / 26px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
+  border-bottom: 2px solid #d9a521;
+}
+[data-world="anatolia"] .shelf-tabs {
+  margin-top: 26px;
+}
+.glass-picker.own .pick {
+  width: 104px;
+  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
+}
