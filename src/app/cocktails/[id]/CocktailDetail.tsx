@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
 import { formatAmount } from "@/components/CocktailCard";
 import { FlavorRadar } from "@/components/FlavorRadar";
 import { GlassArt } from "@/components/GlassArt";
@@ -11,11 +12,14 @@ import { analyse } from "@/lib/balance";
 import { childrenOf, findCocktail, visibleCocktails } from "@/lib/catalog";
 import { usePrefs } from "@/lib/prefs";
 import { GLASS_LABEL, ICE_LABEL, METHOD_STEPS } from "@/lib/ui";
+import { isZeroCocktail, pour } from "@/lib/zero";
+import { Echo } from "@/components/Echo";
 
 export function CocktailDetail({ id }: { id: string }) {
-  const { pick, t, lang, creations, favourites, toggleFav, world, openGate } = usePrefs();
-  const c = findCocktail(id, creations);
-  if (!c) {
+  const { pick, t, lang, creations, favourites, toggleFav, world, openGate, zero } = usePrefs();
+  const [choice, setChoice] = useState<boolean | null>(null);
+  const original = findCocktail(id, creations);
+  if (!original) {
     return (
       <div className="page-head">
         <h1>404</h1>
@@ -23,6 +27,9 @@ export function CocktailDetail({ id }: { id: string }) {
       </div>
     );
   }
+  const native = isZeroCocktail(original);
+  const wantZero = choice ?? zero;
+  const { c, parts, swapped } = pour(original, wantZero);
   const a = analyse(c.parts, c.method);
   const fav = favourites.includes(c.id);
   const parent = c.parent ? findCocktail(c.parent, creations) : undefined;
@@ -44,6 +51,15 @@ export function CocktailDetail({ id }: { id: string }) {
           {c.author ? t("creations") : c.world === "all" ? t("classics") : pick(worldById(c.world).collection)}
         </span>
         <h1>{pick(c.name)}</h1>
+        <Echo text={pick(c.name)} />
+        {native ? (
+          <p><span className="badge zero">0% · {t("zeroNative")}</span></p>
+        ) : (
+          <div className="version-toggle" role="group" aria-label={t("zeroToggle")}>
+            <button className={!wantZero ? "on" : ""} aria-pressed={!wantZero} onClick={() => setChoice(false)}>{t("original")}</button>
+            <button className={wantZero ? "on" : ""} aria-pressed={wantZero} onClick={() => setChoice(true)}>0% · {t("zeroVersion")}</button>
+          </div>
+        )}
         {otherWorld && (
           <p className="hint">
             {pick(worldById(c.world as never).name)} ·{" "}
@@ -62,13 +78,18 @@ export function CocktailDetail({ id }: { id: string }) {
         </dl>
 
         <h2>{t("ingredients")}</h2>
+        {swapped && <p className="zero-note">{t("zeroNote")}</p>}
         <ul className="recipe">
-          {c.parts.map((p) => {
+          {parts.map((p) => {
             const ing = ingredientById(p.id);
             if (!ing) return null;
+            const from = "from" in p && p.from ? p.from.map((f) => pick(ingredientById(f)!.name)).join(", ") : null;
             return (
-              <li key={p.id}>
-                <Link href={`/cellar/${ing.id}`}>{pick(ing.name)}</Link>
+              <li key={p.id + (p.top ? "-top" : "")}>
+                <span>
+                  <Link href={`/cellar/${ing.id}`}>{pick(ing.name)}</Link>
+                  {from && <small className="instead">{t("insteadOf", { name: from })}</small>}
+                </span>
                 <span>{formatAmount(p.ml, lang, p.top, ing.category)}</span>
               </li>
             );

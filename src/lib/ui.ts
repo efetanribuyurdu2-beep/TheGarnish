@@ -24,6 +24,8 @@ const dict = {
   nav_concierge: { tr: "Concierge", en: "Concierge" },
   nav_bar: { tr: "Barım", en: "My Bar" },
   nav_glass: { tr: "Glass & Ice", en: "Glass & Ice" },
+  nav_games: { tr: "Oyunlar", en: "Games" },
+  gamesSub: { tr: "Her dünyanın kendi oyunu var: bilmeceler, bulmacalar ve bir parça eğlence.", en: "Every world has its own game: riddles, puzzles and a little play." },
   nav_collection: { tr: "Koleksiyonum", en: "My Collection" },
   menu: { tr: "Menü", en: "Menu" },
   // sections
@@ -118,6 +120,45 @@ const dict = {
   enterWorld: { tr: "Koleksiyonu keşfet", en: "Explore the collection" },
   footer: { tr: "Lütfen sorumlu için. 18 yaş ve üzeri içindir.", en: "Please drink responsibly. For adults of legal drinking age." },
   age: { tr: "18 yaşından büyük olduğumu onaylıyorum", en: "I confirm I am of legal drinking age" },
+  // alcohol-free
+  zeroMode: { tr: "Alkolsüz", en: "Alcohol-free" },
+  zeroModeOn: { tr: "Alkolsüz mod açık: her tarif alkolsüz muadilleriyle gösteriliyor.", en: "Alcohol-free mode is on: every recipe is shown with zero-proof alternatives." },
+  zeroToggle: { tr: "Alkolsüz modu aç / kapat", en: "Toggle alcohol-free mode" },
+  original: { tr: "Orijinal", en: "Original" },
+  zeroVersion: { tr: "Alkolsüz", en: "Alcohol-free" },
+  insteadOf: { tr: "{name} yerine", en: "instead of {name}" },
+  zeroNative: { tr: "Doğuştan alkolsüz", en: "Zero-proof original" },
+  zeroNote: {
+    tr: "Alkolsüz muadiller (0,0–0,5%) ile hazırlanır. Tadı orijinaline yakındır, birebir aynı değildir.",
+    en: "Made with zero-proof alternatives (0.0–0.5%). Close to the original in taste, not identical.",
+  },
+  zeroShelf: { tr: "Alkolsüz 0%", en: "Zero-proof 0%" },
+  // passport
+  nav_passport: { tr: "Pasaport", en: "Passport" },
+  passportTitle: { tr: "Kokteyl Pasaportu", en: "Cocktail Passport" },
+  passportSub: { tr: "Dünyaları gezdikçe pasaportun damgalarla dolar. Her dünyada üç damga var; hepsini topla, altın mührü aç.", en: "Your passport fills with stamps as you travel the worlds. Three stamps in every world; collect them all to unlock the golden seal." },
+  stamp_arrival: { tr: "Varış", en: "Arrival" },
+  stamp_tasting: { tr: "Tadım", en: "Tasting" },
+  stamp_master: { tr: "Usta", en: "Master" },
+  hint_arrival: { tr: "Bu dünyaya gir.", en: "Enter this world." },
+  hint_tasting: { tr: "Bu dünyanın imza kokteyllerinden birini koleksiyonuna ekle.", en: "Save one of this world's signature cocktails to your collection." },
+  hint_master: { tr: "Dünyanın oyununu bitir ya da barında kendi kokteylini kaydet.", en: "Finish this world's game, or save your own cocktail at its bar." },
+  stampEarned: { tr: "Pasaportuna damga basıldı", en: "Your passport has been stamped" },
+  holder: { tr: "Pasaport sahibi", en: "Holder" },
+  namePlaceholder: { tr: "Adını yaz", en: "Write your name" },
+  nationality: { tr: "Uyruk", en: "Nationality" },
+  nationalityValue: { tr: "Kokteyl Dünyaları", en: "The Cocktail Worlds" },
+  issued: { tr: "Veriliş tarihi", en: "Date of issue" },
+  passportNo: { tr: "Pasaport No", en: "Passport No" },
+  worldsVisited: { tr: "Gezilen dünya", en: "Worlds visited" },
+  stampsCount: { tr: "Damga", en: "Stamps" },
+  visa: { tr: "Vize", en: "Visa" },
+  sealTitle: { tr: "Dünya Gezgini", en: "World Traveller" },
+  sealLocked: { tr: "Dokuz dünyadaki 27 damganın hepsini topla; bu altın mühür pasaportuna basılsın.", en: "Collect all 27 stamps across the nine worlds and this golden seal will be pressed into your passport." },
+  sealDone: { tr: "Dokuz dünyanın hepsini gezdin, her barda içtin, her oyunu bitirdin. Artık bir Dünya Gezginisin.", en: "You have travelled all nine worlds, drunk at every bar and finished every game. You are a World Traveller." },
+  goWorld: { tr: "Bu dünyaya git", en: "Travel here" },
+  prevPage: { tr: "Önceki sayfa", en: "Previous page" },
+  nextPage: { tr: "Sonraki sayfa", en: "Next page" },
 } as const;
 
 export type UIKey = keyof typeof dict;
@@ -164,7 +205,37 @@ export const GLASS_LABEL: Record<string, { tr: string; en: string }> = {
   mug: { tr: "Bakır kupa", en: "Copper mug" },
   tiki: { tr: "Tiki kupası", en: "Tiki mug" },
   wine: { tr: "Şarap kadehi", en: "Wine glass" },
+  fincan: { tr: "Zarflı kahve fincanı", en: "Turkish coffee cup" },
+  istikan: { tr: "İnce belli çay bardağı", en: "Tulip tea glass" },
+  raki: { tr: "Rakı kadehi", en: "Rakı glass" },
+  ochoko: { tr: "Ochoko sake kâsesi", en: "Ochoko sake cup" },
+  masu: { tr: "Hinoki masu", en: "Hinoki masu box" },
+  teacup: { tr: "Porselen fincan", en: "Porcelain teacup" },
+  orb: { tr: "Küre kadeh", en: "Orb glass" },
+  beaker: { tr: "Beher", en: "Beaker" },
+  flask: { tr: "Balon joje", en: "Round-bottom flask" },
+  coconut: { tr: "Hindistan cevizi", en: "Coconut shell" },
+  pineapple: { tr: "Ananas", en: "Hollowed pineapple" },
+  ryumka: { tr: "Buzlu ryumka", en: "Frosted ryumka" },
+  kuksa: { tr: "Huş kuksa", en: "Birch kuksa" },
+  iceglass: { tr: "Buzdan bardak", en: "Glass of ice" },
+  kylix: { tr: "Kylix (Yunan kadehi)", en: "Kylix (Greek cup)" },
+  terracotta: { tr: "Terakota kupa", en: "Terracotta cup" },
 };
+
+/** Vessels that belong to a world: shown first in that world's bar. */
+export const WORLD_VESSELS: Record<string, string[]> = {
+  maison: ["coupe", "nicknora", "flute"],
+  anatolia: ["fincan", "istikan", "raki"],
+  sakura: ["ochoko", "masu"],
+  jazz: ["teacup", "coupe"],
+  cosmos: ["orb"],
+  alchemist: ["beaker", "flask"],
+  tiki: ["coconut", "pineapple", "tiki"],
+  boreal: ["ryumka", "kuksa", "iceglass"],
+  riviera: ["wine", "kylix", "terracotta"],
+};
+export const SPECIAL_VESSELS = ["fincan", "istikan", "raki", "ochoko", "masu", "teacup", "orb", "beaker", "flask", "coconut", "pineapple", "ryumka", "kuksa", "iceglass", "kylix", "terracotta"];
 
 export const ICE_LABEL: Record<string, { tr: string; en: string }> = {
   none: { tr: "Buzsuz (soğutulmuş bardak)", en: "Up (chilled glass)" },

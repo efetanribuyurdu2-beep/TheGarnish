@@ -8,6 +8,8 @@ import { ingredientById } from "@/data/ingredients";
 import { findCocktail } from "@/lib/catalog";
 import { usePrefs } from "@/lib/prefs";
 import type { Cocktail } from "@/lib/types";
+import { Ornament } from "@/components/Ornament";
+import { Echo } from "@/components/Echo";
 
 export default function CollectionPage() {
   const { favourites, creations, pick, t, lang, set } = usePrefs();
@@ -17,8 +19,9 @@ export default function CollectionPage() {
   return (
     <>
       <header className="page-head no-print">
-        <div className="ornament">♥</div>
+        <Ornament />
         <h1>{t("nav_collection")}</h1>
+        <Echo text={t("nav_collection")} />
         <p>{t("collectionSub")}</p>
       </header>
 

@@ -5,13 +5,16 @@ import { CATEGORY_LABEL, INGREDIENTS, ingredientById } from "@/data/ingredients"
 import { visibleCocktails } from "@/lib/catalog";
 import { usePrefs } from "@/lib/prefs";
 import type { IngredientCategory } from "@/lib/types";
+import { Ornament } from "@/components/Ornament";
+import { pour } from "@/lib/zero";
+import { Echo } from "@/components/Echo";
 
 export default function BarPage() {
-  const { bar, toggleBar, set, world, creations, pick, t } = usePrefs();
+  const { bar, toggleBar, set, world, creations, pick, t, zero } = usePrefs();
   const owned = new Set(bar);
   const rows = visibleCocktails(world, creations).map((c) => ({
     c,
-    missing: [...new Set(c.parts.map((p) => p.id))].filter((id) => !owned.has(id)),
+    missing: [...new Set(pour(c, zero).parts.map((p) => p.id))].filter((id) => !owned.has(id)),
   }));
   const ready = rows.filter((r) => r.missing.length === 0);
   const almost = rows.filter((r) => r.missing.length === 1);
@@ -20,8 +23,9 @@ export default function BarPage() {
   return (
     <>
       <header className="page-head">
-        <div className="ornament">◈</div>
+        <Ornament />
         <h1>{t("nav_bar")}</h1>
+        <Echo text={t("nav_bar")} />
         <p>{t("barSub")}</p>
       </header>
       <div className="bar-groups">

@@ -7,6 +7,8 @@ import { PALETTES, worldById } from "@/data/worlds";
 import { usePrefs } from "@/lib/prefs";
 import type { UIKey } from "@/lib/ui";
 import { LogoMark } from "./Logo";
+import { MusicButton } from "./MusicButton";
+import { StampToast } from "./StampToast";
 import { WorldBackdrop } from "./WorldBackdrop";
 import { LangToggle, WorldGate } from "./WorldGate";
 
@@ -18,11 +20,13 @@ const LINKS: [string, UIKey][] = [
   ["/concierge", "nav_concierge"],
   ["/bar", "nav_bar"],
   ["/glass-ice", "nav_glass"],
+  ["/games", "nav_games"],
+  ["/passport", "nav_passport"],
   ["/collection", "nav_collection"],
 ];
 
 export function Shell({ children }: { children: React.ReactNode }) {
-  const { ready, world, gate, openGate, t, pick, palette, set } = usePrefs();
+  const { ready, world, gate, openGate, t, pick, palette, set, zero } = usePrefs();
   const path = usePathname();
   const [menu, setMenu] = useState(false);
   useEffect(() => setMenu(false), [path]);
@@ -68,6 +72,11 @@ export function Shell({ children }: { children: React.ReactNode }) {
                   ))}
                 </div>
               )}
+              <button className={`zero-toggle ${zero ? "on" : ""}`} onClick={() => set({ zero: !zero })} aria-pressed={zero} title={t("zeroToggle")}>
+                <b>0%</b>
+                <span>{t("zeroMode")}</span>
+              </button>
+              <MusicButton />
               <LangToggle />
               <button className="btn ghost small" onClick={() => openGate(true)}>
                 {t("changeWorld")}
@@ -80,6 +89,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
             </div>
           </header>
           <main className="main">{children}</main>
+          <StampToast />
           <footer className="footer">
             <LogoMark size={28} />
             <p>{t("footer")}</p>

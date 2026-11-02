@@ -69,6 +69,16 @@ function Cosmos() {
           <circle key={i} cx={`${s.x}%`} cy={`${s.y}%`} r={s.s} fill="#fff" className="twinkle" style={{ animationDelay: `${s.d}s` }} />
         ))}
       </svg>
+      <svg className="bd-const" viewBox="0 0 400 300" aria-hidden>
+        <g stroke="var(--accent)" strokeOpacity=".5" strokeWidth=".8" fill="none">
+          <path d="M40 60 L90 40 L140 70 L180 50 L230 90" />
+          <path d="M140 70 L150 130 L210 160" />
+          <path d="M280 200 L320 170 L360 210 L330 250 L280 200" />
+        </g>
+        {[[40, 60], [90, 40], [140, 70], [180, 50], [230, 90], [150, 130], [210, 160], [280, 200], [320, 170], [360, 210], [330, 250]].map(([x, y], i) => (
+          <circle key={i} cx={x} cy={y} r={i % 3 === 0 ? 2.6 : 1.6} fill="#fff" className="twinkle" style={{ animationDelay: `${i * 0.4}s` }} />
+        ))}
+      </svg>
       <svg className="bd-planet" viewBox="-60 -60 120 120" aria-hidden>
         <defs>
           <radialGradient id="pl" cx=".35" cy=".35">
@@ -100,6 +110,16 @@ function Jazz() {
         <rect width="100%" height="100%" fill="url(#deco)" />
       </svg>
       <div className="bd-spot" />
+      <svg className="bd-vinyl" viewBox="-50 -50 100 100" aria-hidden>
+        <circle r="48" fill="#0a0908" stroke="var(--accent)" strokeOpacity=".4" />
+        {[44, 40, 36, 32, 28, 24, 20].map((r) => (
+          <circle key={r} r={r} fill="none" stroke="#2a2620" strokeWidth=".6" />
+        ))}
+        <circle r="14" fill="var(--accent2)" />
+        <circle r="13" fill="none" stroke="var(--accent)" strokeWidth=".6" />
+        <circle r="1.6" fill="#0a0908" />
+        <path d="M-30 -30 A42 42 0 0 1 -6 -42" stroke="#fff" strokeOpacity=".15" fill="none" />
+      </svg>
       <div className="bd-notes" aria-hidden>
         {["♪", "♫", "♩", "♬"].map((n, i) => (
           <span key={i} style={{ left: `${10 + i * 24}%`, animationDelay: `${i * 2.5}s` }}>{n}</span>
@@ -128,6 +148,22 @@ function Sakura() {
       <svg className="bd-enso" viewBox="0 0 200 200" aria-hidden>
         <path d="M150 40 C190 80 180 160 110 175 C40 190 10 120 30 75 C45 40 90 22 130 30" fill="none" stroke="var(--accent2)" strokeWidth="9" strokeLinecap="round" opacity=".5" />
       </svg>
+      <div className="bd-tategaki left" lang="ja">一期一会</div>
+      <div className="bd-tategaki right" lang="ja">花見酒</div>
+      <svg className="bd-karesansui" viewBox="0 0 1200 160" preserveAspectRatio="none" aria-hidden>
+        {Array.from({ length: 9 }).map((_, i) => (
+          <path key={i} d={`M0 ${30 + i * 14} C200 ${22 + i * 14} 400 ${38 + i * 14} 600 ${30 + i * 14} S1000 ${22 + i * 14} 1200 ${30 + i * 14}`} stroke="var(--ink)" strokeOpacity=".12" fill="none" />
+        ))}
+        {[[260, 90, 46], [880, 110, 34], [960, 96, 18]].map(([x, y, r], i) => (
+          <g key={i}>
+            {[1.9, 1.55, 1.25].map((k) => (
+              <ellipse key={k} cx={x} cy={y} rx={r * k} ry={r * k * 0.35} fill="none" stroke="var(--ink)" strokeOpacity=".14" />
+            ))}
+            <ellipse cx={x} cy={y - r * 0.15} rx={r} ry={r * 0.55} fill="#3a2f33" />
+            <ellipse cx={x - r * 0.3} cy={y - r * 0.35} rx={r * 0.35} ry={r * 0.15} fill="#fff" opacity=".08" />
+          </g>
+        ))}
+      </svg>
       <div className="bd-petals" aria-hidden>
         {petals.map((p, i) => (
           <span key={i} style={{ left: `${p.x}%`, animationDelay: `-${p.d}s`, animationDuration: `${p.t}s`, transform: `scale(${p.s})` }} />
@@ -142,6 +178,7 @@ function Alchemist() {
   const r = rand(99);
   return (
     <>
+      <div className="bd-parchment" />
       <svg className="bd-circle" viewBox="-100 -100 200 200" aria-hidden>
         <g fill="none" stroke="var(--accent)" strokeWidth=".6">
           <circle r="96" />
@@ -206,9 +243,87 @@ function Maison() {
   );
 }
 
+function Boreal() {
+  const r = rand(23);
+  const pine = (x: number, h: number) => {
+    const w = h * 0.42;
+    return `M${x} ${300 - h} L${x - w * 0.45} ${300 - h * 0.62} H${x - w * 0.25} L${x - w * 0.7} ${300 - h * 0.3} H${x - w * 0.4} L${x - w} ${300 - 6} H${x + w} L${x + w * 0.4} ${300 - h * 0.3} H${x + w * 0.7} L${x + w * 0.25} ${300 - h * 0.62} H${x + w * 0.45} Z`;
+  };
+  const trees = Array.from({ length: 34 }, (_, i) => [i * 31 + r() * 18, 60 + r() * 110] as const);
+  return (
+    <>
+      <div className="bd-aurora">
+        <i />
+        <i />
+        <i />
+      </div>
+      <svg className="bd-pattern" aria-hidden>
+        {Array.from({ length: 70 }).map((_, i) => (
+          <circle key={i} cx={`${r() * 100}%`} cy={`${r() * 55}%`} r={r() * 1.2 + 0.3} fill="#fff" className={i % 4 ? "" : "twinkle"} style={{ animationDelay: `${-r() * 4}s` }} />
+        ))}
+      </svg>
+      <div className="bd-snow">
+        {Array.from({ length: 28 }).map((_, i) => (
+          <span key={i} style={{ left: `${r() * 100}%`, animationDuration: `${12 + r() * 14}s`, animationDelay: `${-r() * 20}s`, width: 2 + r() * 4, height: 2 + r() * 4 }} />
+        ))}
+      </div>
+      <svg className="bd-forest" viewBox="0 0 1060 300" preserveAspectRatio="xMidYMax slice" aria-hidden>
+        <path d="M0 250 C200 230 400 262 620 244 C800 230 960 250 1060 240 V300 H0Z" fill="#0b1826" />
+        {trees.map(([x, h], i) => (
+          <path key={i} d={pine(x, h)} fill={i % 3 ? "#08131f" : "#0a1a2a"} />
+        ))}
+        <path d="M0 282 C240 270 520 290 760 278 C900 272 1000 284 1060 280 V300 H0Z" fill="#dfeaf2" opacity=".12" />
+      </svg>
+    </>
+  );
+}
+
+function Riviera() {
+  const leaf = "M0 10 C-4 8 -12 8 -13 1 C-10 0 -12 -5 -8 -7 C-7 -10 -3 -10 0 -13 C3 -10 7 -10 8 -7 C12 -5 10 0 13 1 C12 8 4 8 0 10Z";
+  const bunch = (x: number, y: number, k: number) =>
+    [[0, 0], [-6, 0], [6, 0], [-3, 6], [3, 6], [0, 12], [-9, -6], [-3, -6], [3, -6], [9, -6]].map(([dx, dy], i) => (
+      <circle key={`${k}-${i}`} cx={x + dx} cy={y + dy} r="4" fill="#4a1f4f" />
+    ));
+  return (
+    <>
+      <div className="bd-sun" />
+      <svg className="bd-vine" viewBox="0 0 420 260" aria-hidden>
+        <path d="M0 18 C80 10 150 40 230 26 C300 14 360 30 420 20" stroke="#4a3220" strokeWidth="6" fill="none" />
+        <path d="M60 18 C70 40 60 70 72 96 M190 30 C200 60 186 90 198 120 M320 22 C326 46 318 66 330 84" stroke="#4a3220" strokeWidth="2.4" fill="none" />
+        {[[40, 30, 20], [96, 22, -30], [140, 40, 10], [230, 36, 40], [270, 24, -20], [360, 34, 15], [86, 70, -10], [214, 82, 30], [340, 70, -25]].map(([x, y, a], i) => (
+          <path key={i} d={leaf} transform={`translate(${x} ${y}) rotate(${a}) scale(1.6)`} fill={i % 2 ? "#4f6a26" : "#5e7a2e"} />
+        ))}
+        {bunch(72, 108, 1)}
+        {bunch(198, 132, 2)}
+        {bunch(330, 96, 3)}
+        <path d="M110 30 c8 -10 18 -4 12 4 c-4 4 -8 0 -5 -3" stroke="#5e7a2e" strokeWidth="1.4" fill="none" />
+      </svg>
+      <svg className="bd-lemons" viewBox="0 0 260 260" aria-hidden>
+        <path d="M260 40 C200 60 160 110 120 200" stroke="#4a3220" strokeWidth="5" fill="none" />
+        {[[220, 54, -30], [184, 84, 40], [160, 120, -50], [138, 160, 30], [200, 110, 70], [126, 198, -20]].map(([x, y, a], i) => (
+          <path key={i} d="M0 0 C10 -10 30 -12 44 -6 C30 4 12 6 0 0Z" transform={`translate(${x} ${y}) rotate(${a})`} fill={i % 2 ? "#4f6a26" : "#5e7a2e"} />
+        ))}
+        {[[176, 128, -20], [146, 182, 10], [214, 96, 30]].map(([x, y, a], i) => (
+          <g key={i} transform={`translate(${x} ${y}) rotate(${a})`}>
+            <ellipse rx="20" ry="15" fill="#f2c94c" />
+            <ellipse cx="-20" rx="3.4" ry="2.8" fill="#e0b030" />
+            <ellipse cx="-6" cy="-5" rx="8" ry="3.6" fill="#fff" opacity=".35" />
+          </g>
+        ))}
+      </svg>
+    </>
+  );
+}
+
 export function WorldBackdrop({ world }: { world: WorldId }) {
   return (
     <div className={`backdrop bd-${world}`} aria-hidden>
+      {(world === "anatolia" || world === "tiki" || world === "maison" || world === "jazz" || world === "boreal" || world === "riviera") && (
+        <>
+          <i className="bd-edge left" />
+          <i className="bd-edge right" />
+        </>
+      )}
       {world === "maison" && <Maison />}
       {world === "anatolia" && <Anatolia />}
       {world === "cosmos" && <Cosmos />}
@@ -216,6 +331,8 @@ export function WorldBackdrop({ world }: { world: WorldId }) {
       {world === "sakura" && <Sakura />}
       {world === "alchemist" && <Alchemist />}
       {world === "tiki" && <Tiki />}
+      {world === "boreal" && <Boreal />}
+      {world === "riviera" && <Riviera />}
     </div>
   );
 }

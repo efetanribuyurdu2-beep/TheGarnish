@@ -4,6 +4,8 @@ import { GlassArt } from "@/components/GlassArt";
 import { usePrefs } from "@/lib/prefs";
 import type { Glass, L } from "@/lib/types";
 import { GLASS_LABEL } from "@/lib/ui";
+import { Ornament } from "@/components/Ornament";
+import { Echo } from "@/components/Echo";
 
 const GLASSES: { g: Glass; color: string; text: L }[] = [
   { g: "coupe", color: "#e8c87a", text: { tr: "Şampanya için doğdu, artık buzsuz servis edilen sour'ların ve shaken kokteyllerin zarif evi.", en: "Born for champagne; now the elegant home of sours and drinks served up." } },
@@ -36,8 +38,9 @@ export default function GlassIcePage() {
   return (
     <>
       <header className="page-head">
-        <div className="ornament">◇</div>
+        <Ornament />
         <h1>{t("nav_glass")}</h1>
+        <Echo text={t("nav_glass")} />
         <p>{t("glassSub")}</p>
       </header>
       <section className="section">

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { PrefsProvider } from "@/lib/prefs";
 import { Shell } from "@/components/Shell";
+import { themeCSS } from "@/lib/themeKit";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = { themeColor: "#0b0b0b" };
 
 const FONTS =
-  "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&family=Marcellus&family=Exo+2:wght@200;300;400;600&family=Poiret+One&family=Josefin+Sans:wght@300;400;600&family=Shippori+Mincho:wght@400;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Uncial+Antiqua&family=Yeseva+One&family=Karla:wght@300;400;600&display=swap";
+  "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&family=Bodoni+Moda:ital,wght@0,400;0,500;0,600;1,400&family=Aref+Ruqaa:wght@400;700&family=Syncopate:wght@400;700&family=Exo+2:wght@300;400;600&family=Limelight&family=Poiret+One&family=Forum&family=Josefin+Sans:wght@300;400;600&family=Zen+Antique&family=Shippori+Mincho:wght@400;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&family=Grenze+Gotisch:wght@400;500;600&family=Kavoon&family=Karla:wght@300;400;600&family=Ruslan+Display&family=Aboreto&family=Lora:ital,wght@0,400;0,500;1,400&family=Noto+Sans+Runic&family=Noto+Sans+Old+Turkic&family=GFS+Didot&display=swap";
 
 // Applies the saved world before first paint so there is no colour flash.
 const boot = `try{var p=JSON.parse(localStorage.getItem("garnish:prefs:v1")||"{}");var h=document.documentElement;h.dataset.world=p.world||"maison";h.dataset.palette=p.palette||"noir";if(p.lang)h.lang=p.lang;}catch(e){}`;
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link rel="stylesheet" href={FONTS} />
         <script dangerouslySetInnerHTML={{ __html: boot }} />
+        <style dangerouslySetInnerHTML={{ __html: themeCSS() }} />
       </head>
       <body>
         <PrefsProvider>
