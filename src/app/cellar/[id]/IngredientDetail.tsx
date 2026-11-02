@@ -7,6 +7,7 @@ import { Bottle } from "@/components/Bottle";
 import { CATEGORY_LABEL, ingredientById } from "@/data/ingredients";
 import { visibleCocktails } from "@/lib/catalog";
 import { usePrefs } from "@/lib/prefs";
+import { Echo } from "@/components/Echo";
 
 export function IngredientDetail({ id }: { id: string }) {
   const { pick, t, world, creations } = usePrefs();
@@ -24,6 +25,7 @@ export function IngredientDetail({ id }: { id: string }) {
         <div>
           <span className="eyebrow">{pick(CATEGORY_LABEL[ing.category])}</span>
           <h1>{pick(ing.name)}</h1>
+          <Echo text={pick(ing.name)} />
           <p className="story">{pick(ing.story)}</p>
           <div className="tasting">
             <div><span className="eyebrow">{t("nose")}</span>{pick(ing.notes.nose)}</div>

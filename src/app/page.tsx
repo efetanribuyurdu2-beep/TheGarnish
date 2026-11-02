@@ -8,6 +8,7 @@ import { worldById } from "@/data/worlds";
 import { usePrefs } from "@/lib/prefs";
 import type { UIKey } from "@/lib/ui";
 import { Ornament } from "@/components/Ornament";
+import { Echo } from "@/components/Echo";
 
 const FEATURES: [string, UIKey, UIKey, string][] = [
   ["/cellar", "nav_cellar", "cellarSub", "❦"],
@@ -17,6 +18,7 @@ const FEATURES: [string, UIKey, UIKey, string][] = [
   ["/bar", "nav_bar", "barSub", "◈"],
   ["/glass-ice", "nav_glass", "glassSub", "◇"],
   ["/games", "nav_games", "gamesSub", "♠"],
+  ["/passport", "nav_passport", "passportSub", "✈"],
 ];
 
 export default function Home() {
@@ -33,6 +35,7 @@ export default function Home() {
         <div>
           <span className="eyebrow">{pick(w.name)}</span>
           <h1>{pick(w.tagline)}</h1>
+          <Echo text={pick(w.tagline)} />
           <p>{pick(w.intro)}</p>
           <div className="row-gap hero-cta">
             <Link href="/cocktails" className="btn">

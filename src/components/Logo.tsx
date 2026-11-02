@@ -37,7 +37,7 @@ export function LogoFull({ width = 260 }: { width?: number }) {
           <GlassMark />
         </g>
       </g>
-      <text x="200" y="320" textAnchor="middle" fontSize="42" letterSpacing="11" fill="currentColor" style={{ fontFamily: "var(--font-display)" }}>
+      <text x="200" y="320" textAnchor="middle" fontSize="42" letterSpacing="11" fill="currentColor" style={{ fontFamily: "var(--font-brand)" }}>
         GARNISH
       </text>
       <line x1="58" y1="348" x2="92" y2="348" stroke="currentColor" strokeWidth=".8" />

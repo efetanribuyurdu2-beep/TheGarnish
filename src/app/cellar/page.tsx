@@ -7,6 +7,7 @@ import { usePrefs } from "@/lib/prefs";
 import type { IngredientCategory } from "@/lib/types";
 import { Ornament } from "@/components/Ornament";
 import { Bottle } from "@/components/Bottle";
+import { Echo } from "@/components/Echo";
 
 const ORDER = Object.keys(CATEGORY_LABEL) as IngredientCategory[];
 
@@ -27,6 +28,7 @@ export default function CellarPage() {
       <header className="page-head">
         <Ornament />
         <h1>{t("nav_cellar")}</h1>
+        <Echo text={t("nav_cellar")} />
         <p>{t("cellarSub")}</p>
       </header>
       <div className="filters">

@@ -10,6 +10,7 @@ import { usePrefs } from "@/lib/prefs";
 import type { Mood, Root } from "@/lib/types";
 import { Ornament } from "@/components/Ornament";
 import { isZeroCocktail } from "@/lib/zero";
+import { Echo } from "@/components/Echo";
 
 export default function CocktailsPage() {
   const { world, creations, pick, t, zero, set } = usePrefs();
@@ -39,6 +40,7 @@ export default function CocktailsPage() {
       <header className="page-head">
         <Ornament />
         <h1>{t("nav_cocktails")}</h1>
+        <Echo text={t("nav_cocktails")} />
         <p>{t("cocktailsSub")}</p>
       </header>
       <div className="filters">

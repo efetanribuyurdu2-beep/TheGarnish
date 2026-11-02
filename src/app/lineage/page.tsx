@@ -6,6 +6,7 @@ import { visibleCocktails } from "@/lib/catalog";
 import { usePrefs } from "@/lib/prefs";
 import type { Cocktail } from "@/lib/types";
 import { Ornament } from "@/components/Ornament";
+import { Echo } from "@/components/Echo";
 
 function Branch({ nodes, all, depth, family }: { nodes: Cocktail[]; all: Cocktail[]; depth: number; family: string }) {
   const { pick } = usePrefs();
@@ -35,6 +36,7 @@ export default function LineagePage() {
       <header className="page-head">
         <Ornament />
         <h1>{t("nav_lineage")}</h1>
+        <Echo text={t("nav_lineage")} />
         <p>{t("lineageSub")}</p>
       </header>
       <div className="lineage">

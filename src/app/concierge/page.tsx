@@ -8,6 +8,7 @@ import { visibleCocktails } from "@/lib/catalog";
 import { usePrefs } from "@/lib/prefs";
 import type { Flavor, Mood } from "@/lib/types";
 import { Ornament } from "@/components/Ornament";
+import { Echo } from "@/components/Echo";
 
 const FLAVORS: Flavor[] = ["fresh", "sweet", "sour", "bitter", "strong", "aromatic"];
 
@@ -34,6 +35,7 @@ export default function ConciergePage() {
       <header className="page-head">
         <Ornament />
         <h1>{t("nav_concierge")}</h1>
+        <Echo text={t("nav_concierge")} />
         <p>{t("conciergeSub")}</p>
       </header>
       <div className="filters">

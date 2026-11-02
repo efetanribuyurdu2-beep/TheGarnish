@@ -16,6 +16,7 @@ import { usePrefs } from "@/lib/prefs";
 import type { Cocktail, Glass, Ice, IngredientCategory, Method, Part, Root } from "@/lib/types";
 import { GLASS_LABEL, ICE_LABEL, SPECIAL_VESSELS, WORLD_VESSELS } from "@/lib/ui";
 import { pour } from "@/lib/zero";
+import { Echo } from "@/components/Echo";
 
 const METHODS: Method[] = ["shake", "dryshake", "stir", "build", "swizzle", "blend"];
 const METHOD_LABEL: Record<Method, { tr: string; en: string }> = {
@@ -31,7 +32,7 @@ const chunk = <T,>(a: T[], n: number) => Array.from({ length: Math.ceil(a.length
 const GARNISH_KEYS = Object.keys(GARNISHES).filter((g) => g !== "none");
 
 export default function AtelierPage() {
-  const { pick, t, lang, world, set, creations, zero } = usePrefs();
+  const { pick, t, lang, world, set, creations, zero, stamp } = usePrefs();
   const w = worldById(world ?? "maison");
   const router = useRouter();
   const [name, setName] = useState("");
@@ -91,6 +92,7 @@ export default function AtelierPage() {
       author: "me",
     };
     set({ creations: [...creations, c] });
+    stamp(w.id, "master");
     router.push(`/cocktails/${c.id}`);
   };
 
@@ -109,6 +111,7 @@ export default function AtelierPage() {
           <span className="sign-bulbs" aria-hidden />
           <span className="eyebrow">{t("nav_atelier")}</span>
           <h1 lang={w.id === "anatolia" ? "tr" : "en"}>{pick(w.bar)}</h1>
+          <Echo text={pick(w.bar)} />
         </div>
         <p className="greeting">“{pick(w.greeting)}”</p>
       </header>

@@ -13,6 +13,7 @@ import { childrenOf, findCocktail, visibleCocktails } from "@/lib/catalog";
 import { usePrefs } from "@/lib/prefs";
 import { GLASS_LABEL, ICE_LABEL, METHOD_STEPS } from "@/lib/ui";
 import { isZeroCocktail, pour } from "@/lib/zero";
+import { Echo } from "@/components/Echo";
 
 export function CocktailDetail({ id }: { id: string }) {
   const { pick, t, lang, creations, favourites, toggleFav, world, openGate, zero } = usePrefs();
@@ -50,6 +51,7 @@ export function CocktailDetail({ id }: { id: string }) {
           {c.author ? t("creations") : c.world === "all" ? t("classics") : pick(worldById(c.world).collection)}
         </span>
         <h1>{pick(c.name)}</h1>
+        <Echo text={pick(c.name)} />
         {native ? (
           <p><span className="badge zero">0% · {t("zeroNative")}</span></p>
         ) : (

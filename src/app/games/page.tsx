@@ -14,6 +14,7 @@ import { Ornament } from "@/components/Ornament";
 import { WORLDS } from "@/data/worlds";
 import { usePrefs } from "@/lib/prefs";
 import type { L, WorldId } from "@/lib/types";
+import { Echo } from "@/components/Echo";
 
 const GAMES: Record<WorldId, { name: L; Comp: () => React.ReactElement }> = {
   maison: { name: { tr: "Barmenin Bilmecesi", en: "Bartender's Riddles" }, Comp: BartenderRiddle },
@@ -38,6 +39,7 @@ export default function GamesPage() {
       <header className="page-head">
         <Ornament />
         <h1>{t("nav_games")}</h1>
+        <Echo text={t("nav_games")} />
         <p>{t("gamesSub")}</p>
       </header>
       <div className="chips game-tabs">

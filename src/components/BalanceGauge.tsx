@@ -81,7 +81,7 @@ function Face({ world, uid }: { world: WorldId; uid: string }) {
           <path d={arc(40, 60, 78)} stroke="#c8102e" strokeWidth="4" fill="none" />
           <path d={arc(-60, -40, 78)} stroke="#2a6b45" strokeWidth="4" fill="none" />
           {ticks(13, 78, 86, 60).map((t, i) => <path key={t.a} d={t.d} stroke={t.a > 38 ? "#c8102e" : "#1a1612"} strokeWidth={i % 3 === 0 ? 1.6 : 0.8} />)}
-          <text x={CX} y="92" textAnchor="middle" fontSize="10" fill="#1a1612" style={{ fontFamily: "'Poiret One', serif", letterSpacing: ".3em" }}>VU</text>
+          <text x={CX} y="92" textAnchor="middle" fontSize="10" fill="#1a1612" style={{ fontFamily: "'Limelight', serif", letterSpacing: ".3em" }}>VU</text>
         </g>
       );
     case "cosmos":
@@ -164,7 +164,7 @@ function Face({ world, uid }: { world: WorldId; uid: string }) {
           {["VI", "VIII", "X", "XII", "II", "IV", "VI"].map((n, i) => {
             const a = -84 + i * 28;
             const [x, y] = pol(a, 72);
-            return <text key={i} x={x} y={y + 3} fontSize="9" textAnchor="middle" fill="#3a2414" style={{ fontFamily: "'Italiana', serif" }} transform={`rotate(${a} ${x} ${y})`}>{n}</text>;
+            return <text key={i} x={x} y={y + 3} fontSize="9" textAnchor="middle" fill="#3a2414" style={{ fontFamily: "'Aboreto', serif" }} transform={`rotate(${a} ${x} ${y})`}>{n}</text>;
           })}
           {ticks(25, 56, 62).map((t) => <path key={t.a} d={t.d} stroke="#3a2414" strokeWidth=".8" />)}
           {/* vine across the base */}

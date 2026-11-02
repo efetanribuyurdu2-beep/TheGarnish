@@ -2,11 +2,25 @@
 
 import { useEffect, useState } from "react";
 import { usePrefs } from "@/lib/prefs";
-import type { L } from "@/lib/types";
+import type { L, WorldId } from "@/lib/types";
+
+/** Which world each game belongs to: finishing it earns that world's "master" stamp. */
+const GAME_WORLD: Record<string, WorldId> = {
+  "bartender-riddle": "maison",
+  "nazar-memory": "anatolia",
+  constellation: "cosmos",
+  "piano-memory": "jazz",
+  kintsugi: "sakura",
+  "secret-elixir": "alchemist",
+  "fruit-catch": "tiki",
+  "frozen-lake": "boreal",
+  majolica: "riviera",
+};
 
 /** Best score kept in the visitor's browser. `lowerIsBetter` for move counters. */
 export function useBest(game: string, lowerIsBetter = false) {
   const key = `garnish:best:${game}`;
+  const { stamp } = usePrefs();
   const [best, setBest] = useState<number | null>(null);
   useEffect(() => {
     try {
@@ -17,6 +31,8 @@ export function useBest(game: string, lowerIsBetter = false) {
     }
   }, [key]);
   const submit = (score: number) => {
+    const world = GAME_WORLD[game.replace(/-\d+$/, "")];
+    if (world && (lowerIsBetter || score > 0)) stamp(world, "master");
     setBest((b) => {
       const better = b === null || (lowerIsBetter ? score < b : score > b);
       if (!better) return b;

@@ -11,7 +11,7 @@ Read this first. It is the hand-off for any new session.
 ## Stack
 Next.js 16 (App Router) + React 19 + TypeScript. No UI library, no image files: **every visual is hand-written inline SVG**.
 Preferences (world, palette, lang, favourites, bar, creations) live in `localStorage` (`garnish:prefs:v1`).
-Fonts load from Google Fonts in `src/app/layout.tsx`.
+Fonts load from Google Fonts in `src/app/layout.tsx`. Every display font must have the **latin-ext** subset (ğ ş ı İ); check before adding one.
 
 ```
 npm install · npm run dev · npm run build · npm run lint (tsc)
@@ -50,13 +50,34 @@ npm install · npm run dev · npm run build · npm run lint (tsc)
 | Boreal (Scandinavia + Russia) | aurora, snow, pine ridge, Selbu star, Gzhel blue, birch bark; fonts Forum + Jost | Aurora Hall | frosted ryumka, birch kuksa, glass of ice | frosted compass | kantele | Frozen Lake (ice-slide, BFS-checked levels) |
 | Riviera (French cellars, Italian/Greek gardens) | meander, vine & grapes, lemons, majolica, cellar brick vault, wax-sealed bottles; fonts Italiana + Lora | La Cave Riviera | wine glass, kylix, terracotta cup | sundial | mandolin | Majolica (sliding tile 3×3 / 4×4) |
 
+## Typography
+The owner found the first fonts generic ("AI-looking"). Each world now has a characterful display font (`--font-display`) and a readable `--font-prose` for long italic text (story, greeting, tips):
+| World | Display | Prose |
+| --- | --- | --- |
+| Maison | Bodoni Moda | (display) |
+| Anatolia | Aref Ruqaa (Ottoman ruqʿa calligraphy) | (display) |
+| Cosmos | Syncopate | Exo 2 |
+| Jazz | Limelight | Poiret One |
+| Sakura | Zen Antique | (display) |
+| Alchemist | Grenze Gotisch | (display) |
+| Tiki | Kavoon | Karla |
+| Boreal | Ruslan Display (Old Russian) | Forum |
+| Riviera | Aboreto (caps only) | Lora |
+The logo wordmark and nav brand use a fixed `--font-brand` (Cormorant Garamond) so the owner's logo never changes.
+**Script echoes** (`src/lib/scripts.ts`, `<Echo>`): page titles are repeated letter by letter in Elder Futhark runes (Boreal), Old Turkic / Orkhon, right to left (Anatolia) and Greek capitals (Riviera).
+
+## Cocktail Passport (`/passport`)
+- 3 stamps per world in `prefs.stamps` (`"world:kind"` → date): **arrival** (entering the world), **tasting** (saving one of its signatures), **master** (finishing its game via `useBest().submit`, or saving a creation in its Atelier).
+- `prefs.stamp()` sets `fresh`, shown by `StampToast`. Stamp art: `PassportStamp.tsx` (ink, outline and motif per world).
+- Book: cover, identity page (name, MRZ lines), 9 visa pages, golden "Dünya Gezgini" seal page when all 27 are collected.
+
 ## Alcohol-free (0%)
 - Header pill **0% Alkolsüz** toggles `prefs.zero`: cards, the bar page and "start from a classic" in the Atelier switch to zero-proof versions; zero-proof originals sort first on /cocktails.
 - Cocktail detail has an **Orijinal / Alkolsüz** switch; swapped lines say "X yerine".
 - Atelier and Cellar have an "Alkolsüz 0%" shelf/filter (`ingredient.zero`). Adding an alcoholic ingredient? Add it to `MAP` in `zero.ts` (category fallbacks exist).
 
 ## Pages
-`/` home · `/cocktails` + `/cocktails/[id]` · `/cellar` + `/cellar/[id]` · `/atelier` (the world's bar: 3D bottle shelves, counter, vessel & garnish pickers, gauge, save signature) · `/lineage` (family tree) · `/concierge` · `/bar` (what can I make) · `/glass-ice` · `/games` · `/collection` (printable menu).
+`/` home · `/cocktails` + `/cocktails/[id]` · `/cellar` + `/cellar/[id]` · `/atelier` (the world's bar: 3D bottle shelves, counter, vessel & garnish pickers, gauge, save signature) · `/lineage` (family tree) · `/concierge` · `/bar` (what can I make) · `/glass-ice` · `/games` · `/passport` · `/collection` (printable menu).
 
 ## How to add things
 - **Ingredient**: add a row to `ingredientsMore.ts` (look string: `"tint[,o][,shape][,glassTint][,capColor]"`, profile = 6 digits sweet/sour/bitter/strong/fresh/aromatic).
@@ -68,9 +89,9 @@ npm install · npm run dev · npm run build · npm run lint (tsc)
 - Turkish `text-transform: uppercase` turns i into İ: set `lang="en"` on English names.
 - SVG arcs over 180° need the large-arc flag (see `BalanceGauge`).
 - Grid children with horizontal scrollers need `min-width: 0`, or the page widens.
-- Nav collapses to the burger menu under 1320px (9 links).
+- Nav collapses to the burger menu under 1480px (10 links).
 - Owner did not want: the old scale, flat bottles and glasses, the busy bright çini wall, the turquoise band on Anatolia glasses. (Same reason Riviera's counter is travertine with only a thin majolica edge.)
 - Backdrops are `position: fixed`; full-page screenshots only show them in the first viewport. That is expected.
 
 ## Ideas parked for later
-Haftanın Gizli Malzemesi (weekly challenge), Kokteyl Pasaportu (world map stamps), party planner (batch maths, shopping list), user accounts and sharing (would need a backend, e.g. Supabase), photo-real assets.
+Haftanın Gizli Malzemesi (weekly challenge), party planner (batch maths, shopping list), user accounts and sharing (would need a backend, e.g. Supabase), photo-real assets.

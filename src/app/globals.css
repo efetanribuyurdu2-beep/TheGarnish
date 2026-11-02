@@ -1,6 +1,7 @@
 /* ─────────────────────────────── World tokens */
 :root,
 [data-world="maison"] {
+  --font-brand: "Cormorant Garamond", Georgia, serif;
   --bg: #0b0b0b;
   --surface: #151413;
   --surface2: #1d1b19;
@@ -9,10 +10,10 @@
   --accent: #c9a961;
   --accent2: #efe6d2;
   --line: rgba(201, 169, 97, 0.28);
-  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-display: "Bodoni Moda", Georgia, serif;
   --font-body: "Jost", system-ui, sans-serif;
   --display-weight: 500;
-  --display-spacing: 0.08em;
+  --display-spacing: 0.04em;
   --display-case: none;
   --radius: 2px;
   --glow: none;
@@ -43,11 +44,12 @@
   --accent2: #c8323c;
   --gold: #d4a94a;
   --line: rgba(212, 169, 74, 0.35);
-  --font-display: "Marcellus", Georgia, serif;
+  --font-display: "Aref Ruqaa", Georgia, serif;
   --font-body: "Jost", system-ui, sans-serif;
-  --display-weight: 400;
-  --display-spacing: 0.06em;
+  --display-weight: 700;
+  --display-spacing: 0.01em;
   --radius: 14px;
+  --display-case: none;
 }
 [data-world="cosmos"] {
   --bg: #05060f;
@@ -58,10 +60,10 @@
   --accent: #9b7bff;
   --accent2: #ff7ac8;
   --line: rgba(155, 123, 255, 0.35);
-  --font-display: "Exo 2", system-ui, sans-serif;
+  --font-display: "Syncopate", system-ui, sans-serif;
   --font-body: "Exo 2", system-ui, sans-serif;
-  --display-weight: 200;
-  --display-spacing: 0.22em;
+  --display-weight: 400;
+  --display-spacing: 0.16em;
   --display-case: uppercase;
   --radius: 18px;
   --glow: 0 0 24px rgba(155, 123, 255, 0.35);
@@ -75,10 +77,10 @@
   --accent: #d9b25f;
   --accent2: #1f6f63;
   --line: rgba(217, 178, 95, 0.35);
-  --font-display: "Poiret One", Georgia, serif;
+  --font-display: "Limelight", Georgia, serif;
   --font-body: "Josefin Sans", system-ui, sans-serif;
   --display-weight: 400;
-  --display-spacing: 0.14em;
+  --display-spacing: 0.08em;
   --display-case: uppercase;
   --radius: 0;
 }
@@ -91,11 +93,12 @@
   --accent: #f2a7bb;
   --accent2: #c8102e;
   --line: rgba(242, 167, 187, 0.28);
-  --font-display: "Shippori Mincho", Georgia, serif;
+  --font-display: "Zen Antique", Georgia, serif;
   --font-body: "Zen Kaku Gothic New", system-ui, sans-serif;
   --display-weight: 400;
-  --display-spacing: 0.1em;
+  --display-spacing: 0.08em;
   --radius: 4px;
+  --display-case: none;
 }
 [data-world="alchemist"] {
   --bg: #12100b;
@@ -106,11 +109,12 @@
   --accent: #c39245;
   --accent2: #5f9470;
   --line: rgba(195, 146, 69, 0.32);
-  --font-display: "Uncial Antiqua", Georgia, serif;
+  --font-display: "Grenze Gotisch", Georgia, serif;
   --font-body: "Cormorant Garamond", Georgia, serif;
-  --display-weight: 400;
-  --display-spacing: 0.03em;
+  --display-weight: 500;
+  --display-spacing: 0.02em;
   --radius: 3px;
+  --display-case: none;
 }
 [data-world="tiki"] {
   --bg: #0b1912;
@@ -121,11 +125,12 @@
   --accent: #f0a04b;
   --accent2: #e2574c;
   --line: rgba(240, 160, 75, 0.32);
-  --font-display: "Yeseva One", Georgia, serif;
+  --font-display: "Kavoon", Georgia, serif;
   --font-body: "Karla", system-ui, sans-serif;
   --display-weight: 400;
   --display-spacing: 0.02em;
   --radius: 20px;
+  --display-case: none;
 }
 
 [data-world="boreal"] {
@@ -138,10 +143,10 @@
   --accent2: #b7d4ff;
   --gold: #b7d4ff;
   --line: rgba(183, 212, 255, 0.3);
-  --font-display: "Forum", Georgia, serif;
+  --font-display: "Ruslan Display", Georgia, serif;
   --font-body: "Jost", system-ui, sans-serif;
   --display-weight: 400;
-  --display-spacing: 0.16em;
+  --display-spacing: 0.08em;
   --display-case: uppercase;
   --radius: 6px;
 }
@@ -155,11 +160,12 @@
   --accent2: #7d8f3a;
   --gold: #e3b341;
   --line: rgba(227, 179, 65, 0.3);
-  --font-display: "Italiana", Georgia, serif;
+  --font-display: "Aboreto", Georgia, serif;
   --font-body: "Lora", Georgia, serif;
   --display-weight: 400;
-  --display-spacing: 0.06em;
+  --display-spacing: 0.1em;
   --radius: 10px;
+  --display-case: uppercase;
 }
 
 /* ─────────────────────────────── Base */
@@ -413,8 +419,8 @@ h3,
   line-height: 1.1;
 }
 .brand-text b {
-  font-family: var(--font-display);
-  font-weight: var(--display-weight);
+  font-family: var(--font-brand);
+  font-weight: 500;
   letter-spacing: 0.32em;
   font-size: 1.05rem;
   color: var(--ink);
@@ -499,7 +505,7 @@ h3,
   background: var(--ink);
   margin: 5px 0;
 }
-@media (max-width: 1320px) {
+@media (max-width: 1480px) {
   .burger {
     display: block;
   }
@@ -831,15 +837,15 @@ select.input {
   font-size: 1.6rem;
   letter-spacing: 0.08em;
 }
-.wc-maison .wc-name { font-family: "Cormorant Garamond", serif; }
-.wc-anatolia .wc-name { font-family: "Marcellus", serif; }
-.wc-cosmos .wc-name { font-family: "Exo 2", sans-serif; font-weight: 200; letter-spacing: 0.25em; text-transform: uppercase; }
-.wc-jazz .wc-name { font-family: "Poiret One", serif; text-transform: uppercase; letter-spacing: 0.16em; }
-.wc-sakura .wc-name { font-family: "Shippori Mincho", serif; }
-.wc-alchemist .wc-name { font-family: "Uncial Antiqua", serif; }
-.wc-tiki .wc-name { font-family: "Yeseva One", serif; }
-.wc-boreal .wc-name { font-family: "Forum", serif; text-transform: uppercase; letter-spacing: 0.2em; }
-.wc-riviera .wc-name { font-family: "Italiana", serif; letter-spacing: 0.1em; }
+.wc-maison .wc-name { font-family: "Bodoni Moda", serif; font-weight: 500; }
+.wc-anatolia .wc-name { font-family: "Aref Ruqaa", serif; font-weight: 700; letter-spacing: 0.02em; }
+.wc-cosmos .wc-name { font-family: "Syncopate", sans-serif; letter-spacing: 0.2em; text-transform: uppercase; font-size: 1.25rem; }
+.wc-jazz .wc-name { font-family: "Limelight", serif; text-transform: uppercase; letter-spacing: 0.1em; }
+.wc-sakura .wc-name { font-family: "Zen Antique", serif; }
+.wc-alchemist .wc-name { font-family: "Grenze Gotisch", serif; font-weight: 500; }
+.wc-tiki .wc-name { font-family: "Kavoon", serif; letter-spacing: 0.04em; }
+.wc-boreal .wc-name { font-family: "Ruslan Display", serif; text-transform: uppercase; letter-spacing: 0.12em; }
+.wc-riviera .wc-name { font-family: "Aboreto", serif; text-transform: uppercase; letter-spacing: 0.14em; }
 .wc-tag {
   font-size: 0.85rem;
   opacity: 0.75;
@@ -1169,7 +1175,7 @@ select.input {
   margin-bottom: 8px;
 }
 .story {
-  font-family: var(--font-display);
+  font-family: var(--font-prose, var(--font-display));
   font-size: 1.3rem;
   font-style: italic;
   line-height: 1.5;
@@ -1320,7 +1326,7 @@ select.input {
   color: var(--muted);
 }
 .tip {
-  font-family: var(--font-display);
+  font-family: var(--font-prose, var(--font-display));
   font-size: 1.1rem;
   text-align: center;
   font-style: italic;
@@ -1720,7 +1726,7 @@ input[type="range"].themed:active::-webkit-slider-thumb {
   border: 14px solid transparent;
 }
 .greeting {
-  font-family: var(--font-display);
+  font-family: var(--font-prose, var(--font-display));
   font-style: italic;
   font-size: 1.25rem;
   color: var(--muted);
@@ -2209,7 +2215,7 @@ input[type="range"].themed:active::-webkit-slider-thumb {
 }
 .game-done {
   margin-top: 18px;
-  font-family: var(--font-display);
+  font-family: var(--font-prose, var(--font-display));
   font-size: 1.3rem;
   color: var(--accent);
   animation: fadeUp 0.6s ease both;
@@ -2479,7 +2485,7 @@ input[type="range"].themed:active::-webkit-slider-thumb {
 
 /* riddle */
 .riddle {
-  font-family: var(--font-display);
+  font-family: var(--font-prose, var(--font-display));
   font-style: italic;
   font-size: clamp(1.2rem, 3vw, 1.6rem);
   line-height: 1.45;
@@ -3050,7 +3056,7 @@ input[type="range"].themed:active::-webkit-slider-thumb {
   transition: background 0.25s, color 0.25s, border-color 0.25s;
 }
 .zero-toggle b {
-  font-family: var(--font-display);
+  font-family: var(--font-brand);
   font-size: 0.95rem;
 }
 .zero-toggle.on {
@@ -3110,3 +3116,273 @@ input[type="range"].themed:active::-webkit-slider-thumb {
   color: var(--accent);
   margin: -6px 0 16px;
 }
+
+/* ═════════════════════════════════════════════ HISTORIC SCRIPT ECHOES */
+.echo {
+  display: block;
+  margin: 6px auto 0;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: clip;
+  font-size: 0.95rem;
+  letter-spacing: 0.3em;
+  color: var(--accent);
+  opacity: 0.55;
+}
+[data-world="boreal"] .echo { font-family: "Noto Sans Runic", sans-serif; }
+[data-world="anatolia"] .echo { font-family: "Noto Sans Old Turkic", sans-serif; letter-spacing: 0.4em; color: var(--gold); }
+[data-world="riviera"] .echo { font-family: "GFS Didot", serif; letter-spacing: 0.24em; }
+.hero .echo { margin: -8px 0 18px; text-align: left; }
+.sign-board .echo { color: inherit; opacity: 0.45; font-size: 0.8rem; }
+
+/* ═════════════════════════════════════════════ COCKTAIL PASSPORT */
+.pp-stats {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: -6px 0 18px;
+}
+.pp-stats .stat { min-width: 120px; }
+.pp-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+.pp-dots {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.pp-dots button {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  background: transparent;
+  cursor: pointer;
+}
+.pp-dots button.on { background: var(--accent); }
+.pp-book {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding: 10px 8px 26px;
+  scrollbar-width: thin;
+}
+.pp-page {
+  --paper: #f3ecdc;
+  position: relative;
+  flex: 0 0 min(400px, 84vw);
+  min-height: 560px;
+  scroll-snap-align: center;
+  padding: 22px 22px 40px;
+  border-radius: 6px 14px 14px 6px;
+  color: #2a2218;
+  background:
+    repeating-radial-gradient(circle at 50% 120%, transparent 0 10px, rgba(120, 100, 70, 0.07) 10px 11px),
+    repeating-linear-gradient(115deg, transparent 0 14px, rgba(120, 100, 70, 0.05) 14px 15px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.1), transparent 6%),
+    var(--paper);
+  box-shadow: 0 24px 40px -22px rgba(0, 0, 0, 0.85), inset 0 0 0 1px rgba(80, 60, 30, 0.2);
+  font-family: var(--font-body);
+  text-align: center;
+}
+.pp-head {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #7a6a52;
+  border-bottom: 1px solid rgba(80, 60, 30, 0.25);
+  padding-bottom: 8px;
+  margin-bottom: 14px;
+}
+.pp-folio {
+  position: absolute;
+  bottom: 14px;
+  left: 0;
+  right: 0;
+  font-size: 0.7rem;
+  color: #9a8a70;
+  letter-spacing: 0.2em;
+}
+/* cover */
+.pp-cover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: #e3c48e;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .35 0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E"),
+    radial-gradient(120% 90% at 30% 20%, #5a1a24, #2e0a12 70%);
+  box-shadow: 0 24px 40px -22px rgba(0, 0, 0, 0.9), inset 0 0 0 6px #2a0810, inset 0 0 0 7px rgba(227, 196, 142, 0.5);
+}
+.pp-cover h2 {
+  font-family: var(--font-brand);
+  font-size: 1.9rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0;
+  color: #e3c48e;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6), 0 -1px 0 rgba(255, 240, 200, 0.25);
+}
+.pp-cover-line,
+.pp-cover-sub {
+  font-family: var(--font-brand);
+  letter-spacing: 0.5em;
+  font-size: 0.85rem;
+}
+.pp-cover-logo { filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.6)); }
+.pp-chip { width: 46px; margin-top: 10px; }
+/* identity */
+.pp-id-grid {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 16px;
+  text-align: left;
+}
+.pp-photo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 136px;
+  color: #6a5a40;
+  border: 1px solid rgba(80, 60, 30, 0.35);
+  background: repeating-linear-gradient(45deg, rgba(120, 100, 70, 0.06) 0 4px, transparent 4px 8px);
+}
+.pp-id dl { margin: 0; display: grid; gap: 8px; }
+.pp-id dt { font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase; color: #8a7a60; }
+.pp-id dd { margin: 0; font-size: 0.95rem; }
+.pp-name {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px dashed rgba(80, 60, 30, 0.5);
+  background: transparent;
+  font: inherit;
+  font-family: var(--font-brand);
+  font-size: 1.15rem;
+  color: #2a2218;
+  padding: 2px 0;
+}
+.pp-tally {
+  display: flex;
+  justify-content: space-around;
+  margin: 26px 0;
+  font-size: 0.85rem;
+}
+.pp-mrz {
+  margin: 0;
+  font-family: "Courier New", monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  line-height: 1.6;
+  text-align: left;
+  color: #3a3022;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.35);
+  padding: 8px;
+}
+/* visa */
+.pp-visa {
+  background:
+    linear-gradient(rgba(243, 236, 220, 0.95), rgba(243, 236, 220, 0.95)),
+    var(--emblem) center 46% / 62% no-repeat,
+    repeating-radial-gradient(circle at 50% 120%, transparent 0 10px, rgba(120, 100, 70, 0.07) 10px 11px),
+    var(--paper);
+}
+.pp-band {
+  display: block;
+  height: 12px;
+  background: var(--band) repeat-x left center / auto 12px;
+  margin: -6px -22px 14px;
+}
+.pp-visa .wc-name {
+  display: block;
+  font-size: 2rem;
+  margin: 4px 0 2px;
+  color: var(--c1, #2a2218);
+}
+.pp-tag { font-size: 0.82rem; color: #6a5a40; margin: 0 0 14px; }
+.pp-slots {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  justify-items: center;
+}
+.pp-slot {
+  width: 100%;
+  min-height: 132px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pp-slot:last-child { grid-column: 1 / -1; }
+.pp-empty {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  width: 112px;
+  height: 112px;
+  padding: 10px;
+  border: 1.5px dashed rgba(80, 60, 30, 0.35);
+  border-radius: 50%;
+  color: #8a7a60;
+}
+.pp-empty b { font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; }
+.pp-empty small { font-size: 0.6rem; line-height: 1.25; }
+.pp-stamp { mix-blend-mode: multiply; }
+.pp-go { display: inline-block; margin-top: 6px; color: #6a5a40; }
+/* seal */
+.pp-seal-art { width: 190px; margin: 6px auto 0; display: block; filter: grayscale(1) opacity(0.28); transition: filter 1s; }
+.pp-seal.done .pp-seal-art { filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.3)); }
+.pp-seal-text { font-size: 0.9rem; color: #4a3e2c; padding: 0 8px; }
+.pp-progress { height: 6px; border-radius: 3px; background: rgba(80, 60, 30, 0.15); overflow: hidden; margin: 10px 20px 0; }
+.pp-progress i { display: block; height: 100%; background: linear-gradient(90deg, #c9a24a, #f6e3a1); }
+
+/* stamp toast */
+.stamp-toast {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 320px;
+  padding: 10px 16px 10px 10px;
+  background: #f3ecdc;
+  color: #2a2218;
+  border-radius: 10px;
+  box-shadow: 0 20px 40px -14px rgba(0, 0, 0, 0.8);
+  animation: toastIn 0.4s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+.stamp-toast b { display: block; font-size: 0.9rem; }
+.stamp-toast small { font-size: 0.78rem; color: #6a5a40; }
+.stamp-toast-art { animation: slam 0.5s 0.25s cubic-bezier(0.5, 0, 0.2, 1.4) both; }
+@keyframes toastIn { from { opacity: 0; transform: translateY(20px); } }
+@keyframes slam {
+  0% { opacity: 0; transform: scale(2.4) rotate(-12deg); }
+  70% { opacity: 1; transform: scale(0.94); }
+  100% { transform: scale(1); }
+}
+
+/* long prose keeps a readable face where the display font is caps-only or very bold */
+[data-world="boreal"] { --font-prose: "Forum", Georgia, serif; }
+[data-world="riviera"] { --font-prose: "Lora", Georgia, serif; }
+[data-world="cosmos"] { --font-prose: "Exo 2", system-ui, sans-serif; }
+[data-world="jazz"] { --font-prose: "Poiret One", Georgia, serif; }
+[data-world="tiki"] { --font-prose: "Karla", system-ui, sans-serif; }
+[data-world="cosmos"] .hero h1 { font-size: clamp(1.8rem, 3.6vw, 2.9rem); line-height: 1.25; }
+[data-world="cosmos"] .page-head h1 { font-size: clamp(1.7rem, 3.8vw, 2.7rem); }
+[data-world="boreal"] .hero h1 { font-size: clamp(2.1rem, 4.4vw, 3.5rem); }

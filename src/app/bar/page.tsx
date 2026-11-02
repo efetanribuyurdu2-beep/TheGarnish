@@ -7,6 +7,7 @@ import { usePrefs } from "@/lib/prefs";
 import type { IngredientCategory } from "@/lib/types";
 import { Ornament } from "@/components/Ornament";
 import { pour } from "@/lib/zero";
+import { Echo } from "@/components/Echo";
 
 export default function BarPage() {
   const { bar, toggleBar, set, world, creations, pick, t, zero } = usePrefs();
@@ -24,6 +25,7 @@ export default function BarPage() {
       <header className="page-head">
         <Ornament />
         <h1>{t("nav_bar")}</h1>
+        <Echo text={t("nav_bar")} />
         <p>{t("barSub")}</p>
       </header>
       <div className="bar-groups">
