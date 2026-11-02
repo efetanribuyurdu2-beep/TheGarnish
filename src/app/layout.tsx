@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { PrefsProvider } from "@/lib/prefs";
 import { Shell } from "@/components/Shell";
+import { themeCSS } from "@/lib/themeKit";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link rel="stylesheet" href={FONTS} />
         <script dangerouslySetInnerHTML={{ __html: boot }} />
+        <style dangerouslySetInnerHTML={{ __html: themeCSS() }} />
       </head>
       <body>
         <PrefsProvider>

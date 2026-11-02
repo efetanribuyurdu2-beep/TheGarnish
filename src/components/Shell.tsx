@@ -7,6 +7,7 @@ import { PALETTES, worldById } from "@/data/worlds";
 import { usePrefs } from "@/lib/prefs";
 import type { UIKey } from "@/lib/ui";
 import { LogoMark } from "./Logo";
+import { MusicButton } from "./MusicButton";
 import { WorldBackdrop } from "./WorldBackdrop";
 import { LangToggle, WorldGate } from "./WorldGate";
 
@@ -68,6 +69,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
                   ))}
                 </div>
               )}
+              <MusicButton />
               <LangToggle />
               <button className="btn ghost small" onClick={() => openGate(true)}>
                 {t("changeWorld")}

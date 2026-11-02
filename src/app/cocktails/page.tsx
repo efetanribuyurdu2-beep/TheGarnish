@@ -8,6 +8,7 @@ import { worldById } from "@/data/worlds";
 import { visibleCocktails } from "@/lib/catalog";
 import { usePrefs } from "@/lib/prefs";
 import type { Mood, Root } from "@/lib/types";
+import { Ornament } from "@/components/Ornament";
 
 export default function CocktailsPage() {
   const { world, creations, pick, t } = usePrefs();
@@ -35,7 +36,7 @@ export default function CocktailsPage() {
   return (
     <>
       <header className="page-head">
-        <div className="ornament">✦</div>
+        <Ornament />
         <h1>{t("nav_cocktails")}</h1>
         <p>{t("cocktailsSub")}</p>
       </header>

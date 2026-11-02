@@ -7,6 +7,7 @@ import { COCKTAILS } from "@/data/cocktails";
 import { worldById } from "@/data/worlds";
 import { usePrefs } from "@/lib/prefs";
 import type { UIKey } from "@/lib/ui";
+import { Ornament } from "@/components/Ornament";
 
 const FEATURES: [string, UIKey, UIKey, string][] = [
   ["/cellar", "nav_cellar", "cellarSub", "❦"],
@@ -48,7 +49,7 @@ export default function Home() {
 
       <section className="section">
         <div className="page-head" style={{ marginBottom: 24 }}>
-          <div className="ornament">✦</div>
+          <Ornament />
           <h2>{pick(w.collection)}</h2>
         </div>
         <div className="grid">

@@ -69,6 +69,16 @@ function Cosmos() {
           <circle key={i} cx={`${s.x}%`} cy={`${s.y}%`} r={s.s} fill="#fff" className="twinkle" style={{ animationDelay: `${s.d}s` }} />
         ))}
       </svg>
+      <svg className="bd-const" viewBox="0 0 400 300" aria-hidden>
+        <g stroke="var(--accent)" strokeOpacity=".5" strokeWidth=".8" fill="none">
+          <path d="M40 60 L90 40 L140 70 L180 50 L230 90" />
+          <path d="M140 70 L150 130 L210 160" />
+          <path d="M280 200 L320 170 L360 210 L330 250 L280 200" />
+        </g>
+        {[[40, 60], [90, 40], [140, 70], [180, 50], [230, 90], [150, 130], [210, 160], [280, 200], [320, 170], [360, 210], [330, 250]].map(([x, y], i) => (
+          <circle key={i} cx={x} cy={y} r={i % 3 === 0 ? 2.6 : 1.6} fill="#fff" className="twinkle" style={{ animationDelay: `${i * 0.4}s` }} />
+        ))}
+      </svg>
       <svg className="bd-planet" viewBox="-60 -60 120 120" aria-hidden>
         <defs>
           <radialGradient id="pl" cx=".35" cy=".35">
@@ -100,6 +110,16 @@ function Jazz() {
         <rect width="100%" height="100%" fill="url(#deco)" />
       </svg>
       <div className="bd-spot" />
+      <svg className="bd-vinyl" viewBox="-50 -50 100 100" aria-hidden>
+        <circle r="48" fill="#0a0908" stroke="var(--accent)" strokeOpacity=".4" />
+        {[44, 40, 36, 32, 28, 24, 20].map((r) => (
+          <circle key={r} r={r} fill="none" stroke="#2a2620" strokeWidth=".6" />
+        ))}
+        <circle r="14" fill="var(--accent2)" />
+        <circle r="13" fill="none" stroke="var(--accent)" strokeWidth=".6" />
+        <circle r="1.6" fill="#0a0908" />
+        <path d="M-30 -30 A42 42 0 0 1 -6 -42" stroke="#fff" strokeOpacity=".15" fill="none" />
+      </svg>
       <div className="bd-notes" aria-hidden>
         {["♪", "♫", "♩", "♬"].map((n, i) => (
           <span key={i} style={{ left: `${10 + i * 24}%`, animationDelay: `${i * 2.5}s` }}>{n}</span>
@@ -128,6 +148,22 @@ function Sakura() {
       <svg className="bd-enso" viewBox="0 0 200 200" aria-hidden>
         <path d="M150 40 C190 80 180 160 110 175 C40 190 10 120 30 75 C45 40 90 22 130 30" fill="none" stroke="var(--accent2)" strokeWidth="9" strokeLinecap="round" opacity=".5" />
       </svg>
+      <div className="bd-tategaki left" lang="ja">一期一会</div>
+      <div className="bd-tategaki right" lang="ja">花見酒</div>
+      <svg className="bd-karesansui" viewBox="0 0 1200 160" preserveAspectRatio="none" aria-hidden>
+        {Array.from({ length: 9 }).map((_, i) => (
+          <path key={i} d={`M0 ${30 + i * 14} C200 ${22 + i * 14} 400 ${38 + i * 14} 600 ${30 + i * 14} S1000 ${22 + i * 14} 1200 ${30 + i * 14}`} stroke="var(--ink)" strokeOpacity=".12" fill="none" />
+        ))}
+        {[[260, 90, 46], [880, 110, 34], [960, 96, 18]].map(([x, y, r], i) => (
+          <g key={i}>
+            {[1.9, 1.55, 1.25].map((k) => (
+              <ellipse key={k} cx={x} cy={y} rx={r * k} ry={r * k * 0.35} fill="none" stroke="var(--ink)" strokeOpacity=".14" />
+            ))}
+            <ellipse cx={x} cy={y - r * 0.15} rx={r} ry={r * 0.55} fill="#3a2f33" />
+            <ellipse cx={x - r * 0.3} cy={y - r * 0.35} rx={r * 0.35} ry={r * 0.15} fill="#fff" opacity=".08" />
+          </g>
+        ))}
+      </svg>
       <div className="bd-petals" aria-hidden>
         {petals.map((p, i) => (
           <span key={i} style={{ left: `${p.x}%`, animationDelay: `-${p.d}s`, animationDuration: `${p.t}s`, transform: `scale(${p.s})` }} />
@@ -142,6 +178,7 @@ function Alchemist() {
   const r = rand(99);
   return (
     <>
+      <div className="bd-parchment" />
       <svg className="bd-circle" viewBox="-100 -100 200 200" aria-hidden>
         <g fill="none" stroke="var(--accent)" strokeWidth=".6">
           <circle r="96" />
@@ -209,6 +246,12 @@ function Maison() {
 export function WorldBackdrop({ world }: { world: WorldId }) {
   return (
     <div className={`backdrop bd-${world}`} aria-hidden>
+      {(world === "anatolia" || world === "tiki" || world === "maison" || world === "jazz") && (
+        <>
+          <i className="bd-edge left" />
+          <i className="bd-edge right" />
+        </>
+      )}
       {world === "maison" && <Maison />}
       {world === "anatolia" && <Anatolia />}
       {world === "cosmos" && <Cosmos />}

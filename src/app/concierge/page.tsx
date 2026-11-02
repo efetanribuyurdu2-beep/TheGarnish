@@ -7,6 +7,7 @@ import { analyse } from "@/lib/balance";
 import { visibleCocktails } from "@/lib/catalog";
 import { usePrefs } from "@/lib/prefs";
 import type { Flavor, Mood } from "@/lib/types";
+import { Ornament } from "@/components/Ornament";
 
 const FLAVORS: Flavor[] = ["fresh", "sweet", "sour", "bitter", "strong", "aromatic"];
 
@@ -31,7 +32,7 @@ export default function ConciergePage() {
   return (
     <>
       <header className="page-head">
-        <div className="ornament">✧</div>
+        <Ornament />
         <h1>{t("nav_concierge")}</h1>
         <p>{t("conciergeSub")}</p>
       </header>

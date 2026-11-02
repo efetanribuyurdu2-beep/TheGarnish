@@ -6,6 +6,8 @@ export interface World {
   tagline: L;
   intro: L;
   collection: L; // name of the exclusive collection
+  bar: L; // the bar the Atelier becomes in this world
+  greeting: L; // the bartender's welcome
   swatch: [string, string, string]; // bg, accent, accent2 for previews
   password?: { answer: string; hint: L };
 }
@@ -20,6 +22,8 @@ export const WORLDS: World[] = [
       en: "Welcome to the quiet grandeur of the great hotel bars. Here every cocktail is a legend, every glass a story.",
     },
     collection: { tr: "Bar Efsaneleri", en: "Legends of the Bar" },
+    bar: { tr: "Le Grand Bar", en: "Le Grand Bar" },
+    greeting: { tr: "İyi akşamlar. Mermer tezgâh sizin; hangi şişeyle başlayalım?", en: "Good evening. The marble is yours; which bottle shall we begin with?" },
     swatch: ["#0b0b0b", "#c9a961", "#efe6d2"],
   },
   {
@@ -31,6 +35,8 @@ export const WORLDS: World[] = [
       en: "The fruits, spices and rituals of a thousand-year-old kitchen, poured into a glass. Pomegranate, mastic, pistachio, rose.",
     },
     collection: { tr: "Anadolu Rezervi", en: "Anatolian Reserve" },
+    bar: { tr: "Garnish Meyhanesi", en: "Garnish Meyhane" },
+    greeting: { tr: "Hoş geldin, safa geldin! Kilimin üstüne buyur, raftan ne istersen alalım.", en: "Hoş geldin! Have a seat on the kilim; take anything you like from the shelf." },
     swatch: ["#0b1f3a", "#2fb7b0", "#c8323c"],
   },
   {
@@ -42,6 +48,8 @@ export const WORLDS: World[] = [
       en: "Gravity is a little lighter here. Cocktail families are planets, recipes are constellations.",
     },
     collection: { tr: "Takımyıldızlar", en: "Constellations" },
+    bar: { tr: "Orbital Lounge", en: "Orbital Lounge" },
+    greeting: { tr: "Yörüngeye hoş geldin. Şişeler yer çekimsiz; dikkatli dök.", en: "Welcome to orbit. The bottles are weightless; pour with care." },
     swatch: ["#05060f", "#9b7bff", "#ff7ac8"],
   },
   {
@@ -53,6 +61,8 @@ export const WORLDS: World[] = [
       en: "The door creaks open, the password was right. Jazz plays in the hidden bars of Prohibition, the glasses are crystal.",
     },
     collection: { tr: "Yasak Dönem", en: "The Prohibition Era" },
+    bar: { tr: "The Blind Tiger", en: "The Blind Tiger" },
+    greeting: { tr: "Parola doğruydu, dostum. Sesini alçak tut ve ne içeceğini söyle.", en: "Password checks out, pal. Keep it down and name your poison." },
     swatch: ["#0d0d0d", "#d9b25f", "#1f6f63"],
     password: {
       answer: "BEES KNEES",
@@ -71,6 +81,8 @@ export const WORLDS: World[] = [
       en: "In Japanese bars a cocktail is a ceremony. Ice is carved by hand, every motion measured. It is hanami season.",
     },
     collection: { tr: "Hanami Koleksiyonu", en: "Hanami Collection" },
+    bar: { tr: "Bar Hanami 花見", en: "Bar Hanami 花見" },
+    greeting: { tr: "いらっしゃいませ. Buz az önce elde yontuldu; ölçüleri birlikte seçelim.", en: "Irasshaimase. The ice was just hand-carved; let us choose the measures together." },
     swatch: ["#1a1216", "#f2a7bb", "#c8102e"],
   },
   {
@@ -82,6 +94,8 @@ export const WORLDS: World[] = [
       en: "The cocktail's ancestor is the apothecary's bottle. This laboratory holds herbs, roots and secret formulas.",
     },
     collection: { tr: "İksirler", en: "Elixirs" },
+    bar: { tr: "The Apothecary", en: "The Apothecary" },
+    greeting: { tr: "Laboratuvara hoş geldin. Her şişe bir element; formülünü yaz.", en: "Welcome to the laboratory. Every bottle is an element; write your formula." },
     swatch: ["#14110c", "#b8863b", "#4f7d5c"],
   },
   {
@@ -93,6 +107,8 @@ export const WORLDS: World[] = [
       en: "A bamboo bar, torches, the sound of the ocean. Here rum comes in ten styles, and they all get along beautifully.",
     },
     collection: { tr: "Lagün Koleksiyonu", en: "Lagoon Collection" },
+    bar: { tr: "The Lagoon Hut", en: "The Lagoon Hut" },
+    greeting: { tr: "Aloha! Bambu tezgâha geç, meşaleler yanıyor, rom bol.", en: "Aloha! Pull up to the bamboo bar; the torches are lit and the rum is plenty." },
     swatch: ["#0c1a14", "#f0a04b", "#e2574c"],
   },
 ];

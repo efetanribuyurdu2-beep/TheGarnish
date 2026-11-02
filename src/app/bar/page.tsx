@@ -5,6 +5,7 @@ import { CATEGORY_LABEL, INGREDIENTS, ingredientById } from "@/data/ingredients"
 import { visibleCocktails } from "@/lib/catalog";
 import { usePrefs } from "@/lib/prefs";
 import type { IngredientCategory } from "@/lib/types";
+import { Ornament } from "@/components/Ornament";
 
 export default function BarPage() {
   const { bar, toggleBar, set, world, creations, pick, t } = usePrefs();
@@ -20,7 +21,7 @@ export default function BarPage() {
   return (
     <>
       <header className="page-head">
-        <div className="ornament">◈</div>
+        <Ornament />
         <h1>{t("nav_bar")}</h1>
         <p>{t("barSub")}</p>
       </header>

@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 import { CATEGORY_LABEL, INGREDIENTS } from "@/data/ingredients";
 import { usePrefs } from "@/lib/prefs";
 import type { IngredientCategory } from "@/lib/types";
+import { Ornament } from "@/components/Ornament";
 
 const ORDER = Object.keys(CATEGORY_LABEL) as IngredientCategory[];
 
@@ -23,7 +24,7 @@ export default function CellarPage() {
   return (
     <>
       <header className="page-head">
-        <div className="ornament">❦</div>
+        <Ornament />
         <h1>{t("nav_cellar")}</h1>
         <p>{t("cellarSub")}</p>
       </header>

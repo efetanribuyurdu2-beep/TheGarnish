@@ -24,7 +24,7 @@ const SHAPES: Record<Glass, Shape> = {
   tiki: { outline: "M30 26 L90 26 L86 146 L34 146 Z", liquid: "M32 32 L88 32 L85 144 L35 144 Z", top: 32, bottom: 144, rim: [60, 26, 30] },
 };
 
-function GarnishIcon({ kind, x, y }: { kind: string; x: number; y: number }) {
+export function GarnishIcon({ kind, x, y }: { kind: string; x: number; y: number }) {
   const g = `translate(${x} ${y})`;
   if (kind === "olive" || kind === "evil-eye")
     return (
