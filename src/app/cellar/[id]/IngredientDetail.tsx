@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { CocktailCard } from "@/components/CocktailCard";
 import { FlavorRadar } from "@/components/FlavorRadar";
+import { Bottle } from "@/components/Bottle";
 import { CATEGORY_LABEL, ingredientById } from "@/data/ingredients";
 import { visibleCocktails } from "@/lib/catalog";
 import { usePrefs } from "@/lib/prefs";
@@ -17,12 +18,7 @@ export function IngredientDetail({ id }: { id: string }) {
     <>
       <article className="detail">
         <aside className="detail-art">
-          <svg width="120" height="200" viewBox="0 0 120 200" aria-hidden>
-            <path d="M48 10 L72 10 L72 46 C96 60 100 74 100 96 L100 186 C100 192 96 194 90 194 L30 194 C24 194 20 192 20 186 L20 96 C20 74 24 60 48 46 Z" fill={ing.color} fillOpacity=".85" stroke="currentColor" strokeWidth="1.5" />
-            <rect x="30" y="112" width="60" height="50" fill="var(--bg)" stroke="var(--accent)" />
-            <text x="60" y="134" textAnchor="middle" fontSize="9" fill="var(--accent)" letterSpacing="2">GARNISH</text>
-            <text x="60" y="150" textAnchor="middle" fontSize="8" fill="currentColor">{ing.abv > 0 ? `${Math.round(ing.abv * 100)}% vol` : "0%"}</text>
-          </svg>
+          <Bottle ing={ing} size={130} />
           <FlavorRadar profile={ing.profile} size={230} />
         </aside>
         <div>

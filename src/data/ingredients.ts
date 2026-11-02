@@ -1,4 +1,5 @@
-import type { Ingredient, IngredientCategory, L, WorldId } from "@/lib/types";
+import type { BottleShape, Ingredient, IngredientCategory, L, WorldId } from "@/lib/types";
+import { MORE_INGREDIENTS } from "./ingredientsMore";
 
 // profile order: sweet, sour, bitter, strong, fresh, aromatic
 type P = [number, number, number, number, number, number];
@@ -36,7 +37,7 @@ function ing(
 const CLEAR = { tint: 0.08 };
 const w = (world: WorldId) => ({ world });
 
-export const INGREDIENTS: Ingredient[] = [
+const BASE: Ingredient[] = [
   // ───────── Spirits
   ing("gin", l("London Dry Cin", "London Dry Gin"), "spirit", { abv: 0.43 }, "#f4f6f2", [0, 0, 1, 4, 3, 5],
     l("İngiltere", "England"),
@@ -347,6 +348,24 @@ export const INGREDIENTS: Ingredient[] = [
     [l("taze nane", "fresh mint"), l("serin", "cool"), l("ferah", "fresh")],
     l("Ezmeyin, hafifçe bastırın: yapraklar parçalanırsa acılaşır.", "Press, don't pulverise: torn leaves turn bitter."),
     { tint: 0 }),
+];
+
+const SHAPES: Record<string, BottleShape> = {
+  gin: "tall", vodka: "tall", "white-rum": "squat", "aged-rum": "squat", "dark-rum": "squat", bourbon: "square", rye: "tall",
+  scotch: "decanter", "japanese-whisky": "decanter", tequila: "tapered", mezcal: "tapered", cognac: "decanter", raki: "tall", sake: "tall",
+  "sweet-vermouth": "wine", "dry-vermouth": "wine", lillet: "tall", campari: "tall", aperol: "tall", cointreau: "square", maraschino: "squat",
+  violette: "round", chartreuse: "squat", absinthe: "tall", fernet: "tall", "coffee-liqueur": "round", elderflower: "square",
+  "pistachio-liqueur": "round", mastic: "tall", umeshu: "round", falernum: "squat", espresso: "carafe", "turkish-coffee": "carafe",
+  matcha: "jar", "butterfly-pea": "carafe", champagne: "sparkling", "egg-white": "jar", coconut: "jar", mint: "jar",
+};
+const DEFAULT: Record<IngredientCategory, BottleShape> = {
+  spirit: "tall", liqueur: "squat", wine: "wine", citrus: "carafe", syrup: "syrup", mixer: "soda", bitters: "bitters", other: "jar",
+};
+const GLASS_TINT: Record<string, string> = { gin: "#3d6b55", chartreuse: "#3d5a2a", "sweet-vermouth": "#3a2a1a", fernet: "#2a2a1a", champagne: "#2f4a2a" };
+
+export const INGREDIENTS: Ingredient[] = [
+  ...BASE.map((i) => ({ ...i, shape: i.shape ?? SHAPES[i.id] ?? DEFAULT[i.category], ...(GLASS_TINT[i.id] ? { glass: GLASS_TINT[i.id] } : {}) })),
+  ...MORE_INGREDIENTS,
 ];
 
 export const ingredientById = (id: string) => INGREDIENTS.find((i) => i.id === id);

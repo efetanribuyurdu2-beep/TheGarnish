@@ -32,7 +32,7 @@ const svg = (a: Art, wrap = (b: string) => b) =>
 const uri = (s: string) => `url("data:image/svg+xml,${encodeURIComponent(s)}")`;
 
 // ───────────────────────────────────────────── Anatolia (kilim · çini · nazar)
-const K = { red: "#a3231c", indigo: "#1b2a5e", mustard: "#d9a521", cream: "#f1e4c8", tq: "#2fb7b0", cobalt: "#1d3f8f" };
+const K = { red: "#7d1a16", indigo: "#1b2a5e", mustard: "#d9a521", cream: "#f1e4c8", tq: "#2fb7b0", cobalt: "#1d3f8f" };
 const stepDiamond = (cx: number, cy: number, s: number, fill: string) =>
   `<path transform="translate(${cx} ${cy}) scale(${s})" d="M-3 -8 H3 V-5 H6 V-2 H9 V2 H6 V5 H3 V8 H-3 V5 H-6 V2 H-9 V-2 H-6 V-5 H-3 Z" fill="${fill}"/>`;
 const eye = (cx: number, cy: number, s = 1) =>
@@ -62,10 +62,17 @@ const anatolia: Kit = {
   },
   emblem: { w: 40, h: 40, body: nazar(20, 20, 17) },
   counter: {
-    w: 80,
-    h: 80,
-    body: `<rect width="80" height="80" fill="${K.red}"/>${stepDiamond(40, 40, 3, K.indigo)}${stepDiamond(40, 40, 2, K.red)}${stepDiamond(40, 40, 1.1, K.mustard)}${eye(40, 40, 1.2)}${eye(0, 0, 1.4)}${eye(80, 0, 1.4)}${eye(0, 80, 1.4)}${eye(80, 80, 1.4)}<path d="M12 40 h6 M62 40 h6 M40 12 v6 M40 62 v6" stroke="${K.cream}" stroke-width="2"/>`,
+    w: 120,
+    h: 120,
+    body: `<rect width="120" height="120" fill="${K.red}"/>
+      <rect y="0" width="120" height="10" fill="${K.indigo}"/><rect y="110" width="120" height="10" fill="${K.indigo}"/>
+      ${Array.from({ length: 15 }, (_, i) => `<path d="M${i * 8} 10 l4 -6 l4 6Z" fill="${K.mustard}"/><path d="M${i * 8} 110 l4 6 l4 -6Z" fill="${K.mustard}"/>`).join("")}
+      ${stepDiamond(60, 60, 4.2, K.indigo)}${stepDiamond(60, 60, 3.2, K.cream)}${stepDiamond(60, 60, 2.5, K.red)}${stepDiamond(60, 60, 1.5, K.mustard)}${stepDiamond(60, 60, 0.7, K.indigo)}
+      <path d="M60 22 v-6 h-6 M60 22 v-6 h6 M60 98 v6 h-6 M60 98 v6 h6 M22 60 h-6 v-6 M22 60 h-6 v6 M98 60 h6 v-6 M98 60 h6 v6" stroke="${K.cream}" stroke-width="2.6" fill="none"/>
+      ${eye(0, 60, 1.6)}${eye(120, 60, 1.6)}${eye(20, 24, 1)}${eye(100, 24, 1)}${eye(20, 96, 1)}${eye(100, 96, 1)}
+      <path d="M8 40 l6 -6 l6 6 l-6 6Z M100 40 l6 -6 l6 6 l-6 6Z M8 80 l6 -6 l6 6 l-6 6Z M100 80 l6 -6 l6 6 l-6 6Z" fill="${K.tq}"/>`,
   },
+
   wall: {
     w: 60,
     h: 60,

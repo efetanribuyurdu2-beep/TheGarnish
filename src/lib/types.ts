@@ -25,6 +25,21 @@ export type IngredientCategory =
   | "bitters"
   | "other";
 
+export type BottleShape =
+  | "tall"
+  | "square"
+  | "decanter"
+  | "squat"
+  | "tapered"
+  | "round"
+  | "wine"
+  | "sparkling"
+  | "syrup"
+  | "bitters"
+  | "carafe"
+  | "soda"
+  | "jar";
+
 export interface Ingredient {
   id: string;
   name: L;
@@ -43,6 +58,9 @@ export interface Ingredient {
   premium?: string; // a premium bottle to try
   world?: WorldId; // highlighted in this world
   kcal?: number; // per 100 ml, non-alcohol, non-sugar extra (cream etc.)
+  shape?: BottleShape; // back-bar bottle silhouette (defaults by category)
+  glass?: string; // bottle glass tint, e.g. green or amber glass
+  cap?: string; // cap / foil colour
 }
 
 export type Glass =

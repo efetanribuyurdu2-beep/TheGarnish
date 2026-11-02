@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
+import { BalanceGauge } from "@/components/BalanceGauge";
 import { Bottle } from "@/components/Bottle";
 import { formatAmount } from "@/components/CocktailCard";
 import { FlavorRadar } from "@/components/FlavorRadar";
@@ -26,6 +27,7 @@ const METHOD_LABEL: Record<Method, { tr: string; en: string }> = {
 };
 const GLASSES = Object.keys(GLASS_LABEL) as Glass[];
 const CATS = Object.keys(CATEGORY_LABEL) as IngredientCategory[];
+const chunk = <T,>(a: T[], n: number) => Array.from({ length: Math.ceil(a.length / n) }, (_, i) => a.slice(i * n, i * n + n));
 const GARNISH_KEYS = Object.keys(GARNISHES).filter((g) => g !== "none");
 
 export default function AtelierPage() {
@@ -96,7 +98,6 @@ export default function AtelierPage() {
     : a.tip?.kind === "strong" ? t("tipStrong")
     : a.tip?.kind === "weak" ? t("tipWeak")
     : t("tipOk");
-  const tilt = parts.length ? a.balance * 14 : 0;
 
   return (
     <>
@@ -120,18 +121,28 @@ export default function AtelierPage() {
               </button>
             ))}
           </div>
-          <div className="shelf">
-            {INGREDIENTS.filter((i) => i.category === shelf).map((i) => (
-              <button
-                key={i.id}
-                className={`bottle-btn ${inRecipe.has(i.id) ? "in" : ""} ${i.world === w.id ? "local" : ""}`}
-                onClick={() => toggleBottle(i.id)}
-                aria-pressed={inRecipe.has(i.id)}
-                title={pick(i.name)}
-              >
-                <Bottle ing={i} size={46} />
-                <span>{pick(i.name)}</span>
-              </button>
+          <div className="shelves">
+            {chunk(INGREDIENTS.filter((i) => i.category === shelf), 10).map((row, r) => (
+              <div key={r} className="shelf-row">
+                <div className="shelf-bottles">
+                  {row.map((i) => (
+                    <button
+                      key={i.id}
+                      className={`bottle-btn ${inRecipe.has(i.id) ? "in" : ""} ${i.world === w.id ? "local" : ""}`}
+                      onClick={() => toggleBottle(i.id)}
+                      aria-pressed={inRecipe.has(i.id)}
+                      title={pick(i.name)}
+                    >
+                      <Bottle ing={i} size={64} />
+                      <span>{pick(i.name)}</span>
+                    </button>
+                  ))}
+                </div>
+                <div className="plank" aria-hidden>
+                  <i className="plank-top" />
+                  <i className="plank-front" />
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -139,22 +150,9 @@ export default function AtelierPage() {
           <div className="counter-glass">
             <GlassArt key={glass + parts.length} glass={glass} color={parts.length ? a.color : "transparent"} opaque={a.opaque} ice={ice} method={method} garnish={garnish} size={170} />
           </div>
-          <svg className="scale" viewBox="0 0 300 124" aria-label={t("balance")}>
-            <path d="M150 40 L150 104 M118 108 L182 108" stroke="currentColor" strokeWidth="2" />
-            <path d="M140 108 L150 92 L160 108" fill="currentColor" />
-            <g className="beam" style={{ transform: `rotate(${tilt}deg)` }}>
-              <line x1="40" y1="40" x2="260" y2="40" stroke="currentColor" strokeWidth="2.5" />
-              <circle cx="150" cy="40" r="5" fill="currentColor" />
-              {[40, 260].map((x) => (
-                <g key={x} transform={`translate(${x} 40)`}>
-                  <path d="M0 0 L-18 36 M0 0 L18 36" stroke="currentColor" />
-                  <path d="M-24 36 Q0 50 24 36 Z" fill="currentColor" fillOpacity=".25" stroke="currentColor" />
-                </g>
-              ))}
-            </g>
-            <text x="40" y="118" textAnchor="middle" fontSize="11" fill="currentColor">{t("tooSour")}</text>
-            <text x="260" y="118" textAnchor="middle" fontSize="11" fill="currentColor">{t("tooSweet")}</text>
-          </svg>
+          <div className="counter-reflection" aria-hidden>
+            <GlassArt key={"r" + glass + parts.length} glass={glass} color={parts.length ? a.color : "transparent"} opaque={a.opaque} ice={ice} method={method} garnish={garnish} size={170} animate={false} />
+          </div>
         </div>
       </section>
 
@@ -184,7 +182,7 @@ export default function AtelierPage() {
             const min = bit ? 1 : 0;
             return (
               <div key={p.id} className="pour-row">
-                <Bottle ing={ing} size={26} />
+                <Bottle ing={ing} size={28} />
                 <div className="pour-main">
                   <div className="pour-head">
                     <span>{pick(ing.name)}</span>
@@ -257,6 +255,7 @@ export default function AtelierPage() {
         </div>
 
         <aside className="scale-panel">
+          <BalanceGauge balance={a.balance} active={parts.length > 0} />
           {parts.length === 0 ? (
             <p className="tip">{t("emptyAtelier")}</p>
           ) : (

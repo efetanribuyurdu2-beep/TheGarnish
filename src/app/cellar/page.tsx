@@ -6,6 +6,7 @@ import { CATEGORY_LABEL, INGREDIENTS } from "@/data/ingredients";
 import { usePrefs } from "@/lib/prefs";
 import type { IngredientCategory } from "@/lib/types";
 import { Ornament } from "@/components/Ornament";
+import { Bottle } from "@/components/Bottle";
 
 const ORDER = Object.keys(CATEGORY_LABEL) as IngredientCategory[];
 
@@ -42,7 +43,7 @@ export default function CellarPage() {
       <div className="grid wide">
         {list.map((i) => (
           <Link key={i.id} href={`/cellar/${i.id}`} className="card ing-card">
-            <span className="ing-swatch" style={{ background: i.color }} />
+            <Bottle ing={i} size={40} />
             <span>
               {i.world === world && <span className="badge" style={{ marginBottom: 6 }}>✦</span>}
               <h3>{pick(i.name)}</h3>
