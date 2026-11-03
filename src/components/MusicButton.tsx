@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { worldById } from "@/data/worlds";
 import { getPlayer } from "@/lib/music";
+import { loadSpotify, playlistUri, playlistUrl, type SpotifyController } from "@/lib/spotify";
 import { usePrefs } from "@/lib/prefs";
 import type { WorldId } from "@/lib/types";
 
@@ -150,19 +152,40 @@ function Instrument({ world }: { world: WorldId }) {
   }
 }
 
+/**
+ * The world's instrument opens its Spotify playlist (official embed). Tap once to
+ * play, again to stop; the small player stays reachable under the icon. Offline or
+ * if Spotify cannot load, the generated music (music.ts) plays instead.
+ */
 export function MusicButton() {
-  const { world, lang } = usePrefs();
+  const { world, lang, pick } = usePrefs();
   const w = world ?? "maison";
   const [on, setOn] = useState(false);
-  const [vol, setVol] = useState(0.6);
   const [open, setOpen] = useState(false);
+  const [mode, setMode] = useState<"spotify" | "synth" | null>(null);
+  const [playing, setPlaying] = useState(false);
+  const [vol, setVol] = useState(0.6);
   const wrap = useRef<HTMLDivElement>(null);
+  const host = useRef<HTMLDivElement>(null);
+  const ctrl = useRef<SpotifyController | null>(null);
+  const loaded = useRef<WorldId | null>(null);
+  const tr = lang === "tr";
 
-  // follow world changes while playing
+  const startSynth = useCallback(async (to: WorldId) => {
+    setMode("synth");
+    await getPlayer().play(to);
+  }, []);
+
+  // the playlist follows the world
   useEffect(() => {
-    const p = getPlayer();
-    if (on && p.current !== w) void p.play(w);
-  }, [w, on]);
+    if (!on) return;
+    if (mode === "spotify" && ctrl.current && loaded.current !== w) {
+      loaded.current = w;
+      ctrl.current.loadUri(playlistUri(w));
+      ctrl.current.play();
+    }
+    if (mode === "synth" && getPlayer().current !== w) void getPlayer().play(w);
+  }, [w, on, mode]);
 
   useEffect(() => () => getPlayer().stop(), []);
 
@@ -174,45 +197,103 @@ export function MusicButton() {
     return () => document.removeEventListener("click", close);
   }, []);
 
-  const toggle = async () => {
-    const p = getPlayer();
-    if (on) {
-      p.stop();
-      setOn(false);
-    } else {
-      await p.play(w);
-      setOn(true);
-      setOpen(true);
+  const start = async () => {
+    setOn(true);
+    setOpen(true);
+    if (ctrl.current) {
+      setMode("spotify");
+      if (loaded.current !== w) {
+        loaded.current = w;
+        ctrl.current.loadUri(playlistUri(w));
+      }
+      ctrl.current.play();
+      return;
+    }
+    if (typeof navigator !== "undefined" && !navigator.onLine) return startSynth(w);
+    // play the generated music at once while Spotify loads, so the tap is never silent
+    void startSynth(w);
+    try {
+      const api = await loadSpotify();
+      if (!host.current) return;
+      const el = document.createElement("div");
+      host.current.replaceChildren(el);
+      api.createController(el, { uri: playlistUri(w), width: "100%", height: 152 }, (c) => {
+        ctrl.current = c;
+        loaded.current = w;
+        c.addListener("playback_update", (e) => {
+          const p = !e.data.isPaused;
+          setPlaying(p);
+          // Spotify has taken over: the generated music steps aside
+          if (p) getPlayer().stop();
+        });
+        c.addListener("ready", () => {
+          setMode("spotify");
+          c.play();
+        });
+      });
+    } catch {
+      /* Spotify unavailable: the generated music keeps playing */
     }
   };
 
-  const label = lang === "tr" ? (on ? "Müziği durdur" : "Müziği çal") : on ? "Stop music" : "Play music";
+  const stop = () => {
+    ctrl.current?.pause();
+    getPlayer().stop();
+    setOn(false);
+    setOpen(false);
+    setPlaying(false);
+  };
+
+  // first tap plays; while playing, a tap reopens the player, a second one stops
+  const tap = () => {
+    if (!on) void start();
+    else if (!open) setOpen(true);
+    else stop();
+  };
+
+  const label = !on ? (tr ? "Dünyanın çalma listesini aç" : "Play this world's playlist") : open ? (tr ? "Müziği durdur" : "Stop music") : tr ? "Çalanı göster" : "Show what's playing";
+  const name = pick(worldById(w).bar);
 
   return (
     <div className="music" ref={wrap}>
-      <button className={`music-btn ${on ? "playing" : ""}`} onClick={toggle} aria-pressed={on} aria-label={label} title={label}>
+      <button className={`music-btn ${on ? "playing" : ""}`} onClick={tap} aria-pressed={on} aria-expanded={open} aria-label={label} title={label}>
         <Instrument world={w} />
       </button>
-      {open && on && (
-        <div className="music-pop">
-          <span>{lang === "tr" ? "Ses" : "Volume"}</span>
-          <input
-            type="range"
-            className="themed"
-            min={0}
-            max={1}
-            step={0.05}
-            value={vol}
-            style={{ "--pct": `${vol * 100}%` } as React.CSSProperties}
-            onChange={(e) => {
-              const v = Number(e.target.value);
-              setVol(v);
-              getPlayer().setVolume(v);
-            }}
-            aria-label={lang === "tr" ? "Ses seviyesi" : "Volume"}
-          />
+      {/* kept mounted once created, so the music goes on while the panel is closed */}
+      <div className={`music-pop ${open && on ? "shown" : ""} ${mode ?? ""}`} aria-hidden={!(open && on)}>
+        <div className="music-head">
+          <span className="eyebrow">{tr ? "Çalma listesi" : "Playlist"}</span>
+          <b>{name}</b>
         </div>
-      )}
+        <div className="spotify-host" ref={host} />
+        {mode === "spotify" && !playing && <p className="music-hint">{tr ? "Çalmadıysa oynatıcıdaki ▶ düğmesine dokun." : "If it hasn't started, tap ▶ in the player."}</p>}
+        {mode === "spotify" && (
+          <p className="music-note">
+            {tr ? "Spotify'a giriş yaptıysan şarkıların tamamı çalar, yoksa önizlemeler." : "Signed in to Spotify you hear full tracks, otherwise previews."}{" "}
+            <a href={playlistUrl(w)} target="_blank" rel="noreferrer">{tr ? "Spotify'da aç" : "Open in Spotify"} ↗</a>
+          </p>
+        )}
+        {mode === "synth" && (
+          <label className="music-vol">
+            <span>{tr ? "Ses" : "Volume"}</span>
+            <input
+              type="range"
+              className="themed"
+              min={0}
+              max={1}
+              step={0.05}
+              value={vol}
+              style={{ "--pct": `${vol * 100}%` } as React.CSSProperties}
+              onChange={(e) => {
+                const v = Number(e.target.value);
+                setVol(v);
+                getPlayer().setVolume(v);
+              }}
+              aria-label={tr ? "Ses seviyesi" : "Volume"}
+            />
+          </label>
+        )}
+      </div>
     </div>
   );
 }
