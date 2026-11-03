@@ -17,6 +17,7 @@ import { LangToggle, WorldGate } from "./WorldGate";
 const LINKS: [string, UIKey][] = [
   ["/worlds", "nav_worlds"],
   ["/cocktails", "nav_cocktails"],
+  ["/book", "nav_book"],
   ["/cellar", "nav_cellar"],
   ["/atelier", "nav_atelier"],
   ["/lineage", "nav_lineage"],

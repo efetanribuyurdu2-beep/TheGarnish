@@ -142,6 +142,12 @@ const dict = {
   zeroShelf: { tr: "Alkolsüz 0%", en: "Zero-proof 0%" },
   // passport
   nav_passport: { tr: "Pasaport", en: "Passport" },
+  nav_book: { tr: "Kokteyl Kitabı", en: "The Cocktail Book" },
+  bookSub: { tr: "Herkesin bildiği {n} kokteyl: hikâyeleri, tarifleri, kadehleri.", en: "{n} cocktails everyone knows: their stories, recipes and glasses." },
+  openBook: { tr: "Kitabı aç", en: "Open the book" },
+  contents: { tr: "İçindekiler", en: "Contents" },
+  photoBy: { tr: "Fotoğraf:", en: "Photo:" },
+  fullRecipe: { tr: "Tarifin tamamı ve denge", en: "Full recipe and balance" },
   passportTitle: { tr: "Kokteyl Pasaportu", en: "Cocktail Passport" },
   passportSub: { tr: "Dünyaları gezdikçe pasaportun damgalarla dolar. Her dünyada üç damga var; hepsini topla, altın mührü aç.", en: "Your passport fills with stamps as you travel the worlds. Three stamps in every world; collect them all to unlock the golden seal." },
   stamp_arrival: { tr: "Varış", en: "Arrival" },
