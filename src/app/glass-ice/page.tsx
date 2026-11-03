@@ -3,7 +3,7 @@
 import { GlassArt } from "@/components/GlassArt";
 import { usePrefs } from "@/lib/prefs";
 import type { Glass, L } from "@/lib/types";
-import { GLASS_LABEL } from "@/lib/ui";
+import { GLASS_LABEL, nameLang } from "@/lib/ui";
 import { Ornament } from "@/components/Ornament";
 import { Echo } from "@/components/Echo";
 
@@ -60,7 +60,7 @@ export default function GlassIcePage() {
         <div className="grid wide">
           {ICE.map((i) => (
             <div key={i.name.en} className="card">
-              <h3>{pick(i.name)}</h3>
+              <h3 lang={nameLang(i.name)}>{pick(i.name)}</h3>
               <p className="muted">{pick(i.text)}</p>
             </div>
           ))}
@@ -71,7 +71,7 @@ export default function GlassIcePage() {
         <div className="grid wide">
           {GARNISH.map((i) => (
             <div key={i.name.en} className="card">
-              <h3>{pick(i.name)}</h3>
+              <h3 lang={nameLang(i.name)}>{pick(i.name)}</h3>
               <p className="muted">{pick(i.text)}</p>
             </div>
           ))}

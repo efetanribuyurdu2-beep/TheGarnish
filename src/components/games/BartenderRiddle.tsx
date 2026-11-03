@@ -7,6 +7,7 @@ import { analyse } from "@/lib/balance";
 import { usePrefs } from "@/lib/prefs";
 import type { L } from "@/lib/types";
 import { BEST, GameFrame, shuffle, useBest } from "./common";
+import { nameLang } from "@/lib/ui";
 
 const RIDDLES: { id: string; q: L }[] = [
   { id: "martini", q: { tr: "Ne kadar kuru olacağım her barda tartışılır. Tacım tek bir zeytindir.", en: "Every bar argues over how dry I should be. My crown is a single olive." } },
@@ -86,7 +87,7 @@ export function BartenderRiddle() {
               return (
                 <button key={id} className={`pick riddle-opt ${state}`} onClick={() => answer(id)}>
                   <GlassArt glass={c.glass} color={a.color} opaque={a.opaque} ice={c.ice} method={c.method} garnish={c.garnish} size={54} animate={false} />
-                  <span>{pick(c.name)}</span>
+                  <span lang={nameLang(c.name)}>{pick(c.name)}</span>
                 </button>
               );
             })}

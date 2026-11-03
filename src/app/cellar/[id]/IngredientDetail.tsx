@@ -8,6 +8,7 @@ import { CATEGORY_LABEL, ingredientById } from "@/data/ingredients";
 import { visibleCocktails } from "@/lib/catalog";
 import { usePrefs } from "@/lib/prefs";
 import { Echo } from "@/components/Echo";
+import { nameLang } from "@/lib/ui";
 
 export function IngredientDetail({ id }: { id: string }) {
   const { pick, t, world, creations } = usePrefs();
@@ -24,7 +25,7 @@ export function IngredientDetail({ id }: { id: string }) {
         </aside>
         <div>
           <span className="eyebrow">{pick(CATEGORY_LABEL[ing.category])}</span>
-          <h1>{pick(ing.name)}</h1>
+          <h1 lang={nameLang(ing.name)}>{pick(ing.name)}</h1>
           <Echo text={pick(ing.name)} />
           <p className="story">{pick(ing.story)}</p>
           <div className="tasting">
@@ -45,7 +46,7 @@ export function IngredientDetail({ id }: { id: string }) {
                 return o ? (
                   <span key={s}>
                     {i > 0 && " · "}
-                    <Link href={`/cellar/${o.id}`}>{pick(o.name)}</Link>
+                    <Link href={`/cellar/${o.id}`} lang={nameLang(o.name)}>{pick(o.name)}</Link>
                   </span>
                 ) : null;
               })}
