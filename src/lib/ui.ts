@@ -42,6 +42,8 @@ const dict = {
   collectionSub: { tr: "Kaydettiğin ve yarattığın kokteyller, kişisel menün olarak.", en: "The cocktails you saved and created, as your personal menu." },
   all: { tr: "Tümü", en: "All" },
   classics: { tr: "Klasikler", en: "Classics" },
+  allRecipes: { tr: "Tüm tarifler, arama ve filtreler", en: "All recipes, search and filters" },
+  backToMenu: { tr: "Menüye dön", en: "Back to the menu" },
   search: { tr: "Ara…", en: "Search…" },
   explore: { tr: "Keşfet", en: "Explore" },
   // cocktail detail
