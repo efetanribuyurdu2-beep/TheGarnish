@@ -29,6 +29,8 @@ npm install · npm run dev · npm run build · npm run lint (tsc) · npm run smo
 | `src/lib/scripts.ts` | Script echoes (runes, Old Turkic, Greek) used by `<Echo>` |
 | `src/lib/themeKit.ts` | Per-world SVG motifs → CSS vars (`--band --bandV --track --thumb --c-tl.. --emblem --counter --wall`) |
 | `src/lib/music.ts` | Generative Web Audio music per world (no files). Toggled by `MusicButton` (world instrument icon) |
+| `src/lib/audio.ts` | `unlockAudio(ctx)`: makes Web Audio sound on iPhone (silent switch → `navigator.audioSession.type = "playback"`, silent `<audio>` on older iOS) and resumes "suspended"/"interrupted" contexts on any tap. Every AudioContext (music, sfx) goes through it |
+| `src/lib/menuPdf.tsx`, `pdf.ts`, `/api/menu` | "PDF menü indir" on `/collection`: the saved drinks as a world-styled A4 PDF made on the server (next/og pages → tiny PNG→PDF writer). `window.print()` stays as "Yazdır" but does nothing in phone in-app browsers |
 | `src/lib/ui.ts` | UI translations, method steps, glass/ice labels, `WORLD_VESSELS`, `SPECIAL_VESSELS` |
 | `src/lib/prefs.tsx` | Prefs context: `t()`, `pick()`, `openGate()`, `zero` (alcohol-free mode) |
 | `src/lib/zero.ts` | Alcohol-free: `MAP` of every alcoholic ingredient → zero-proof stand-in(s), `toZero()`, `pour(c, zero)`, `isZeroCocktail()` |

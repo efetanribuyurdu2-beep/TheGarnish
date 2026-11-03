@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
+import { shareCode } from "@/lib/share";
 import { formatAmount } from "@/components/CocktailCard";
 import { CocktailCard } from "@/components/CocktailCard";
 import { LogoFull } from "@/components/Logo";
@@ -13,9 +15,35 @@ import { Echo } from "@/components/Echo";
 import { nameLang } from "@/lib/ui";
 
 export default function CollectionPage() {
-  const { favourites, creations, pick, t, lang, set } = usePrefs();
+  const { favourites, creations, pick, t, lang, set, world, palette, zero, traveller } = usePrefs();
+  const [pdf, setPdf] = useState<"idle" | "busy" | "error">("idle");
   const saved = favourites.map((id) => findCocktail(id, creations)).filter(Boolean) as Cocktail[];
   const menu = [...creations, ...saved.filter((s) => !s.author)];
+
+  // a real PDF, made on the server: window.print() does nothing in phone in-app browsers
+  const downloadPdf = async () => {
+    setPdf("busy");
+    try {
+      const o = { world: world ?? "maison", palette, lang, zero };
+      const res = await fetch("/api/menu", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ codes: menu.map((c) => shareCode(c, o)), by: traveller.trim() || undefined }),
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      const file = new File([await res.blob()], `garnish-menu-${o.world}.pdf`, { type: "application/pdf" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(file);
+      a.download = file.name;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 60000);
+      setPdf("idle");
+    } catch {
+      setPdf("error");
+    }
+  };
 
   return (
     <>
@@ -33,7 +61,11 @@ export default function CollectionPage() {
       ) : (
         <>
           <div className="row-gap no-print">
-            <button className="btn" onClick={() => window.print()}>{t("printMenu")}</button>
+            <button className="btn" onClick={downloadPdf} disabled={pdf === "busy"} aria-busy={pdf === "busy"}>
+              {pdf === "busy" ? t("pdfBusy") : t("downloadPdf")}
+            </button>
+            <button className="btn ghost" onClick={() => window.print()}>{t("printMenu")}</button>
+            {pdf === "error" && <p className="hint" role="alert">{t("pdfError")}</p>}
           </div>
 
           {creations.length > 0 && (

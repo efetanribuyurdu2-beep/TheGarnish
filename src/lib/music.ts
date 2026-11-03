@@ -3,6 +3,7 @@
  * No audio files and no licensing: every world has its own little band.
  */
 import type { WorldId } from "./types";
+import { unlockAudio } from "./audio";
 
 type Ctx = AudioContext;
 const mtof = (m: number) => 440 * 2 ** ((m - 69) / 12);
@@ -442,7 +443,9 @@ export class MusicPlayer {
 
   async play(world: WorldId) {
     const ctx = this.ensure();
-    if (ctx.state === "suspended") await ctx.resume();
+    unlockAudio(ctx);
+    // iOS can leave a context "interrupted"; never wait on it for more than a moment
+    if (ctx.state !== "running") await Promise.race([ctx.resume().catch(() => {}), new Promise((r) => setTimeout(r, 600))]);
     this.stopBand();
     this.world = world;
     const band = BANDS[world];

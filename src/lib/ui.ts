@@ -121,7 +121,10 @@ const dict = {
   // collection
   favourites: { tr: "Kaydedilenler", en: "Saved" },
   creations: { tr: "İmzalarım", en: "My Signatures" },
-  printMenu: { tr: "Menü olarak yazdır / PDF", en: "Print as menu / PDF" },
+  printMenu: { tr: "Yazdır", en: "Print" },
+  downloadPdf: { tr: "PDF menü indir", en: "Download PDF menu" },
+  pdfBusy: { tr: "Menü hazırlanıyor…", en: "Preparing the menu…" },
+  pdfError: { tr: "Menü hazırlanamadı. Bağlantını kontrol edip tekrar dene.", en: "The menu could not be prepared. Check your connection and try again." },
   emptyCollection: { tr: "Koleksiyonun henüz boş. Bir kokteyldeki ♡ işaretine dokun.", en: "Your collection is empty. Tap ♡ on any cocktail." },
   otherFamily: { tr: "başka aileye geçen torun", en: "descendant in another family" },
   yourBranches: { tr: "Senin dalların", en: "Your branches" },
