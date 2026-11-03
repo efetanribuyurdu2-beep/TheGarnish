@@ -81,7 +81,7 @@ const METHOD_NOTE: Record<string, L> = {
 
 function stepper(value: number, set: (n: number) => void, min: number, max: number, label: string) {
   return (
-    <div className="pp-stepper" role="group" aria-label={label}>
+    <div className="pt-stepper" role="group" aria-label={label}>
       <button type="button" onClick={() => set(Math.max(min, value - 1))} disabled={value <= min} aria-label="−">−</button>
       <input
         className="input"
@@ -166,10 +166,10 @@ export default function PartyPage() {
         <Ornament />
         <h1>{p(T.title)}</h1>
         <Echo text={p(T.title)} />
-        <p className="pp-host">{pick(HOST[w.id])}</p>
+        <p className="pt-host">{pick(HOST[w.id])}</p>
       </header>
 
-      <section className="pp-guests family">
+      <section className="pt-guests family">
         <div>
           <span className="eyebrow">{p(T.guests)}</span>
           {stepper(plan.guests, (n) => update({ guests: n }), 2, 200, p(T.guests))}
@@ -178,32 +178,32 @@ export default function PartyPage() {
           <span className="eyebrow">{p(T.hours)}</span>
           {stepper(plan.hours, (n) => update({ hours: n }), 1, 10, p(T.hours))}
         </div>
-        <div className="pp-total">
+        <div className="pt-total">
           <b>{p(T.total, { n: total })}</b>
           <small className="muted">{p(T.rule)}</small>
         </div>
       </section>
-      {zero && <p className="hint pp-zero">{p(T.zeroOn)}</p>}
+      {zero && <p className="hint pt-zero">{p(T.zeroOn)}</p>}
 
       <section className="section">
         <h2>{p(T.menu)}</h2>
         <p className="muted">{p(T.menuSub)}</p>
         {chosen.length === 0 ? (
-          <p className="muted pp-empty">{p(T.empty)}</p>
+          <p className="muted pt-empty">{p(T.empty)}</p>
         ) : (
-          <ul className="pp-menu">
+          <ul className="pt-menu">
             {chosen.map((c, i) => {
               const d = plan.drinks.find((x) => x.id === c.id)!;
               const a = analyse(batches[i].c.parts, c.method);
               return (
                 <li key={c.id} className="family">
                   <GlassArt glass={c.glass} color={a.color} opaque={a.opaque} ice={c.ice} method={c.method} garnish={c.garnish} size={54} animate={false} />
-                  <div className="pp-menu-name">
+                  <div className="pt-menu-name">
                     <Link href={`/cocktails/${c.id}`} lang={nameLang(c.name)}>{pick(c.name)}</Link>
                     <small className="muted">{pick(GLASS_LABEL[c.glass])}{d.n === undefined ? ` · ${p(T.auto)}` : ""}</small>
                   </div>
                   {stepper(servings[i], (n) => update({ drinks: plan.drinks.map((x) => (x.id === c.id ? { ...x, n } : x)) }), 1, 400, `${pick(c.name)} · ${p(T.servings)}`)}
-                  <button className="link pp-remove" onClick={() => update({ drinks: plan.drinks.filter((x) => x.id !== c.id) })} aria-label={`${p(T.remove)} ${pick(c.name)}`}>×</button>
+                  <button className="link pt-remove" onClick={() => update({ drinks: plan.drinks.filter((x) => x.id !== c.id) })} aria-label={`${p(T.remove)} ${pick(c.name)}`}>×</button>
                 </li>
               );
             })}
@@ -211,12 +211,12 @@ export default function PartyPage() {
         )}
 
         {!full && (
-          <details className="pp-picker" open={chosen.length === 0}>
+          <details className="pt-picker" open={chosen.length === 0}>
             <summary className="btn ghost">+ {p(T.add)}</summary>
             <input className="input" value={q} onChange={(e) => setQ(e.target.value)} placeholder={p(T.search)} aria-label={p(T.search)} />
             {groups.map(([title, list]) =>
               list.length ? (
-                <div key={title.en} className="pp-group">
+                <div key={title.en} className="pt-group">
                   <span className="eyebrow">{pick(title)}</span>
                   <div className="chips left">
                     {list.map((c) => (
@@ -237,42 +237,42 @@ export default function PartyPage() {
           <section className="section">
             <h2>{p(T.batches)}</h2>
             <p className="muted">{p(T.batchSub)}</p>
-            <div className="pp-batches">
+            <div className="pt-batches">
               {batches.map((b) => (
                 <BatchCard key={b.c.id} b={b} lang={lang} p={p} />
               ))}
             </div>
           </section>
 
-          <section className="section pp-shop-wrap">
+          <section className="section pt-shop-wrap">
             <h2>{p(T.shop)}</h2>
             <p className="muted">{p(T.shopSub)}</p>
-            <div className="family pp-shop">
+            <div className="family pt-shop">
               <ul>
                 {toBuy.map((s) => {
                   const have = owned.has(s.ing.id);
                   return (
                     <li key={s.ing.id} className={have ? "have" : ""}>
-                      <span className="pp-box" aria-hidden>{have ? "✓" : ""}</span>
+                      <span className="pt-box" aria-hidden>{have ? "✓" : ""}</span>
                       <Link href={`/cellar/${s.ing.id}`} lang={nameLang(s.ing.name)}>{pick(s.ing.name)}</Link>
-                      <span className="pp-dots" aria-hidden />
-                      <span className="pp-amt">{pick(s.amount)}</span>
-                      {have && <small className="muted pp-have">{p(T.have)}</small>}
+                      <span className="pt-dots" aria-hidden />
+                      <span className="pt-amt">{pick(s.amount)}</span>
+                      {have && <small className="muted pt-have">{p(T.have)}</small>}
                     </li>
                   );
                 })}
                 <li>
-                  <span className="pp-box" aria-hidden />
+                  <span className="pt-box" aria-hidden />
                   <b>{p(T.ice)}</b>
-                  <span className="pp-dots" aria-hidden />
-                  <span className="pp-amt">{p(T.iceLine, ice)}{ice.spheres ? ` · ${p(T.spheres, { n: ice.spheres })}` : ""}</span>
+                  <span className="pt-dots" aria-hidden />
+                  <span className="pt-amt">{p(T.iceLine, ice)}{ice.spheres ? ` · ${p(T.spheres, { n: ice.spheres })}` : ""}</span>
                 </li>
                 {garnishes.map((g) => (
                   <li key={g.name.en}>
-                    <span className="pp-box" aria-hidden />
+                    <span className="pt-box" aria-hidden />
                     <span>{p(T.garnish)}: {pick(g.name)}</span>
-                    <span className="pp-dots" aria-hidden />
-                    <span className="pp-amt">× {g.count}</span>
+                    <span className="pt-dots" aria-hidden />
+                    <span className="pt-amt">× {g.count}</span>
                   </li>
                 ))}
               </ul>
@@ -285,7 +285,7 @@ export default function PartyPage() {
 
           <section className="section">
             <h2>{p(T.flow)}</h2>
-            <ol className="pp-flow">
+            <ol className="pt-flow">
               {flow.map(([when, what]) => (
                 <li key={when.en}>
                   <span className="eyebrow">{pick(when)}</span>
@@ -310,32 +310,32 @@ function BatchCard({ b, lang, p }: { b: Batch; lang: Lang; p: (x: L, v?: Record<
   const amount = (ml: number, cat: string) => formatAmount(Math.round(ml * 2) / 2, lang, false, cat);
   const rows = (role: Role) => b.lines.filter((x) => x.role === role);
   return (
-    <article className="family pp-batch">
+    <article className="family pt-batch">
       <header>
         <h3 lang={nameLang(b.c.name)}>{name}</h3>
-        <span className="pp-count">× {b.servings}</span>
+        <span className="pt-count">× {b.servings}</span>
       </header>
-      <p className="muted pp-note">{p(METHOD_NOTE[b.method])}</p>
+      <p className="muted pt-note">{p(METHOD_NOTE[b.method])}</p>
       {ROLE_ORDER.map((role) => {
         const list = rows(role);
         if (!list.length && !(role === "batch" && b.water)) return null;
         const head = role === "serve" ? p(T.perServe) : role === "top" ? p(T.atServe) : role === "batch" ? p(T.inBottle) : null;
         return (
-          <div key={role} className={`pp-rows ${role}`}>
+          <div key={role} className={`pt-rows ${role}`}>
             {head && <span className="eyebrow">{head}</span>}
             <ul>
               {list.map((x) => (
                 <li key={x.ing.id}>
                   <span lang={nameLang(x.ing.name)}>{x.ing.name[lang]}{role === "fresh" ? <small className="muted"> · {p(T.sameDay)}</small> : null}</span>
-                  <span className="pp-dots" aria-hidden />
-                  <span className="pp-amt">{role === "serve" || role === "top" ? `${amount(x.perGlass, x.ing.category)} / ${lang === "tr" ? "kadeh" : "glass"}` : amount(x.total, x.ing.category)}</span>
+                  <span className="pt-dots" aria-hidden />
+                  <span className="pt-amt">{role === "serve" || role === "top" ? `${amount(x.perGlass, x.ing.category)} / ${lang === "tr" ? "kadeh" : "glass"}` : amount(x.total, x.ing.category)}</span>
                 </li>
               ))}
               {role === "batch" && b.water > 0 && (
                 <li className="water">
                   <span>{p(T.water)}</span>
-                  <span className="pp-dots" aria-hidden />
-                  <span className="pp-amt">{Math.round(b.water)} ml</span>
+                  <span className="pt-dots" aria-hidden />
+                  <span className="pt-amt">{Math.round(b.water)} ml</span>
                 </li>
               )}
             </ul>
