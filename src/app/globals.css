@@ -4603,3 +4603,101 @@ select.input:focus {
 .hero-menu-btn { padding: 14px 32px; font-size: 0.85rem; animation: menuBeckon 2.8s 1.4s ease-in-out 2; }
 @keyframes menuBeckon { 50% { transform: translateY(-2px); box-shadow: 0 10px 30px -8px var(--accent); } }
 @media (prefers-reduced-motion: reduce) { .hero-menu-btn { animation: none; } }
+
+/* ─────────────────────────────── RECIPE SHARING */
+.detail-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; position: relative; z-index: 2; }
+.share-btn { display: inline-flex; align-items: center; gap: 8px; }
+.share-icon { flex: none; }
+body.sheet-open { overflow: hidden; }
+
+.share-sheet {
+  position: fixed; inset: 0; z-index: 95;
+  display: grid; place-items: center; padding: 20px;
+  background: rgba(0, 0, 0, 0.62);
+  animation: share-fade 0.35s ease both;
+}
+.share-panel {
+  position: relative;
+  width: min(680px, 100%);
+  max-height: calc(100dvh - 40px);
+  overflow-y: auto;
+  padding: 34px 36px 28px;
+  background: linear-gradient(180deg, var(--surface2), var(--surface));
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 40px 120px -30px #000;
+  animation: share-rise 0.5s cubic-bezier(0.2, 0.75, 0.15, 1) both;
+}
+/* the world's band across the top and its corners, as on every panel */
+.share-panel::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 12px;
+  background: var(--band) repeat-x left center / auto 12px;
+}
+.share-panel::after {
+  content: ""; position: absolute; inset: 18px 6px 6px; pointer-events: none;
+  background: var(--c-tl) top left / 30px 30px no-repeat, var(--c-tr) top right / 30px 30px no-repeat,
+    var(--c-br) bottom right / 30px 30px no-repeat, var(--c-bl) bottom left / 30px 30px no-repeat;
+  opacity: 0.85;
+}
+.share-panel > * { position: relative; z-index: 1; }
+.share-panel h2 { margin: 4px 44px 6px 0; font-size: clamp(1.6rem, 4vw, 2.2rem); }
+.share-sub { margin: 0 0 18px; font-family: var(--font-prose, var(--font-display)); font-style: italic; }
+.share-close {
+  position: absolute; top: 30px; right: 38px; z-index: 2;
+  width: 36px; height: 36px; border-radius: var(--radius);
+  background: none; border: 1px solid var(--line); color: var(--ink); font-size: 1.3rem; line-height: 1; cursor: pointer;
+}
+.share-preview {
+  position: relative; display: grid; place-items: center;
+  margin: 0 auto 14px; overflow: hidden;
+  background: var(--bg); border: 1px solid var(--line);
+  box-shadow: 0 18px 40px -18px #000;
+}
+.share-preview.wide { aspect-ratio: 1200 / 630; width: 100%; }
+.share-preview.tall { aspect-ratio: 1080 / 1350; width: min(340px, 72%); }
+.share-preview img { width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.5s ease; }
+.share-preview img.on { opacity: 1; }
+.share-loading {
+  position: absolute; inset: 0;
+  background: linear-gradient(100deg, transparent 30%, color-mix(in srgb, var(--accent) 18%, transparent) 50%, transparent 70%) 0 0 / 250% 100%;
+  animation: share-shimmer 1.4s linear infinite;
+}
+.share-format { display: flex; width: fit-content; margin: 0 auto 18px; }
+.share-link { display: flex; gap: 10px; margin-bottom: 12px; }
+.share-link .input { flex: 1; min-width: 0; font-size: 0.85rem; }
+.share-link .btn { flex: none; }
+.share-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.share-actions .btn { flex: 1 1 auto; justify-content: center; text-align: center; }
+.share-note { margin: 14px 0 0; font-size: 0.8rem; }
+@keyframes share-fade { from { opacity: 0; } }
+@keyframes share-rise { from { opacity: 0; transform: translateY(24px) scale(0.98); } }
+@keyframes share-shimmer { to { background-position: -250% 0; } }
+@media (max-width: 600px) {
+  .share-sheet { place-items: end stretch; padding: 0; }
+  .share-panel { width: 100%; max-height: 92dvh; padding: 30px 20px 24px; border-radius: 0; border-width: 1px 0 0; }
+  .share-close { top: 28px; right: 30px; }
+  .share-link { flex-direction: column; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .share-sheet, .share-panel { animation: none; }
+  .share-loading { animation: none; }
+}
+
+/* the banner on a shared link: who sent it, where it was poured */
+.shared-banner {
+  position: relative;
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  margin: 0 0 28px; padding: 16px 20px 16px 34px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  overflow: hidden;
+}
+.shared-banner::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 12px;
+  background: var(--bandV) repeat-y center top / 12px auto;
+}
+.shared-seal { flex: none; width: 40px; height: 40px; background: var(--emblem) center / contain no-repeat; }
+.shared-banner > div:not(.shared-actions) { display: flex; flex-direction: column; gap: 2px; flex: 1 1 220px; min-width: 0; }
+.shared-banner b { font-family: var(--font-display); font-weight: var(--display-weight, 500); letter-spacing: var(--display-spacing); font-size: 1.1rem; }
+.shared-banner .muted { font-family: var(--font-prose, var(--font-display)); font-style: italic; font-size: 0.92rem; }
+.shared-actions { display: flex; gap: 10px; flex-wrap: wrap; }

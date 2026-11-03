@@ -175,6 +175,26 @@ const dict = {
   goWorld: { tr: "Bu dünyaya git", en: "Travel here" },
   prevPage: { tr: "Önceki sayfa", en: "Previous page" },
   nextPage: { tr: "Sonraki sayfa", en: "Next page" },
+  // recipe sharing
+  share: { tr: "Paylaş", en: "Share" },
+  shareTitle: { tr: "Tarifi paylaş", en: "Share the recipe" },
+  shareSub: { tr: "Kart, bu dünyanın kıyafetiyle gider: bağlantıyı gönder ya da kartı indir.", en: "The card travels dressed in this world: send the link or download the card." },
+  shareText: { tr: "{name} · Garnish'te tarifi:", en: "{name} · the recipe on Garnish:" },
+  shareCardAlt: { tr: "{name} tarif kartı", en: "{name} recipe card" },
+  shareLink: { tr: "Paylaşım bağlantısı", en: "Share link" },
+  copyLink: { tr: "Bağlantıyı kopyala", en: "Copy link" },
+  copied: { tr: "Kopyalandı", en: "Copied" },
+  shareVia: { tr: "Gönder…", en: "Send…" },
+  downloadCard: { tr: "Kartı indir", en: "Download card" },
+  cardFormat: { tr: "Kart biçimi", en: "Card format" },
+  cardWide: { tr: "Yatay", en: "Landscape" },
+  cardTall: { tr: "Dikey · hikâye", en: "Portrait · story" },
+  shareCreationNote: { tr: "İmzan yalnızca bu tarayıcıda yaşıyor; bağlantı tarifin kendisini taşır. Pasaportuna adını yazdıysan kartta imzan olarak görünür.", en: "Your signature lives only in this browser, so the link carries the recipe itself. If you wrote your name in the passport, it appears on the card as your signature." },
+  sharedBy: { tr: "{name} bu tarifi seninle paylaştı", en: "{name} shared this recipe with you" },
+  sharedFriend: { tr: "Bir dost bu tarifi seninle paylaştı", en: "A friend shared this recipe with you" },
+  sharedFrom: { tr: "{world} dünyasında dökülmüş.", en: "Poured in the {world} world." },
+  addToMine: { tr: "İmzalarıma ekle", en: "Add to my signatures" },
+  sharedMissing: { tr: "Bu paylaşım bağlantısı okunamadı.", en: "This share link could not be read." },
 } as const;
 
 export type UIKey = keyof typeof dict;
@@ -264,3 +284,13 @@ export const ICE_LABEL: Record<string, { tr: string; en: string }> = {
 /** lang for a name that is the same in both languages (an English or foreign proper name).
  * Turkish uppercase would otherwise turn its i into İ ("MARTİNİ"). */
 export const nameLang = (l: L): "en" | undefined => (l.tr === l.en ? "en" : undefined);
+
+export function formatAmount(ml: number, lang: Lang, top?: boolean, ingCategory?: string) {
+  if (ml === 0) return lang === "tr" ? "bir avuç" : "a handful";
+  if (ingCategory === "bitters" || (ml <= 3 && ingCategory !== "citrus")) {
+    const d = Math.round(ml);
+    return lang === "tr" ? `${d} dash` : `${d} dash${d > 1 ? "es" : ""}`;
+  }
+  const s = `${Number.isInteger(ml) ? ml : ml.toFixed(1)} ml`;
+  return top ? (lang === "tr" ? `${s} (üzerine)` : `top ${s}`) : s;
+}
