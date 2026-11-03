@@ -28,7 +28,7 @@ npm install · npm run dev · npm run build · npm run lint (tsc) · npm run smo
 | `src/lib/catalog.ts` | `visibleCocktails(world, creations)` (classics + world signatures + own creations), `findCocktail`, `childrenOf` |
 | `src/lib/scripts.ts` | Script echoes (runes, Old Turkic, Greek) used by `<Echo>` |
 | `src/lib/themeKit.ts` | Per-world SVG motifs → CSS vars (`--band --bandV --track --thumb --c-tl.. --emblem --counter --wall`) |
-| `src/lib/music.ts` | Generative Web Audio music per world (no files). Toggled by `MusicButton` (world instrument icon) |
+| `src/lib/music.ts` | Generative Web Audio music per world (no files): "Dünyanın kendi müziği" and the fallback when Spotify is unavailable |
 | `src/lib/audio.ts` | `unlockAudio(ctx)`: makes Web Audio sound on iPhone (silent switch → `navigator.audioSession.type = "playback"`, silent `<audio>` on older iOS) and resumes "suspended"/"interrupted" contexts on any tap. Every AudioContext (music, sfx) goes through it |
 | `src/lib/menuPdf.tsx`, `pdf.ts`, `/api/menu` | "PDF menü indir" on `/collection`: the saved drinks as a world-styled A4 PDF made on the server (next/og pages → tiny PNG→PDF writer). `window.print()` stays as "Yazdır" but does nothing in phone in-app browsers |
 | `src/lib/ui.ts` | UI translations, method steps, glass/ice labels, `WORLD_VESSELS`, `SPECIAL_VESSELS` |
@@ -38,7 +38,7 @@ npm install · npm run dev · npm run build · npm run lint (tsc) · npm run smo
 | `src/components/GarnishMenu.tsx` | Every page in one panel, opened from the logo or the menu button (the owner did not want a row of tabs). Three groups (Bar, Keşif, Yolculuk), headed by the world's bar and greeting, world band down the edge; on phones it also holds TR/EN and Maison's palette |
 | `src/components/CocktailCard.tsx` | Cocktail card + `formatAmount()` (ml, dashes, "a handful", "top") |
 | `src/components/Logo.tsx`, `Ornament.tsx`, `FlavorRadar.tsx`, `Echo.tsx` | Logo, dividers, 6-axis taste radar, script echo |
-| `src/components/MusicButton.tsx` | World instrument icon that toggles `music.ts` |
+| `src/components/MusicButton.tsx`, `src/lib/spotify.ts` | World instrument icon. Two sources, chosen in its panel and remembered (`garnish:music-source`): the owner's Spotify playlist per world (`PLAYLISTS`, official iFrame API, no key; full tracks only for listeners signed in to Spotify, previews otherwise; the owner's Premium does not extend to visitors) or "Dünyanın kendi müziği" (`music.ts`, generated, royalty-free, offline). First tap plays, a tap while playing reopens the panel, the next stops; the panel is hidden, never unmounted, so music goes on; the playlist follows the world. Spotify unreachable → generated music. Never download, mix or re-stream Spotify audio |
 | `src/components/PassportStamp.tsx`, `StampToast.tsx` | Passport stamp art (`INK` per world) and the "new stamp" toast |
 | `src/components/GlassArt.tsx`, `glassSvg.tsx` | Realistic glassware + world vessels; world-specific glass craft. The drawing (`GlassSvg`) is hook-free in `glassSvg.tsx` so the server can render it into share cards; `GlassArt` is the client wrapper |
 | `src/lib/share.ts`, `card.tsx`, `svgString.ts` | Recipe sharing: share codes (`shareCode`/`readShare`), the world-styled card image (next/og), React SVG → string |

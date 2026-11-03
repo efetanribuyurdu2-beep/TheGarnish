@@ -5021,3 +5021,38 @@ body.sheet-open { overflow: hidden; }
 .dice-btn .dice-icon { transition: transform 0.6s cubic-bezier(0.3, 1.5, 0.4, 1); }
 .dice-btn.rolling .dice-icon { transform: rotate(540deg) scale(1.15); }
 @media (prefers-reduced-motion: reduce) { .pour-fx { display: none; } }
+
+/* ─────────────────────────────── MUSIC · SPOTIFY PLAYLIST PANEL
+   The panel stays in the DOM once opened (the Spotify iframe keeps playing);
+   it is only hidden, never unmounted. */
+.music-pop {
+  width: min(340px, calc(100vw - 24px));
+  padding: 14px 14px 12px;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--ink);
+  font-size: 0.82rem;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.25s, transform 0.25s, visibility 0s 0.25s;
+}
+.music-pop.shown { visibility: visible; opacity: 1; transform: none; transition: opacity 0.25s, transform 0.25s; }
+.music-pop::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 6px; background: var(--band) repeat-x left center / auto 6px; border-radius: var(--radius) var(--radius) 0 0; }
+.music-head { display: flex; flex-direction: column; gap: 1px; margin: 2px 0 10px; }
+.music-head .eyebrow { margin: 0; }
+.music-head b { font-family: var(--font-display); font-weight: var(--display-weight, 500); letter-spacing: var(--display-spacing); font-size: 1.05rem; }
+.spotify-host { border-radius: 12px; overflow: hidden; min-height: 0; }
+.music-pop.spotify .spotify-host { min-height: 152px; background: rgba(0, 0, 0, 0.25); }
+.spotify-host iframe { display: block; border: 0; border-radius: 12px; }
+.music-hint { margin: 8px 0 0; color: var(--accent); }
+.music-note { margin: 8px 0 0; color: var(--muted); font-size: 0.74rem; line-height: 1.45; }
+.music-note a { color: var(--accent); white-space: nowrap; }
+.music-vol { display: flex; flex-direction: column; gap: 6px; font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+@media (max-width: 600px) {
+  .music-pop { position: fixed; top: 64px; left: 12px; right: 12px; width: auto; }
+}
+.music-source { display: flex; width: 100%; margin: 0 0 10px; }
+.music-source button { flex: 1; padding: 7px 8px; font-size: 0.76rem; }
+.music-pop.src-synth .spotify-host { display: none; }
+.music-vol { margin-top: 10px; }
