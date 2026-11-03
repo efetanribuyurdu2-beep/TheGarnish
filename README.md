@@ -17,7 +17,7 @@ renkleri, yazı tipleri, motifleri, animasyonları ve özel kokteylleri o dünya
 | **Boreal** | Kuzey ışıkları, kar, Selbu yıldızı, Gzhel mavisi, huş kabuğu | Kutup Gecesi |
 | **Riviera** | Fransız mahzenleri, İtalyan/Yunan bahçeleri, majolika, limon | Bağ Bozumu |
 
-Dünya, dil ve renk seçimleri tarayıcıda (localStorage) hatırlanır. Dünya üst menüden her an değiştirilebilir.
+Dünya, dil ve renk seçimleri tarayıcıda (localStorage) hatırlanır. Dünya her an **Dünyalar** sayfasından değiştirilebilir; her dünyaya kendine özgü animasyonlu bir geçişle girilir (kilim perdeler, kadife perde, tipi, yaprak fırtınası, ışık hızı…).
 
 ## Bölümler
 
@@ -49,8 +49,8 @@ dünya motifleri) kod içinde SVG olarak çizilir.
 
 ```
 src/
-  app/            sayfalar (cocktails, cellar, atelier, lineage, concierge, bar, glass-ice, games, passport, collection)
-  components/     Shell, GlassArt, Bottle, BalanceGauge, WorldBackdrop, WorldGate, PassportStamp, games/ …
+  app/            sayfalar (worlds, cocktails, cellar, atelier, lineage, concierge, bar, glass-ice, games, passport, collection)
+  components/     Shell, WorldTransition, GlassArt, Bottle, BalanceGauge, WorldBackdrop, WorldGate, PassportStamp, games/ …
   data/           worlds.ts, ingredients.ts + ingredientsMore.ts, cocktails.ts
   lib/            balance.ts (denge), prefs.tsx (tercihler), ui.ts (çeviriler), themeKit.ts, music.ts, zero.ts
 ```

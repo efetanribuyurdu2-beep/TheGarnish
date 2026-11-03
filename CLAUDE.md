@@ -32,7 +32,7 @@ npm install · npm run dev · npm run build · npm run lint (tsc)
 | `src/lib/ui.ts` | UI translations, method steps, glass/ice labels, `WORLD_VESSELS`, `SPECIAL_VESSELS` |
 | `src/lib/prefs.tsx` | Prefs context: `t()`, `pick()`, `openGate()`, `zero` (alcohol-free mode) |
 | `src/lib/zero.ts` | Alcohol-free: `MAP` of every alcoholic ingredient → zero-proof stand-in(s), `toZero()`, `pour(c, zero)`, `isZeroCocktail()` |
-| `src/components/Shell.tsx` | Header, nav `LINKS` (10), world switch, Maison palette, 0% pill, footer |
+| `src/components/Shell.tsx` | Header, nav `LINKS` (11), globe pill to `/worlds`, Maison palette, 0% pill, footer |
 | `src/components/CocktailCard.tsx` | Cocktail card + `formatAmount()` (ml, dashes, "a handful", "top") |
 | `src/components/Logo.tsx`, `Ornament.tsx`, `FlavorRadar.tsx`, `Echo.tsx` | Logo, dividers, 6-axis taste radar, script echo |
 | `src/components/MusicButton.tsx` | World instrument icon that toggles `music.ts` |
@@ -41,6 +41,7 @@ npm install · npm run dev · npm run build · npm run lint (tsc)
 | `src/components/Bottle.tsx` | 13 bottle silhouettes (by ingredient `shape`) × world label/cap styling |
 | `src/components/BalanceGauge.tsx` | Balance dial, a different design per world |
 | `src/components/WorldBackdrop.tsx` | Animated world backgrounds |
+| `src/components/WorldTransition.tsx` | Themed cover/reveal animation per world, played by `travel()` |
 | `src/components/WorldGate.tsx` | Entry: age check, world choice, Maison palette, Jazz speakeasy password |
 | `src/components/games/*` | One mini game per world; `common.tsx` has `GameFrame`, `useBest` (best score + master stamp), `shuffle` |
 | `src/app/globals.css` | World tokens `[data-world]`, all styling (theme-kit section, shelves, gauges, games at the end) |
@@ -99,7 +100,7 @@ The logo wordmark and nav brand use a fixed `--font-brand` (Cormorant Garamond) 
 
 ## Decisions & gotchas
 - Logo: owner's design, fine-line martini with olive; wordmark **GARNISH** / COCKTAIL WORLDS (`Logo.tsx`).
-- Turkish `text-transform: uppercase` turns i into İ: set `lang="en"` on English names.
+- Turkish `text-transform: uppercase` turns i into İ: set `lang="en"` on English names (world names `.wc-name` already have it, else RİVİERA).
 - SVG arcs over 180° need the large-arc flag (see `BalanceGauge`).
 - Grid children with horizontal scrollers need `min-width: 0`, or the page widens.
 - Nav collapses to the burger menu under 1720px (11 links).
