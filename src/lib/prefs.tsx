@@ -15,12 +15,13 @@ interface Prefs {
   zero: boolean; // alcohol-free mode: every recipe shown with zero-proof alternatives
   stamps: Record<string, string>; // cocktail passport: "world:kind" -> ISO date earned
   traveller: string; // name written in the passport
+  jazzKey: boolean; // the speakeasy password was given once
 }
 
 export type StampKind = "arrival" | "tasting" | "master";
 export const STAMP_KINDS: StampKind[] = ["arrival", "tasting", "master"];
 
-const DEFAULTS: Prefs = { world: null, palette: "noir", lang: "tr", favourites: [], bar: [], creations: [], zero: false, stamps: {}, traveller: "" };
+const DEFAULTS: Prefs = { world: null, palette: "noir", lang: "tr", favourites: [], bar: [], creations: [], zero: false, stamps: {}, traveller: "", jazzKey: false };
 const KEY = "garnish:prefs:v1";
 
 interface Ctx extends Prefs {
@@ -35,7 +36,14 @@ interface Ctx extends Prefs {
   stamp: (world: WorldId, kind: StampKind) => void;
   fresh: { world: WorldId; kind: StampKind } | null; // the stamp just earned (for the toast)
   clearFresh: () => void;
+  /** Travel to a world with its themed transition (the world swaps while the screen is covered). */
+  travel: (to: WorldId, patch?: Partial<Prefs>) => void;
+  transit: { to: WorldId; from: WorldId | null; phase: "in" | "out" } | null;
 }
+
+/** Cover and reveal durations of the world transition (ms). */
+export const TRANSIT_IN = 750;
+export const TRANSIT_OUT = 1050;
 
 const PrefsContext = createContext<Ctx | null>(null);
 
@@ -57,6 +65,7 @@ export function PrefsProvider({ children }: { children: React.ReactNode }) {
   const [ready, setReady] = useState(false);
   const [gate, openGate] = useState(false);
   const [fresh, setFresh] = useState<Ctx["fresh"]>(null);
+  const [transit, setTransit] = useState<Ctx["transit"]>(null);
 
   useEffect(() => {
     setPrefs(load());
@@ -94,6 +103,25 @@ export function PrefsProvider({ children }: { children: React.ReactNode }) {
     if (ready && prefs.world) stamp(prefs.world, "arrival");
   }, [ready, prefs.world, stamp]);
 
+  const travel = useCallback((to: WorldId, patch: Partial<Prefs> = {}) => {
+    const arrive = () => {
+      setPrefs((p) => ({ ...p, ...patch, world: to }));
+      openGate(false);
+      window.scrollTo({ top: 0 });
+    };
+    const still = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (still) return arrive();
+    setPrefs((p) => {
+      setTransit({ to, from: p.world, phase: "in" });
+      return p;
+    });
+    setTimeout(() => {
+      arrive();
+      setTransit((t) => (t ? { ...t, phase: "out" } : t));
+    }, TRANSIT_IN);
+    setTimeout(() => setTransit(null), TRANSIT_IN + TRANSIT_OUT);
+  }, []);
+
   const toggleFav = (id: string) => {
     const adding = !prefs.favourites.includes(id);
     toggle("favourites")(id);
@@ -115,9 +143,11 @@ export function PrefsProvider({ children }: { children: React.ReactNode }) {
       stamp,
       fresh,
       clearFresh: () => setFresh(null),
+      travel,
+      transit,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [prefs, ready, gate, set, fresh, stamp],
+    [prefs, ready, gate, set, fresh, stamp, travel, transit],
   );
 
   return <PrefsContext.Provider value={value}>{children}</PrefsContext.Provider>;
