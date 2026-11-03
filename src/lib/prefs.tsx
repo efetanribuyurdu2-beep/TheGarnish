@@ -115,9 +115,10 @@ export function PrefsProvider({ children }: { children: React.ReactNode }) {
       openGate(false);
       window.scrollTo({ top: 0 });
     };
+    // the sound plays even when motion is reduced (iPhones with "Reduce Motion" on still hear it)
+    if (sfxOn.current) playTransitionSfx(to);
     const still = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
     if (still) return arrive();
-    if (sfxOn.current) playTransitionSfx(to);
     setPrefs((p) => {
       setTransit({ to, from: p.world, phase: "in" });
       return p;

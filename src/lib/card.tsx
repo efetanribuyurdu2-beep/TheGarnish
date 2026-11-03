@@ -21,11 +21,11 @@ import { pour } from "./zero";
 export type CardFormat = "wide" | "tall";
 export const CARD_SIZE: Record<CardFormat, [number, number]> = { wide: [1200, 630], tall: [1080, 1350] };
 
-interface Font {
+export interface Font {
   family: string;
   weight?: number;
 }
-interface Theme {
+export interface Theme {
   bg: string;
   ink: string;
   muted: string;
@@ -36,8 +36,8 @@ interface Theme {
   wall: number; // opacity of the world's wall pattern
 }
 
-const brand: Font = { family: "Cormorant Garamond", weight: 500 };
-const THEMES: Record<WorldId, Theme> = {
+export const brand: Font = { family: "Cormorant Garamond", weight: 500 };
+export const THEMES: Record<WorldId, Theme> = {
   maison: { bg: "#0b0b0b", ink: "#efe6d2", muted: "#a69d8a", accent: "#c9a961", display: { family: "Bodoni Moda", weight: 500 }, body: { family: "Jost", weight: 400 }, prose: { family: "Bodoni Moda", weight: 400 }, wall: 0.22 },
   anatolia: { bg: "#0a1c36", ink: "#f5ecd9", muted: "#a9b9cf", accent: "#d4a94a", display: { family: "Aref Ruqaa", weight: 700 }, body: { family: "Jost", weight: 400 }, prose: { family: "Aref Ruqaa", weight: 400 }, wall: 0.2 },
   cosmos: { bg: "#05060f", ink: "#e8ecff", muted: "#9aa3d6", accent: "#9b7bff", display: { family: "Syncopate", weight: 700 }, body: { family: "Exo 2", weight: 400 }, prose: { family: "Exo 2", weight: 300 }, wall: 0.5 },
@@ -48,7 +48,7 @@ const THEMES: Record<WorldId, Theme> = {
   boreal: { bg: "#07121f", ink: "#e8f1f6", muted: "#9db3c4", accent: "#7fe3c4", display: { family: "Ruslan Display" }, body: { family: "Jost", weight: 400 }, prose: { family: "Forum" }, wall: 0.25 },
   riviera: { bg: "#17110d", ink: "#f4ead6", muted: "#c2ad8e", accent: "#e3b341", display: { family: "Aboreto" }, body: { family: "Lora", weight: 400 }, prose: { family: "Lora", weight: 400 }, wall: 0.3 },
 };
-const MAISON_PALETTE: Record<PaletteId, Partial<Theme>> = {
+export const MAISON_PALETTE: Record<PaletteId, Partial<Theme>> = {
   noir: {},
   midnight: { bg: "#0a1226", accent: "#d4b56a" },
   bordeaux: { bg: "#26080f", ink: "#f1e3c6", muted: "#c3a98d", accent: "#e3c48e" },
@@ -56,7 +56,7 @@ const MAISON_PALETTE: Record<PaletteId, Partial<Theme>> = {
 
 // ── fonts: Google Fonts, subset to the card's own text (truetype for satori)
 const fontCache = new Map<string, Promise<ArrayBuffer | null>>();
-function loadFont(f: Font, text: string): Promise<ArrayBuffer | null> {
+export function loadFont(f: Font, text: string): Promise<ArrayBuffer | null> {
   const chars = [...new Set(text)].sort().join("");
   const key = `${f.family}:${f.weight ?? 400}:${chars}`;
   if (!fontCache.has(key)) {
@@ -76,12 +76,12 @@ function loadFont(f: Font, text: string): Promise<ArrayBuffer | null> {
   return fontCache.get(key)!;
 }
 
-const upper = (l: L, lang: Lang) => (l.tr === l.en ? l[lang].toUpperCase() : l[lang].toLocaleUpperCase(lang));
+export const upper = (l: L, lang: Lang) => (l.tr === l.en ? l[lang].toUpperCase() : l[lang].toLocaleUpperCase(lang));
 const repeat = (id: string, w: number, h: number, body: string) =>
   `<pattern id="${id}" width="${w}" height="${h}" patternUnits="userSpaceOnUse">${body}</pattern>`;
 
 /** The frame: world wall, band strips, gilt rule and the kit's four corners, in one SVG. */
-function frameSvg(world: WorldId, t: Theme, W: number, H: number) {
+export function frameSvg(world: WorldId, t: Theme, W: number, H: number) {
   const k = KITS[world];
   const inset = 26;
   const corner = (x: number, y: number, rot: number) =>

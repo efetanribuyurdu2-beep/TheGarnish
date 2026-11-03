@@ -4,6 +4,7 @@
  * then the reveal (0.75 → 1.8 s). Independent of the background music; the
  * visitor can switch them off on their own (prefs.sfx).
  */
+import { unlockAudio } from "./audio";
 import type { WorldId } from "./types";
 
 const COVER = 0.75; // seconds, same as TRANSIT_IN
@@ -211,7 +212,7 @@ export function playTransitionSfx(to: WorldId) {
   try {
     const c = ensure();
     if (!c) return;
-    if (c.state === "suspended") void c.resume();
+    unlockAudio(c);
     const g = c.createGain();
     g.gain.value = LEVEL[to];
     g.connect(room!);
@@ -228,7 +229,7 @@ export function playSfxPreview(world: WorldId) {
   try {
     const c = ensure();
     if (!c) return;
-    if (c.state === "suspended") void c.resume();
+    unlockAudio(c);
     const t = c.currentTime + 0.02;
     const base = world === "cosmos" || world === "boreal" ? 88 : world === "jazz" || world === "anatolia" ? 74 : 81;
     bell(mtof(base), t, 0.05, 0.9);

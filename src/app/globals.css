@@ -1481,6 +1481,10 @@ select.input {
   .nav,
   .footer,
   .backdrop,
+  .stamp-toast,
+  .share-sheet,
+  .gm,
+  .world-transition,
   .no-print {
     display: none !important;
   }
@@ -1491,6 +1495,14 @@ select.input {
   }
   .print-menu {
     color: #111;
+  }
+  .print-menu .card h3,
+  .print-menu .muted {
+    color: #111 !important;
+  }
+  .print-menu .card::before,
+  .print-menu .card::after {
+    display: none;
   }
   .print-menu .card {
     border: 0;
