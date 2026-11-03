@@ -412,7 +412,15 @@ h3,
   gap: 12px;
   color: var(--accent);
   flex-shrink: 0;
+  background: none;
+  border: 0;
+  padding: 4px 8px 4px 0;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
 }
+.brand-caret { width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translate(-2px, -2px); opacity: 0.7; transition: transform 0.3s, opacity 0.3s; }
+.brand:hover .brand-caret { opacity: 1; transform: rotate(45deg) translate(0, 0); }
 .brand-text {
   display: flex;
   flex-direction: column;
@@ -505,38 +513,24 @@ h3,
   background: var(--ink);
   margin: 5px 0;
 }
-@media (max-width: 1720px) {
-  .burger {
-    display: block;
-  }
-  .nav {
-    flex-wrap: wrap;
-    padding: 10px 16px;
-  }
-  .nav-tools {
-    margin-left: auto;
-  }
-  .nav-links {
-    display: none;
-    order: 3;
-    flex-basis: 100%;
-    flex-direction: column;
-    padding: 8px 0;
-  }
-  .nav-links.open {
-    display: flex;
-  }
-  .nav-links a {
-    padding: 10px 4px;
-    font-size: 1rem;
-  }
-  .nav-tools .btn.small {
-    display: none;
-  }
-  .nav-links.open::after {
-    content: "";
-  }
+/* the tabs are gone: everything opens from the GARNISH logo (GarnishMenu) */
+.burger { display: block; }
+.nav-tools { margin-left: auto; }
+@media (max-width: 600px) {
+  .nav { padding: 10px 12px; gap: 8px; }
+  .nav-tools { gap: 6px; }
+  /* on a phone the pills keep only their signs; Maison's palette moves into the menu */
+  .zero-toggle span,
+  .world-btn span,
+  .nav-tools .palette-mini,
+  .nav-tools .lang-toggle,
+  .brand-caret { display: none; }
+  .brand { gap: 8px; }
+  .brand-text b { letter-spacing: 0.24em; font-size: 0.95rem; }
 }
+.gm-palette { display: none; gap: 10px; align-items: center; margin: -8px 0 20px; font-size: 0.75rem; color: var(--muted); }
+.gm-lang { display: none; margin: -8px 0 20px; }
+@media (max-width: 600px) { .gm-palette, .gm-lang { display: flex; } }
 
 /* ─────────────────────────────── Layout */
 .main {
@@ -4367,3 +4361,245 @@ select.input:focus {
 @media (max-width: 520px) {
   .gate-tools .sfx-toggle span { display: none; }
 }
+
+/* ═════════════════════════════════════════════ COCKTAIL BOOK (/book)
+   A cover, a contents page, then one two-page spread per drink. The photo sits
+   faded and grey until its spread is in view (.lit) or hovered, then comes up
+   to full colour. Each world binds the book in its own way (skins below). */
+.cbook {
+  --cb-paper: #f3ead8;
+  --cb-ink: #2b2218;
+  --cb-soft: #6b5c48;
+  --cb-rule: #9c7b38;
+  --cb-cover: linear-gradient(160deg, #2a2118, #120d08);
+  --cb-cover-ink: var(--accent);
+  --cb-edge: #d8ccb2;
+  padding: 20px 0 60px;
+}
+.cb-cover {
+  position: relative;
+  max-width: 760px;
+  min-height: 540px;
+  margin: 10px auto 48px;
+  padding: 70px 48px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 14px;
+  text-align: center;
+  background: var(--cb-cover);
+  color: var(--cb-cover-ink);
+  border-radius: 6px 14px 14px 6px;
+  box-shadow: -10px 0 0 -4px rgba(0, 0, 0, 0.35), inset 18px 0 30px -18px rgba(0, 0, 0, 0.8), 0 50px 90px -40px #000;
+  animation: wmIn 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.cb-emblem { width: 70px; height: 70px; background: var(--emblem) center / contain no-repeat; }
+.cb-kicker { font-size: 0.72rem; letter-spacing: 0.36em; text-transform: uppercase; margin: 0; opacity: 0.85; }
+.cb-title { font-size: clamp(2.2rem, 6vw, 3.8rem); margin: 0; }
+.cb-sub { font-family: var(--font-prose, var(--font-display)); font-style: italic; max-width: 440px; margin: 0 0 12px; opacity: 0.85; }
+.cb-clasp { position: absolute; display: none; }
+
+.cb-sheet,
+.cb-spread {
+  max-width: 1080px;
+  margin: 0 auto 40px;
+  background: var(--cb-paper);
+  color: var(--cb-ink);
+  border-radius: 4px;
+  box-shadow: 0 1px 0 var(--cb-edge), 0 3px 0 -1px var(--cb-edge), 0 5px 0 -2px var(--cb-edge), 0 40px 70px -40px #000;
+}
+.cb-contents { max-width: 760px; padding: 48px clamp(22px, 5vw, 64px); }
+.cb-contents-title { text-align: center; color: var(--cb-rule); letter-spacing: 0.2em; text-transform: uppercase; font-size: 1.1rem; margin-bottom: 24px; }
+.cb-contents ol { list-style: none; margin: 0; padding: 0; columns: 2; column-gap: 40px; }
+.cb-contents li { break-inside: avoid; }
+.cb-contents a { display: flex; align-items: baseline; gap: 6px; padding: 4px 0; font-size: 0.95rem; }
+.cb-contents a:hover span { color: var(--cb-rule); }
+.cb-contents i { flex: 1; border-bottom: 1px dotted currentColor; opacity: 0.35; transform: translateY(-3px); }
+.cb-contents b { font-weight: 400; color: var(--cb-rule); font-size: 0.85rem; }
+
+.cb-spread { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: 560px; overflow: hidden; position: relative; scroll-margin-top: 90px; }
+/* the gutter: a soft shadow where the pages meet */
+.cb-spread::after { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 60px; transform: translateX(-50%); background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.16) 45%, rgba(0, 0, 0, 0.22) 50%, rgba(0, 0, 0, 0.16) 55%, transparent); pointer-events: none; }
+.cb-left { position: relative; min-height: 100%; }
+.cb-photo { position: absolute; inset: 0; margin: 0; overflow: hidden; }
+.cb-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0.3;
+  filter: grayscale(0.85) sepia(0.15);
+  transform: scale(1.06);
+  transition: opacity 1.2s ease, filter 1.4s ease, transform 2.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.cb-spread.lit .cb-photo img,
+.cb-spread:hover .cb-photo img { opacity: 1; filter: none; transform: scale(1); }
+.cb-credit { position: absolute; left: 12px; bottom: 10px; font-size: 0.66rem; color: #fff; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8); opacity: 0; transition: opacity 0.8s 0.4s; }
+.cb-credit a { text-decoration: underline; text-underline-offset: 2px; }
+.cb-spread.lit .cb-credit,
+.cb-spread:hover .cb-credit { opacity: 0.9; }
+/* a page still waiting for its photograph: the glass drawn large on a lit plate */
+.cb-drawn { display: grid; place-items: center; background: radial-gradient(60% 50% at 50% 55%, color-mix(in srgb, var(--drink) 30%, transparent), transparent 70%), radial-gradient(120% 90% at 50% 100%, rgba(0, 0, 0, 0.25), transparent 60%); }
+.cb-drawn-glass { opacity: 0.35; filter: grayscale(0.8); transform: scale(0.94); transition: opacity 1.2s, filter 1.4s, transform 1.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.cb-spread.lit .cb-drawn-glass,
+.cb-spread:hover .cb-drawn-glass { opacity: 1; filter: none; transform: scale(1); }
+
+.cb-right { position: relative; padding: clamp(28px, 4vw, 56px) clamp(24px, 4vw, 60px); display: flex; flex-direction: column; gap: 10px; }
+.cb-folio { position: absolute; right: 22px; bottom: 16px; font-size: 0.8rem; color: var(--cb-soft); }
+.cb-meta { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 0; font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cb-rule); }
+.cb-name { font-size: clamp(1.9rem, 3.6vw, 2.8rem); margin: 0; color: var(--cb-ink); }
+.cb-family { margin: 0; font-size: 0.82rem; color: var(--cb-soft); letter-spacing: 0.06em; }
+.cb-story { font-family: var(--font-prose, var(--font-display)); font-style: italic; font-size: 1.05rem; line-height: 1.6; margin: 8px 0; }
+.cb-recipe { list-style: none; margin: 6px 0; padding: 14px 0; border-top: 1px solid color-mix(in srgb, var(--cb-rule) 45%, transparent); border-bottom: 1px solid color-mix(in srgb, var(--cb-rule) 45%, transparent); display: grid; gap: 6px; }
+.cb-recipe li::before { content: "—"; color: var(--cb-rule); margin-right: 10px; }
+.cb-method { margin: 0; font-size: 0.92rem; }
+.cb-serve { margin: 0; font-size: 0.82rem; color: var(--cb-soft); }
+.cb-more { margin-top: auto; align-self: flex-start; font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cb-rule); border-bottom: 1px solid currentColor; padding-bottom: 2px; }
+/* the right page darkens a touch until its spread is reached */
+.cb-right > * { transition: opacity 0.9s; }
+.cb-spread:not(.lit):not(:hover) .cb-right > * { opacity: 0.55; }
+
+@media (max-width: 760px) {
+  .cb-spread { grid-template-columns: minmax(0, 1fr); }
+  .cb-left { min-height: 360px; }
+  .cb-spread::after { display: none; }
+  .cb-contents ol { columns: 1; }
+  .cb-cover { min-height: 420px; padding: 50px 24px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cb-photo img, .cb-drawn-glass, .cb-right > * { transition: none; }
+}
+
+/* ── Maison: black morocco leather, gilt fillets */
+.cbook-maison { --cb-cover: radial-gradient(120% 90% at 30% 20%, #23201c, #0b0a09 70%); --cb-cover-ink: #e0c27a; --cb-paper: #f4ecdc; --cb-rule: #9c7b38; }
+.cbook-maison .cb-cover { border: 1px solid #c9a961; box-shadow: inset 0 0 0 10px #0b0a09, inset 0 0 0 11px rgba(201, 169, 97, 0.7), inset 0 0 0 16px #0b0a09, inset 0 0 0 17px rgba(201, 169, 97, 0.35), -10px 0 0 -4px #000, 0 50px 90px -40px #000; }
+.cbook-maison .cb-title { font-style: italic; }
+
+/* ── Anatolia: an illuminated manuscript, tezhip border in gold and lapis */
+.cbook-anatolia { --cb-cover: linear-gradient(160deg, #7a1d24, #4a0f15); --cb-cover-ink: #f0d08a; --cb-paper: #f1e5c8; --cb-ink: #2a1a10; --cb-rule: #a8742a; }
+.cbook-anatolia .cb-cover { border-radius: 8px; box-shadow: inset 0 0 0 12px rgba(0, 0, 0, 0.2), inset 0 0 0 14px #d4a94a, inset 0 0 0 26px rgba(12, 35, 70, 0.55), inset 0 0 0 28px #d4a94a, 0 50px 90px -40px #000; }
+.cbook-anatolia .cb-cover::before { content: ""; position: absolute; inset: 40px; border-radius: 50% 50% 8px 8px / 30% 30% 8px 8px; border: 1px solid rgba(240, 208, 138, 0.55); pointer-events: none; }
+.cbook-anatolia .cb-right { border-left: 0; background: linear-gradient(90deg, transparent 0 calc(100% - 22px), rgba(168, 116, 42, 0.18) calc(100% - 22px)); }
+.cbook-anatolia .cb-right::before { content: ""; position: absolute; inset: 14px; border: 2px solid rgba(168, 116, 42, 0.55); box-shadow: inset 0 0 0 4px var(--cb-paper), inset 0 0 0 5px rgba(23, 60, 110, 0.45); pointer-events: none; }
+.cbook-anatolia .cb-name { font-family: var(--font-display); }
+
+/* ── Cosmos: a holographic star atlas, dark pages with silver ink */
+.cbook-cosmos { --cb-cover: radial-gradient(80% 70% at 60% 30%, #3a2a8a, #0b0b2a 70%); --cb-cover-ink: #e8ecff; --cb-paper: linear-gradient(160deg, #10123a, #070818); --cb-ink: #e8ecff; --cb-soft: #9aa3d6; --cb-rule: #7fe6ff; --cb-edge: #2a2a6a; }
+.cbook-cosmos .cb-cover { border-radius: 24px; border: 1px solid rgba(155, 123, 255, 0.6); box-shadow: 0 0 60px rgba(155, 123, 255, 0.35), inset 0 0 80px rgba(255, 122, 200, 0.12); }
+.cbook-cosmos .cb-cover::before { content: ""; position: absolute; inset: 0; border-radius: inherit; background: radial-gradient(1px 1px at 20% 30%, #fff, transparent), radial-gradient(1px 1px at 70% 20%, #fff, transparent), radial-gradient(1.5px 1.5px at 40% 80%, #fff, transparent), radial-gradient(1px 1px at 85% 65%, #fff, transparent), radial-gradient(1px 1px at 10% 75%, #fff, transparent); opacity: 0.8; }
+.cbook-cosmos .cb-spread { border-radius: 18px; border: 1px solid rgba(155, 123, 255, 0.35); }
+.cbook-cosmos .cb-title { background: linear-gradient(90deg, #e8ecff, #9b7bff, #ff7ac8); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+/* ── Jazz: a black speakeasy ledger with brass corners */
+.cbook-jazz { --cb-cover: linear-gradient(160deg, #1a1611, #050403); --cb-cover-ink: #e9c97a; --cb-paper: #efe4c4; --cb-ink: #1b150c; --cb-rule: #8a6a2c; }
+.cbook-jazz .cb-cover { border-radius: 4px; box-shadow: inset 0 0 0 8px #050403, inset 0 0 0 10px #d9b25f, -10px 0 0 -4px #000, 0 50px 90px -40px #000; }
+.cbook-jazz .cb-cover::before,
+.cbook-jazz .cb-cover::after { content: ""; position: absolute; width: 54px; height: 54px; background: linear-gradient(135deg, #f0d38e, #8a6a2c); clip-path: polygon(0 0, 100% 0, 0 100%); }
+.cbook-jazz .cb-cover::before { top: 0; left: 0; }
+.cbook-jazz .cb-cover::after { bottom: 0; right: 0; transform: rotate(180deg); }
+.cbook-jazz .cb-right { background: repeating-linear-gradient(180deg, transparent 0 31px, rgba(138, 106, 44, 0.2) 31px 32px); }
+.cbook-jazz .cb-name { font-family: var(--font-display); }
+
+/* ── Sakura: an orihon accordion fold on washi, stitched spine */
+.cbook-sakura { --cb-cover: linear-gradient(160deg, #3a1520, #1c0b10); --cb-cover-ink: #f7eef0; --cb-paper: #f6efe6; --cb-ink: #2a1a1f; --cb-soft: #6d5a60; --cb-rule: #c8102e; }
+.cbook-sakura .cb-cover { border-radius: 2px; box-shadow: inset 26px 0 0 -10px rgba(0, 0, 0, 0.35), 0 50px 90px -40px #000; }
+.cbook-sakura .cb-cover::before { content: ""; position: absolute; left: 18px; top: 30px; bottom: 30px; width: 2px; background: repeating-linear-gradient(180deg, #f2a7bb 0 18px, transparent 18px 46px); }
+.cbook-sakura .cb-cover::after { content: "花見"; position: absolute; right: 34px; bottom: 34px; width: 58px; height: 58px; display: grid; place-items: center; border: 3px solid #c8102e; border-radius: 6px; color: #c8102e; font-family: var(--font-display); writing-mode: vertical-rl; background: #f7eef0; transform: rotate(-4deg); }
+.cbook-sakura .cb-spread { border-radius: 0; }
+.cbook-sakura .cb-spread::after { width: 2px; background: rgba(42, 26, 31, 0.15); }
+
+/* ── Alchemist: a grimoire bound in oxblood with a brass clasp */
+.cbook-alchemist { --cb-cover: radial-gradient(120% 100% at 50% 30%, #5a1e14, #2a0c08 70%); --cb-cover-ink: #e6c27a; --cb-paper: radial-gradient(120% 90% at 50% 20%, #efe2c3, #d6c39a 80%); --cb-ink: #2b2014; --cb-soft: #5c4a30; --cb-rule: #7b3f12; }
+.cbook-alchemist .cb-cover { border-radius: 10px 18px 18px 10px; box-shadow: inset 0 0 0 10px rgba(0, 0, 0, 0.25), inset 0 0 0 12px rgba(230, 194, 122, 0.5), -10px 0 0 -4px #1a0604, 0 50px 90px -40px #000; }
+.cbook-alchemist .cb-clasp { display: block; right: -14px; top: 50%; width: 46px; height: 70px; transform: translateY(-50%); border-radius: 8px; background: linear-gradient(90deg, #6b4f22, #e0b866 50%, #6b4f22); box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6); }
+
+/* ── Tiki: a bamboo-bound scrapbook with lashed spine */
+.cbook-tiki { --cb-cover: repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.1) 0 2px, transparent 2px 24px), linear-gradient(160deg, #3a2412, #1e1209); --cb-cover-ink: #f0a04b; --cb-paper: #f2e6cc; --cb-ink: #2a1807; --cb-rule: #b5532a; }
+.cbook-tiki .cb-cover { border-left: 22px solid transparent; border-image: repeating-linear-gradient(180deg, #d39a43 0 60px, #7a5a26 60px 64px) 22; box-shadow: 0 50px 90px -40px #000; }
+.cbook-tiki .cb-title { font-family: var(--font-display); text-shadow: 3px 3px 0 #4a2f10; }
+.cbook-tiki .cb-spread { border-radius: 14px; }
+.cbook-tiki .cb-left::after { content: ""; position: absolute; top: 14px; left: 50%; width: 90px; height: 26px; transform: translateX(-50%) rotate(-3deg); background: rgba(240, 220, 170, 0.75); box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); }
+
+/* ── Boreal: birch-bark boards with a Selbu-star clasp */
+.cbook-boreal { --cb-cover: linear-gradient(90deg, #f1efe8, #e2ded2 50%, #f4f2ec); --cb-cover-ink: #2a5d9f; --cb-paper: #f7f6f1; --cb-ink: #10233a; --cb-soft: #4b5d70; --cb-rule: #2a5d9f; }
+.cbook-boreal .cb-cover { color: #10233a; box-shadow: inset 0 0 0 1px rgba(40, 40, 40, 0.15), -10px 0 0 -4px #b9b4a6, 0 50px 90px -40px #000; }
+.cbook-boreal .cb-cover::before { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse 22px 3px at 18% 22%, rgba(30, 30, 30, 0.45), transparent), radial-gradient(ellipse 16px 3px at 76% 14%, rgba(30, 30, 30, 0.4), transparent), radial-gradient(ellipse 26px 3px at 84% 70%, rgba(30, 30, 30, 0.4), transparent), radial-gradient(ellipse 14px 3px at 12% 84%, rgba(30, 30, 30, 0.4), transparent), radial-gradient(ellipse 20px 3px at 52% 92%, rgba(30, 30, 30, 0.35), transparent); pointer-events: none; }
+.cbook-boreal .cb-title { color: #2a5d9f; }
+
+/* ── Riviera: a cellar notebook bound in linen, with a pressed lemon leaf */
+.cbook-riviera { --cb-cover: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.03) 0 2px, transparent 2px 5px), linear-gradient(160deg, #3b4a2a, #1f2a16); --cb-cover-ink: #f1e6cc; --cb-paper: #f6efdc; --cb-ink: #2a2014; --cb-rule: #7d8f3a; }
+.cbook-riviera .cb-cover { border-radius: 4px 12px 12px 4px; box-shadow: inset 0 0 0 12px rgba(0, 0, 0, 0.15), inset 0 0 0 13px rgba(227, 179, 65, 0.6), -10px 0 0 -4px #141c0e, 0 50px 90px -40px #000; }
+.cbook-riviera .cb-title { font-family: "Lora", serif; font-style: italic; text-transform: none; letter-spacing: 0.02em; }
+.cbook-riviera .cb-right::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 8px; background: var(--band) repeat-x left center / auto 8px; opacity: 0.8; }
+.cbook-boreal .cb-cover .btn.ghost { color: #2a5d9f; border-color: #2a5d9f; background: rgba(42, 93, 159, 0.06); box-shadow: none; backdrop-filter: none; }
+.cbook-cosmos .cb-title { font-size: clamp(1.35rem, 5.2vw, 3.3rem); }
+.cb-cover > * { max-width: 100%; }
+
+/* ═════════════════════════════════════════════ GARNISH MENU (opened from the logo)
+   A panel drawn in the world's hand: its band runs down the edge, theme-kit
+   corners, the world's glyph before every section, its bar at the head. */
+.gm { position: fixed; inset: 0; z-index: 90; pointer-events: none; }
+.gm.open { pointer-events: auto; }
+.gm-scrim { position: absolute; inset: 0; border: 0; background: rgba(0, 0, 0, 0.55); opacity: 0; transition: opacity 0.4s; cursor: pointer; }
+.gm.open .gm-scrim { opacity: 1; }
+.gm-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: min(440px, 92vw);
+  overflow-y: auto;
+  padding: 26px 34px 40px 46px;
+  background: linear-gradient(180deg, var(--surface2), var(--surface));
+  color: var(--ink);
+  box-shadow: 30px 0 80px -30px #000;
+  transform: translateX(-104%);
+  transition: transform 0.55s cubic-bezier(0.2, 0.75, 0.15, 1);
+}
+.gm.open .gm-panel { transform: none; }
+.gm-edge { position: absolute; left: 0; top: 0; bottom: 0; width: 14px; background: var(--bandV) repeat-y center top / 14px auto; opacity: 0.95; }
+.gm-panel .wm-corner { width: 40px; height: 40px; opacity: 0.85; }
+.gm-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.gm-home { display: flex; align-items: center; gap: 12px; color: var(--accent); }
+.gm-home b { display: block; font-family: var(--font-brand); font-weight: 500; letter-spacing: 0.32em; font-size: 1.1rem; color: var(--ink); }
+.gm-home small { display: block; font-family: var(--font-display); font-size: 0.95rem; letter-spacing: var(--display-spacing); text-transform: var(--display-case); color: var(--accent); }
+.gm-close { background: none; border: 1px solid var(--line); color: var(--ink); width: 36px; height: 36px; border-radius: var(--radius); cursor: pointer; font-size: 0.9rem; }
+.gm-greeting { font-family: var(--font-prose, var(--font-display)); font-style: italic; color: var(--muted); margin: 0 0 22px; font-size: 0.95rem; }
+.gm-group + .gm-group { margin-top: 22px; }
+.gm-group-title { font-size: 0.72rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; display: flex; align-items: center; gap: 10px; font-family: var(--font-body); }
+.gm-group-title::before { content: var(--ui-eyebrow, "◆"); letter-spacing: 0; }
+.gm-group-title::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.gm-group ul { list-style: none; margin: 0; padding: 0; }
+.gm-group a { display: block; padding: 8px 0 8px 12px; border-left: 2px solid transparent; transition: border-color 0.25s, background 0.25s, padding 0.25s; }
+.gm-group a:hover,
+.gm-group a.on { border-left-color: var(--accent); background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 12%, transparent), transparent); padding-left: 16px; }
+.gm-name { display: block; font-family: var(--font-display); font-size: 1.25rem; letter-spacing: var(--display-spacing); text-transform: var(--display-case); line-height: 1.2; }
+.gm-sub { display: block; font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+/* links arrive one after another as the panel opens */
+.gm.open .gm-group li { animation: gmIn 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.gm.open .gm-group:nth-child(1) li { animation-delay: 0.12s; }
+.gm.open .gm-group:nth-child(2) li { animation-delay: 0.2s; }
+.gm.open .gm-group:nth-child(3) li { animation-delay: 0.28s; }
+@keyframes gmIn { from { opacity: 0; transform: translateX(-12px); } }
+/* a few worlds bind the panel more strongly */
+.gm-maison .gm-panel { box-shadow: inset -1px 0 0 var(--accent), inset -6px 0 0 var(--surface), inset -7px 0 0 var(--line), 30px 0 80px -30px #000; }
+.gm-jazz .gm-panel { background: radial-gradient(120% 60% at 0 0, #1b1710, #070605 70%); }
+.gm-sakura .gm-panel { background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 30%), #f4ece4; color: #2a1a1f; --ink: #2a1a1f; --muted: #6d5a60; --accent: #c8102e; --line: rgba(200, 16, 46, 0.25); }
+.gm-alchemist .gm-panel { background: radial-gradient(120% 90% at 50% 20%, #efe2c3, #d6c39a 80%); color: #2b2014; --ink: #2b2014; --muted: #5c4a30; --accent: #7b3f12; --line: rgba(123, 63, 18, 0.3); }
+.gm-boreal .gm-panel { background: linear-gradient(90deg, #f1efe8, #e2ded2 50%, #f4f2ec); color: #10233a; --ink: #10233a; --muted: #4b5d70; --accent: #2a5d9f; --line: rgba(42, 93, 159, 0.3); }
+.gm-tiki .gm-panel { background: repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.06) 0 2px, transparent 2px 22px), linear-gradient(180deg, #3a2412, #24160a); }
+.gm-riviera .gm-panel { background: radial-gradient(120% 80% at 30% 20%, #2f3a33, #1d2521 70%); }
+.gm-cosmos .gm-panel { background: linear-gradient(160deg, rgba(30, 24, 80, 0.96), rgba(8, 9, 26, 0.98)); box-shadow: 0 0 60px rgba(155, 123, 255, 0.35); }
+.gm-anatolia .gm-panel { background: linear-gradient(180deg, #102a4c, #0a1c36 70%); }
+@media (prefers-reduced-motion: reduce) {
+  .gm-panel, .gm-scrim { transition: none; }
+  .gm.open .gm-group li { animation: none; }
+}
+
+/* ── the home page invites the visitor to open the world's menu */
+.hero-invite { margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--line); max-width: 520px; }
+.hero-invite-line { font-family: var(--font-prose, var(--font-display)); font-style: italic; font-size: 1.15rem; color: var(--ink); margin: 0 0 16px; animation: fadeUp 1s 0.3s ease both; }
+.hero-invite .hero-cta { justify-content: flex-start; margin-top: 0; }
+.hero-menu-btn { padding: 14px 32px; font-size: 0.85rem; animation: menuBeckon 2.8s 1.4s ease-in-out 2; }
+@keyframes menuBeckon { 50% { transform: translateY(-2px); box-shadow: 0 10px 30px -8px var(--accent); } }
+@media (prefers-reduced-motion: reduce) { .hero-menu-btn { animation: none; } }

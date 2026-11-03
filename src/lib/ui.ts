@@ -33,6 +33,9 @@ const dict = {
   gamesSub: { tr: "Her dünyanın kendi oyunu var: bilmeceler, bulmacalar ve bir parça eğlence.", en: "Every world has its own game: riddles, puzzles and a little play." },
   nav_collection: { tr: "Koleksiyonum", en: "My Collection" },
   menu: { tr: "Menü", en: "Menu" },
+  close: { tr: "Kapat", en: "Close" },
+  openMenu: { tr: "Menüyü aç", en: "Open the menu" },
+  orBrowse: { tr: "ya da sitenin tamamı için GARNISH'e dokun", en: "or tap GARNISH for everything else" },
   // sections
   cellarSub: { tr: "Malzemeler, bir şarap mahzeni gibi: tadım notları, kökenler ve hikâyeler.", en: "Ingredients, like a wine cellar: tasting notes, origins and stories." },
   cocktailsSub: { tr: "Klasikler her dünyada; imzalar yalnızca kendi dünyasında.", en: "Classics in every world; signatures only in their own." },
@@ -142,6 +145,12 @@ const dict = {
   zeroShelf: { tr: "Alkolsüz 0%", en: "Zero-proof 0%" },
   // passport
   nav_passport: { tr: "Pasaport", en: "Passport" },
+  nav_book: { tr: "Kokteyl Kitabı", en: "The Cocktail Book" },
+  bookSub: { tr: "Herkesin bildiği {n} kokteyl: hikâyeleri, tarifleri, kadehleri.", en: "{n} cocktails everyone knows: their stories, recipes and glasses." },
+  openBook: { tr: "Kitabı aç", en: "Open the book" },
+  contents: { tr: "İçindekiler", en: "Contents" },
+  photoBy: { tr: "Fotoğraf:", en: "Photo:" },
+  fullRecipe: { tr: "Tarifin tamamı ve denge", en: "Full recipe and balance" },
   passportTitle: { tr: "Kokteyl Pasaportu", en: "Cocktail Passport" },
   passportSub: { tr: "Dünyaları gezdikçe pasaportun damgalarla dolar. Her dünyada üç damga var; hepsini topla, altın mührü aç.", en: "Your passport fills with stamps as you travel the worlds. Three stamps in every world; collect them all to unlock the golden seal." },
   stamp_arrival: { tr: "Varış", en: "Arrival" },
