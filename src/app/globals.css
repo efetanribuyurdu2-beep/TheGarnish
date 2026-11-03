@@ -4953,3 +4953,11 @@ body.sheet-open { overflow: hidden; }
 .why-points li { margin: 8px 0; line-height: 1.55; }
 .why-points li::marker { color: var(--accent); content: var(--ui-eyebrow, "◆") "  "; font-size: 0.75em; }
 @media (max-width: 600px) { .why-seg small { display: none; } .why-seg { min-width: 44px; padding: 8px 6px; } .why-seg b { font-size: 0.58rem; letter-spacing: 0.1em; } }
+
+/* ─────────────────────────────── OFFLINE */
+.offline-note { position: relative; z-index: 2; margin: 0; padding: 8px 16px; text-align: center; font-size: 0.8rem; color: var(--bg); background: var(--accent); }
+.offline-kit { margin-top: 26px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 0.85rem; color: var(--muted); display: flex; flex-direction: column; gap: 8px; }
+.offline-kit .link { padding: 0; color: var(--accent); text-align: left; }
+.offline-bar { display: block; height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; }
+.offline-bar b { display: block; height: 100%; background: var(--accent); transition: width 0.3s; }
+@media print { .offline-note { display: none; } }

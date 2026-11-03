@@ -18,7 +18,7 @@ const QUICK = process.argv.includes("--quick");
 const WORLDS = ["maison", "anatolia", "cosmos", "jazz", "sakura", "alchemist", "tiki", "boreal", "riviera"];
 const PAGES = QUICK
   ? ["/", "/worlds", "/cocktails", "/cocktails/martini", "/atelier", "/passport"]
-  : ["/", "/worlds", "/cocktails", "/cocktails/martini", "/r/negroni.jazz.en", "/book", "/cellar", "/cellar/gin", "/atelier", "/lineage", "/concierge", "/bar", "/party", "/secret", "/glass-ice", "/games", "/passport", "/collection"];
+  : ["/", "/worlds", "/cocktails", "/cocktails/martini", "/r/negroni.jazz.en", "/book", "/cellar", "/cellar/gin", "/atelier", "/lineage", "/concierge", "/bar", "/party", "/secret", "/offline", "/glass-ice", "/games", "/passport", "/collection"];
 const VIEWPORTS = QUICK ? [{ width: 1440, height: 900 }] : [{ width: 390, height: 844 }, { width: 1440, height: 900 }];
 
 // English names that must never show a dotted İ: world names and cocktail names written with n("…")

@@ -9,6 +9,7 @@ import type { L } from "@/lib/types";
 import { nameLang, type UIKey } from "@/lib/ui";
 import { LogoMark } from "./Logo";
 import { LangToggle } from "./WorldGate";
+import { OfflineKit } from "./Offline";
 
 /**
  * Every page of the site in one place, opened from the GARNISH logo (or the menu
@@ -125,6 +126,7 @@ export function GarnishMenu({ open, onClose }: { open: boolean; onClose: () => v
             </section>
           ))}
         </nav>
+        <OfflineKit />
       </div>
     </div>
   );

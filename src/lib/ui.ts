@@ -180,6 +180,13 @@ const dict = {
   goWorld: { tr: "Bu dünyaya git", en: "Travel here" },
   prevPage: { tr: "Önceki sayfa", en: "Previous page" },
   nextPage: { tr: "Sonraki sayfa", en: "Next page" },
+  offlineTitle: { tr: "Bağlantı yok, bar açık", en: "No connection, the bar is open" },
+  offlineSub: { tr: "Bu sayfa daha önce açılmamış. Daha önce gezdiğin sayfalar, Atelier, oyunlar ve müzik internetsiz de çalışır.", en: "This page was never opened before. The pages you have visited, the Atelier, the games and the music all work without the internet." },
+  offlineKept: { tr: "Yanında olan tarifler", en: "Recipes you have with you" },
+  offlineMake: { tr: "Çevrimdışı için hazırla", en: "Make it work offline" },
+  offlineReady: { tr: "Çevrimdışı hazır", en: "Ready offline" },
+  offlineSaving: { tr: "Sayfalar kaydediliyor · {done}/{total}", en: "Saving pages · {done}/{total}" },
+  offlineNow: { tr: "Çevrimdışısın: kayıtlı sayfalar açık, paylaşım kartı ve PDF bağlantı gelince.", en: "You are offline: saved pages are open; share cards and PDFs when you are back." },
   whyTitle: { tr: "Neden işe yarıyor?", en: "Why it works" },
   // weekly secret ingredient
   secretTitle: { tr: "Haftanın Gizli Malzemesi", en: "The Secret of the Week" },

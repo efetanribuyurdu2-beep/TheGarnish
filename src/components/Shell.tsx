@@ -14,6 +14,7 @@ import { WorldTransition } from "./WorldTransition";
 import { WorldBackdrop } from "./WorldBackdrop";
 import { LangToggle, WorldGate } from "./WorldGate";
 import { usePhase } from "@/lib/useDaytime";
+import { useOnline } from "./Offline";
 
 export function Shell({ children }: { children: React.ReactNode }) {
   const { ready, world, gate, t, pick, palette, set, zero } = usePrefs();
@@ -22,6 +23,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
   useEffect(() => setMenu(false), [path]);
   const closeMenu = useCallback(() => setMenu(false), []);
   usePhase(); // keeps <html data-time> in step with the clock
+  const online = useOnline();
 
   if (!ready) return <div className="boot" />;
   const showGate = world === null || gate;
@@ -83,6 +85,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
               </button>
             </div>
           </header>
+          {!online && <p className="offline-note" role="status">{t("offlineNow")}</p>}
           <GarnishMenu open={menu} onClose={closeMenu} />
           <main className="main">{children}</main>
           <StampToast />

@@ -12,7 +12,8 @@ export const metadata: Metadata = {
   metadataBase: new URL(host ? `https://${host}` : "http://localhost:3100"),
   title: "Garnish — Cocktail Worlds",
   description: "A luxury cocktail atlas: seven worlds, a sommelier-style ingredient cellar and an atelier to design your own signature.",
-  icons: { icon: "/icon.svg" },
+  icons: { icon: "/icon.svg", apple: "/pwa-icon/180" },
+  appleWebApp: { capable: true, title: "Garnish", statusBarStyle: "black-translucent" },
 };
 
 export const viewport: Viewport = { themeColor: "#0b0b0b" };
