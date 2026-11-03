@@ -137,7 +137,7 @@ export default function PassportPage() {
               <span>{pick(w.bar)}</span>
             </header>
             <i className="pp-band" aria-hidden />
-            <h3 className="wc-name" style={{ color: INK[w.id] }}>{pick(w.name)}</h3>
+            <h3 className="wc-name" lang="en" style={{ color: INK[w.id] }}>{pick(w.name)}</h3>
             <p className="pp-tag">{pick(w.tagline)}</p>
             <div className="pp-slots">
               {STAMP_KINDS.map((k) => {

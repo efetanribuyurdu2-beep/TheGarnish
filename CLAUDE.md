@@ -20,21 +20,30 @@ npm install · npm run dev · npm run build · npm run lint (tsc)
 ## Map of the code
 | Path | What |
 | --- | --- |
+| `src/lib/types.ts` | All shared types: `WorldId`, `Ingredient`, `Cocktail`, `Glass`, `Method`, `Ice`, `Root`, `Mood`, `BottleShape` |
 | `src/data/worlds.ts` | 9 worlds: name, tagline, intro, collection name, bar name, bartender greeting, Jazz password |
 | `src/data/ingredients.ts` | 61 base ingredients (full prose) + merge with `ingredientsMore.ts` (150 compact rows, incl. 18 `zero-*` alcohol-free stand-ins) = **211** |
 | `src/data/cocktails.ts` | 87 cocktails (21 classics `world:"all"`, 3 of them alcohol-free, + signatures per world incl. 2 alcohol-free each), garnishes, 6 families (ROOTS), moods |
 | `src/lib/balance.ts` | Drink maths: dilution (Dave Arnold formulas), final ABV, sugar/acid balance, kcal, colour mixing, tips |
+| `src/lib/catalog.ts` | `visibleCocktails(world, creations)` (classics + world signatures + own creations), `findCocktail`, `childrenOf` |
+| `src/lib/scripts.ts` | Script echoes (runes, Old Turkic, Greek) used by `<Echo>` |
 | `src/lib/themeKit.ts` | Per-world SVG motifs → CSS vars (`--band --bandV --track --thumb --c-tl.. --emblem --counter --wall`) |
 | `src/lib/music.ts` | Generative Web Audio music per world (no files). Toggled by `MusicButton` (world instrument icon) |
 | `src/lib/ui.ts` | UI translations, method steps, glass/ice labels, `WORLD_VESSELS`, `SPECIAL_VESSELS` |
 | `src/lib/prefs.tsx` | Prefs context: `t()`, `pick()`, `openGate()`, `zero` (alcohol-free mode) |
 | `src/lib/zero.ts` | Alcohol-free: `MAP` of every alcoholic ingredient → zero-proof stand-in(s), `toZero()`, `pour(c, zero)`, `isZeroCocktail()` |
+| `src/components/Shell.tsx` | Header, nav `LINKS` (11), globe pill to `/worlds`, Maison palette, 0% pill, footer |
+| `src/components/CocktailCard.tsx` | Cocktail card + `formatAmount()` (ml, dashes, "a handful", "top") |
+| `src/components/Logo.tsx`, `Ornament.tsx`, `FlavorRadar.tsx`, `Echo.tsx` | Logo, dividers, 6-axis taste radar, script echo |
+| `src/components/MusicButton.tsx` | World instrument icon that toggles `music.ts` |
+| `src/components/PassportStamp.tsx`, `StampToast.tsx` | Passport stamp art (`INK` per world) and the "new stamp" toast |
 | `src/components/GlassArt.tsx` | Realistic glassware + world vessels; world-specific glass craft |
 | `src/components/Bottle.tsx` | 13 bottle silhouettes (by ingredient `shape`) × world label/cap styling |
 | `src/components/BalanceGauge.tsx` | Balance dial, a different design per world |
 | `src/components/WorldBackdrop.tsx` | Animated world backgrounds |
+| `src/components/WorldTransition.tsx` | Themed cover/reveal animation per world, played by `travel()` |
 | `src/components/WorldGate.tsx` | Entry: age check, world choice, Maison palette, Jazz speakeasy password |
-| `src/components/games/*` | One mini game per world |
+| `src/components/games/*` | One mini game per world; `common.tsx` has `GameFrame`, `useBest` (best score + master stamp), `shuffle` |
 | `src/app/globals.css` | World tokens `[data-world]`, all styling (theme-kit section, shelves, gauges, games at the end) |
 
 ## Worlds (each restyles everything)
@@ -91,7 +100,7 @@ The logo wordmark and nav brand use a fixed `--font-brand` (Cormorant Garamond) 
 
 ## Decisions & gotchas
 - Logo: owner's design, fine-line martini with olive; wordmark **GARNISH** / COCKTAIL WORLDS (`Logo.tsx`).
-- Turkish `text-transform: uppercase` turns i into İ: set `lang="en"` on English names.
+- Turkish `text-transform: uppercase` turns i into İ: set `lang="en"` on English names (world names `.wc-name` already have it, else RİVİERA).
 - SVG arcs over 180° need the large-arc flag (see `BalanceGauge`).
 - Grid children with horizontal scrollers need `min-width: 0`, or the page widens.
 - Nav collapses to the burger menu under 1720px (11 links).

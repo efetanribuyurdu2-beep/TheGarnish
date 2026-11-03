@@ -74,7 +74,7 @@ export default function WorldsPage() {
               <button className="portal-face" onClick={() => choose(w)} aria-expanded={isOpen} aria-label={`${pick(w.name)}: ${pick(w.tagline)}`}>
                 <i className="portal-band" aria-hidden />
                 <span className="portal-icon" aria-hidden>{w.id === "anatolia" ? <Nazar size={34} /> : ICON[w.id]}</span>
-                <span className="wc-name">{pick(w.name)}</span>
+                <span className="wc-name" lang="en">{pick(w.name)}</span>
                 <span className="portal-tag">{pick(w.tagline)}</span>
                 <span className="portal-bar">{pick(w.bar)}</span>
                 <span className="portal-foot">
