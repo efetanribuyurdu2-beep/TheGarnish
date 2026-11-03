@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { worldById } from "@/data/worlds";
 import { getPlayer } from "@/lib/music";
+import { nameLang } from "@/lib/ui";
 import { loadSpotify, playlistUri, playlistUrl, type SpotifyController } from "@/lib/spotify";
 import { usePrefs } from "@/lib/prefs";
 import type { WorldId } from "@/lib/types";
@@ -157,6 +158,8 @@ function Instrument({ world }: { world: WorldId }) {
  * play, again to stop; the small player stays reachable under the icon. Offline or
  * if Spotify cannot load, the generated music (music.ts) plays instead.
  */
+const SOURCE_KEY = "garnish:music-source";
+
 export function MusicButton() {
   const { world, lang, pick } = usePrefs();
   const w = world ?? "maison";
@@ -197,9 +200,17 @@ export function MusicButton() {
     return () => document.removeEventListener("click", close);
   }, []);
 
-  const start = async () => {
-    setOn(true);
-    setOpen(true);
+  // where the music comes from: the owner's Spotify playlist, or the world's own generated music
+  const [source, setSource] = useState<"spotify" | "synth">("spotify");
+  useEffect(() => {
+    try {
+      if (localStorage.getItem(SOURCE_KEY) === "synth") setSource("synth");
+    } catch {
+      /* ignore */
+    }
+  }, []);
+
+  const startSpotify = async () => {
     if (ctrl.current) {
       setMode("spotify");
       if (loaded.current !== w) {
@@ -224,7 +235,10 @@ export function MusicButton() {
           const p = !e.data.isPaused;
           setPlaying(p);
           // Spotify has taken over: the generated music steps aside
-          if (p) getPlayer().stop();
+          if (p) {
+            getPlayer().stop();
+            setMode("spotify");
+          }
         });
         c.addListener("ready", () => {
           setMode("spotify");
@@ -233,6 +247,29 @@ export function MusicButton() {
       });
     } catch {
       /* Spotify unavailable: the generated music keeps playing */
+    }
+  };
+
+  const start = async (src = source) => {
+    setOn(true);
+    setOpen(true);
+    if (src === "synth") return startSynth(w);
+    return startSpotify();
+  };
+
+  const choose = (src: "spotify" | "synth") => {
+    setSource(src);
+    try {
+      localStorage.setItem(SOURCE_KEY, src);
+    } catch {
+      /* ignore */
+    }
+    if (!on) return;
+    if (src === "synth") {
+      ctrl.current?.pause();
+      void startSynth(w);
+    } else {
+      void startSpotify();
     }
   };
 
@@ -260,13 +297,18 @@ export function MusicButton() {
         <Instrument world={w} />
       </button>
       {/* kept mounted once created, so the music goes on while the panel is closed */}
-      <div className={`music-pop ${open && on ? "shown" : ""} ${mode ?? ""}`} aria-hidden={!(open && on)}>
+      <div className={`music-pop ${open && on ? "shown" : ""} ${mode ?? ""} src-${source}`} aria-hidden={!(open && on)}>
         <div className="music-head">
           <span className="eyebrow">{tr ? "Çalma listesi" : "Playlist"}</span>
-          <b>{name}</b>
+          <b lang={nameLang(worldById(w).bar)}>{name}</b>
+        </div>
+        <div className="version-toggle music-source" role="group" aria-label={tr ? "Müzik kaynağı" : "Music source"}>
+          <button className={source === "spotify" ? "on" : ""} aria-pressed={source === "spotify"} onClick={() => choose("spotify")}>Spotify</button>
+          <button className={source === "synth" ? "on" : ""} aria-pressed={source === "synth"} onClick={() => choose("synth")}>{tr ? "Dünyanın kendi müziği" : "The world's own music"}</button>
         </div>
         <div className="spotify-host" ref={host} />
         {mode === "spotify" && !playing && <p className="music-hint">{tr ? "Çalmadıysa oynatıcıdaki ▶ düğmesine dokun." : "If it hasn't started, tap ▶ in the player."}</p>}
+        {source === "synth" && <p className="music-note">{tr ? "Bu dünya için burada bestelenen müzik: sınırsız, telifsiz, internetsiz de çalar." : "Music composed here for this world: endless, royalty-free, and it plays offline."}</p>}
         {mode === "spotify" && (
           <p className="music-note">
             {tr ? "Spotify'a giriş yaptıysan şarkıların tamamı çalar, yoksa önizlemeler." : "Signed in to Spotify you hear full tracks, otherwise previews."}{" "}

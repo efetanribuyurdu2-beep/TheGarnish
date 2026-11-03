@@ -5052,3 +5052,7 @@ body.sheet-open { overflow: hidden; }
 @media (max-width: 600px) {
   .music-pop { position: fixed; top: 64px; left: 12px; right: 12px; width: auto; }
 }
+.music-source { display: flex; width: 100%; margin: 0 0 10px; }
+.music-source button { flex: 1; padding: 7px 8px; font-size: 0.76rem; }
+.music-pop.src-synth .spotify-host { display: none; }
+.music-vol { margin-top: 10px; }
