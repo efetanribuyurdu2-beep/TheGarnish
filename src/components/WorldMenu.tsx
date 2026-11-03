@@ -55,6 +55,18 @@ const HEAD: Record<WorldId, { kicker: L; foot: L }> = {
 
 const nameLang = (l: L) => (l.tr === l.en ? "en" : undefined);
 
+/** Sakura's oshinagaki writes each drink in Japanese, top to bottom; the Latin name sits level beneath it. */
+const JA: Record<string, string> = {
+  martini: "ドライ・マティーニ", negroni: "ネグローニ", "old-fashioned": "オールド・ファッションド", manhattan: "マンハッタン", daiquiri: "ダイキリ",
+  margarita: "マルガリータ", "whiskey-sour": "ウイスキー・サワー", gimlet: "ギムレット", mojito: "モヒート", "moscow-mule": "モスコー・ミュール",
+  "aperol-spritz": "アペロール・スプリッツ", "french-75": "フレンチ75", boulevardier: "ブールヴァルディエ", sidecar: "サイドカー",
+  paloma: "パロマ", "espresso-martini": "エスプレッソ・マティーニ", americano: "アメリカーノ", "tom-collins": "トム・コリンズ",
+  "shirley-temple": "シャーリー・テンプル", pussyfoot: "プッシーフット", "lime-rickey": "ライム・リッキー",
+  "japanese-highball": "ハイボール", "hanami-sour": "花見サワー", "yuzu-whisky-sour": "柚子ウイスキーサワー", "matcha-fizz": "抹茶フィズ",
+  "umeshu-spritz": "梅酒スプリッツ", saketini: "サケティーニ", "matcha-tonic": "抹茶トニック", "haru-soda": "春ソーダ",
+};
+const JA_SECTION = { signature: "花見の品", own: "私の一杯", classics: "定番" };
+
 function Item({ c, i, world }: { c: Cocktail; i: number; world: WorldId }) {
   const { pick, zero } = usePrefs();
   const shown = pour(c, zero).c;
@@ -70,6 +82,12 @@ function Item({ c, i, world }: { c: Cocktail; i: number; world: WorldId }) {
   return (
     <li className="wm-item">
       <Link href={`/cocktails/${c.id}`}>
+        {world === "sakura" && JA[c.id] && (
+          <span className="wm-ja" lang="ja">
+            {/* digits stand upright, side by side, inside vertical text (tate-chū-yoko) */}
+            {JA[c.id].split(/(\d+)/).map((part, k) => (/^\d+$/.test(part) ? <span key={k} className="tcy">{part}</span> : part))}
+          </span>
+        )}
         <span className="wm-name" lang={nameLang(c.name)}>
           {pick(c.name)}
           {(isZeroCocktail(c) || zero) && <small className="wm-zero">0%</small>}
@@ -82,11 +100,16 @@ function Item({ c, i, world }: { c: Cocktail; i: number; world: WorldId }) {
   );
 }
 
-function Section({ title, list, world, offset = 0 }: { title: string; list: Cocktail[]; world: WorldId; offset?: number }) {
+function Section({ title, ja, list, world, offset = 0 }: { title: string; ja?: string; list: Cocktail[]; world: WorldId; offset?: number }) {
   if (!list.length) return null;
   return (
     <section className="wm-section">
       <h2 className="wm-section-title">
+        {world === "sakura" && ja && (
+          <span className="wm-ja" lang="ja">
+            {ja}
+          </span>
+        )}
         <span>{title}</span>
       </h2>
       <ol className="wm-list">
@@ -125,9 +148,9 @@ export function WorldMenu({ list, onShowAll }: { list: Cocktail[]; onShowAll: ()
           <p className="wm-greeting">{pick(w.greeting)}</p>
         </header>
         <div className="wm-body">
-          <Section title={pick(w.collection)} list={signatures} world={id} />
-          {own.length > 0 && <Section title={t("creations")} list={own} world={id} offset={signatures.length} />}
-          <Section title={t("classics")} list={classics} world={id} offset={signatures.length + own.length} />
+          <Section title={pick(w.collection)} ja={JA_SECTION.signature} list={signatures} world={id} />
+          {own.length > 0 && <Section title={t("creations")} ja={JA_SECTION.own} list={own} world={id} offset={signatures.length} />}
+          <Section title={t("classics")} ja={JA_SECTION.classics} list={classics} world={id} offset={signatures.length + own.length} />
         </div>
         <footer className="wm-foot">
           {id === "sakura" && (
