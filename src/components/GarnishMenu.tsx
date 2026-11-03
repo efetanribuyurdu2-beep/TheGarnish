@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
-import { worldById } from "@/data/worlds";
+import { PALETTES, worldById } from "@/data/worlds";
 import { usePrefs } from "@/lib/prefs";
 import type { L } from "@/lib/types";
 import { nameLang, type UIKey } from "@/lib/ui";
 import { LogoMark } from "./Logo";
+import { LangToggle } from "./WorldGate";
 
 /**
  * Every page of the site in one place, opened from the GARNISH logo (or the menu
@@ -50,7 +51,7 @@ const GROUPS: { title: L; items: Item[] }[] = [
 ];
 
 export function GarnishMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const { world, pick, t } = usePrefs();
+  const { world, pick, t, palette, set } = usePrefs();
   const path = usePathname();
   const w = worldById(world ?? "maison");
   const panel = useRef<HTMLDivElement>(null);
@@ -87,6 +88,24 @@ export function GarnishMenu({ open, onClose }: { open: boolean; onClose: () => v
           </button>
         </header>
         <p className="gm-greeting">{pick(w.greeting)}</p>
+        <div className="gm-lang">
+          <LangToggle />
+        </div>
+        {w.id === "maison" && (
+          <div className="gm-palette palette-mini" role="group" aria-label={t("palette")}>
+            <span>{t("palette")}</span>
+            {PALETTES.map((p) => (
+              <button
+                key={p.id}
+                title={pick(p.name)}
+                aria-label={pick(p.name)}
+                className={palette === p.id ? "on" : ""}
+                onClick={() => set({ palette: p.id })}
+                style={{ background: `linear-gradient(135deg, ${p.swatch[0]} 50%, ${p.swatch[1]} 50%)` }}
+              />
+            ))}
+          </div>
+        )}
         <nav className="gm-groups" aria-label="Main">
           {GROUPS.map((g) => (
             <section key={g.title.en} className="gm-group">

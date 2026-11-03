@@ -517,9 +517,20 @@ h3,
 .burger { display: block; }
 .nav-tools { margin-left: auto; }
 @media (max-width: 600px) {
-  .nav { padding: 10px 14px; gap: 10px; }
+  .nav { padding: 10px 12px; gap: 8px; }
   .nav-tools { gap: 6px; }
+  /* on a phone the pills keep only their signs; Maison's palette moves into the menu */
+  .zero-toggle span,
+  .world-btn span,
+  .nav-tools .palette-mini,
+  .nav-tools .lang-toggle,
+  .brand-caret { display: none; }
+  .brand { gap: 8px; }
+  .brand-text b { letter-spacing: 0.24em; font-size: 0.95rem; }
 }
+.gm-palette { display: none; gap: 10px; align-items: center; margin: -8px 0 20px; font-size: 0.75rem; color: var(--muted); }
+.gm-lang { display: none; margin: -8px 0 20px; }
+@media (max-width: 600px) { .gm-palette, .gm-lang { display: flex; } }
 
 /* ─────────────────────────────── Layout */
 .main {
@@ -4527,7 +4538,7 @@ select.input:focus {
 /* ═════════════════════════════════════════════ GARNISH MENU (opened from the logo)
    A panel drawn in the world's hand: its band runs down the edge, theme-kit
    corners, the world's glyph before every section, its bar at the head. */
-.gm { position: fixed; inset: 0; z-index: 60; pointer-events: none; }
+.gm { position: fixed; inset: 0; z-index: 90; pointer-events: none; }
 .gm.open { pointer-events: auto; }
 .gm-scrim { position: absolute; inset: 0; border: 0; background: rgba(0, 0, 0, 0.55); opacity: 0; transition: opacity 0.4s; cursor: pointer; }
 .gm.open .gm-scrim { opacity: 1; }
