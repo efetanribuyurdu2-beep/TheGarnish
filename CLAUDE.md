@@ -94,6 +94,9 @@ The logo wordmark and nav brand use a fixed `--font-brand` (Cormorant Garamond) 
 - Cocktail detail has an **Orijinal / Alkolsüz** switch; swapped lines say "X yerine".
 - Atelier and Cellar have an "Alkolsüz 0%" shelf/filter (`ingredient.zero`). Adding an alcoholic ingredient? Add it to `MAP` in `zero.ts` (category fallbacks exist).
 
+## World menus (`/cocktails`)
+`/cocktails` opens on the world's printed menu (`WorldMenu.tsx`); "Tüm tarifler" (`#all`) shows the old grid with search and filters, and the back button returns to the menu. Per world: Maison Art Deco carte (No. I, II…), Anatolia meyhane list under a mihrab arch (Arabic-Indic numerals, kilim rules), Cosmos flight manifest (star coordinates), Jazz speakeasy card (prices in cents by strength), Sakura vertical oshinagaki (kanji numerals, hanko seal), Alchemist formulary on parchment (planet sign per family, wax seal), Tiki grog log in a bamboo frame (mana dots = strength), Boreal birch-bark scroll (❄ degrees = ABV), Riviera bistro chalkboard (vintage year). Marks live in `MARK`, kicker and footer lines in `HEAD`; skins in `globals.css` → "WORLD MENUS".
+
 ## Pages
 `/` home · `/cocktails` + `/cocktails/[id]` · `/cellar` + `/cellar/[id]` · `/atelier` (the world's bar: 3D bottle shelves, counter, vessel & garnish pickers, gauge, save signature) · `/lineage` (family tree) · `/concierge` · `/bar` (what can I make) · `/glass-ice` · `/games` · `/passport` · `/worlds` · `/collection` (printable menu).
 
