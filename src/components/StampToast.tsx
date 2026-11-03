@@ -5,16 +5,33 @@ import { useEffect } from "react";
 import { worldById } from "@/data/worlds";
 import { usePrefs } from "@/lib/prefs";
 import { PassportStamp } from "./PassportStamp";
+import { SecretSeal } from "./SecretSeal";
+import { ingredientById } from "@/data/ingredients";
 
 /** "Your passport has been stamped": a stamp slams down in the corner for a few seconds. */
 export function StampToast() {
-  const { fresh, clearFresh, t, pick, lang, stamps } = usePrefs();
+  const { fresh, clearFresh, t, pick, lang, stamps, freshSecret, secrets, world } = usePrefs();
 
   useEffect(() => {
-    if (!fresh) return;
+    if (!fresh && !freshSecret) return;
     const timer = setTimeout(clearFresh, 4200);
     return () => clearTimeout(timer);
-  }, [fresh, clearFresh]);
+  }, [fresh, freshSecret, clearFresh]);
+
+  if (freshSecret) {
+    const ing = ingredientById(secrets[freshSecret]?.ing ?? "");
+    return (
+      <Link href="/passport#seals" className="stamp-toast" onClick={clearFresh} key={freshSecret}>
+        <span className="stamp-toast-art">
+          <SecretSeal week={freshSecret} world={world ?? "maison"} size={78} uid="toast" />
+        </span>
+        <span>
+          <b>{t("secretSealed")}</b>
+          <small>{freshSecret.replace("-W", " · ")}{ing ? ` · ${pick(ing.name)}` : ""}</small>
+        </span>
+      </Link>
+    );
+  }
 
   if (!fresh) return null;
   return (

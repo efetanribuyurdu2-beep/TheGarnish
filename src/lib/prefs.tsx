@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { playTransitionSfx } from "./sfx";
 import { COCKTAILS } from "@/data/cocktails";
 import type { Cocktail, L, Lang, PaletteId, WorldId } from "./types";
+import { DEFAULT_PARTY, type PartyPlan } from "./party";
 import { tr as translate, type UIKey } from "./ui";
 
 interface Prefs {
@@ -18,12 +19,14 @@ interface Prefs {
   traveller: string; // name written in the passport
   jazzKey: boolean; // the speakeasy password was given once
   sfx: boolean; // transition sound effects (independent of the music)
+  party: PartyPlan; // the party planner's guest list and drinks
+  secrets: Record<string, { ing: string; date: string }>; // weekly secret ingredient seals: "2026-W45" -> earned
 }
 
 export type StampKind = "arrival" | "tasting" | "master";
 export const STAMP_KINDS: StampKind[] = ["arrival", "tasting", "master"];
 
-const DEFAULTS: Prefs = { world: null, palette: "noir", lang: "tr", favourites: [], bar: [], creations: [], zero: false, stamps: {}, traveller: "", jazzKey: false, sfx: true };
+const DEFAULTS: Prefs = { world: null, palette: "noir", lang: "tr", favourites: [], bar: [], creations: [], zero: false, stamps: {}, traveller: "", jazzKey: false, sfx: true, party: DEFAULT_PARTY, secrets: {} };
 const KEY = "garnish:prefs:v1";
 
 interface Ctx extends Prefs {
@@ -38,6 +41,9 @@ interface Ctx extends Prefs {
   stamp: (world: WorldId, kind: StampKind) => void;
   fresh: { world: WorldId; kind: StampKind } | null; // the stamp just earned (for the toast)
   clearFresh: () => void;
+  /** Press this week's wax seal (the secret ingredient challenge). */
+  sealSecret: (week: string, ing: string) => void;
+  freshSecret: string | null; // the week just sealed (for the toast)
   /** Travel to a world with its themed transition (the world swaps while the screen is covered). */
   travel: (to: WorldId, patch?: Partial<Prefs>) => void;
   transit: { to: WorldId; from: WorldId | null; phase: "in" | "out" } | null;
@@ -104,6 +110,15 @@ export function PrefsProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
+  const [freshSecret, setFreshSecret] = useState<string | null>(null);
+  const sealSecret = useCallback((week: string, ing: string) => {
+    setPrefs((p) => {
+      if (p.secrets?.[week]) return p;
+      setTimeout(() => setFreshSecret(week), 0);
+      return { ...p, secrets: { ...p.secrets, [week]: { ing, date: new Date().toISOString() } } };
+    });
+  }, []);
+
   // arriving in a world stamps the passport
   useEffect(() => {
     if (ready && prefs.world) stamp(prefs.world, "arrival");
@@ -150,12 +165,17 @@ export function PrefsProvider({ children }: { children: React.ReactNode }) {
       pick: (l) => l[prefs.lang],
       stamp,
       fresh,
-      clearFresh: () => setFresh(null),
+      clearFresh: () => {
+        setFresh(null);
+        setFreshSecret(null);
+      },
+      sealSecret,
+      freshSecret,
       travel,
       transit,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [prefs, ready, gate, set, fresh, stamp, travel, transit],
+    [prefs, ready, gate, set, fresh, stamp, travel, transit, sealSecret, freshSecret],
   );
 
   return <PrefsContext.Provider value={value}>{children}</PrefsContext.Provider>;

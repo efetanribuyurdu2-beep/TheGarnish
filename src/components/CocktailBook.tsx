@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { BOOK_EXTRAS, BOOK_FROM_SITE, type BookExtra } from "@/data/book";
 import { BOOK_PHOTOS } from "@/data/bookPhotos";
+import { BOOK_DETAIL, type BookDetail } from "@/data/bookDetail";
 import { COCKTAILS, GARNISHES, ROOTS } from "@/data/cocktails";
 import { ingredientById } from "@/data/ingredients";
 import { worldById } from "@/data/worlds";
@@ -209,8 +210,10 @@ export function CocktailBook() {
         const glassName = GLASS_LABEL[p.glass] ? pick(GLASS_LABEL[p.glass]) : p.glass;
         const garnish = p.garnish !== "none" && GARNISHES[p.garnish] ? pick(GARNISHES[p.garnish]) : null;
         const w = p.onSite && p.onSite.world !== "all" ? worldById(p.onSite.world) : null;
+        const d = BOOK_DETAIL[p.id];
         return (
-          <article key={p.id} id={`page-${p.id}`} data-page={p.id} className={`cb-spread ${lit.has(p.id) ? "lit" : ""}`}>
+          <div key={p.id} className="cb-entry">
+          <article id={`page-${p.id}`} data-page={p.id} className={`cb-spread ${lit.has(p.id) ? "lit" : ""}`}>
             <div className="cb-left">
               <Photo p={p} world={id} />
             </div>
@@ -250,8 +253,48 @@ export function CocktailBook() {
               )}
             </div>
           </article>
+          {d && <Leaf d={d} p={p} />}
+          </div>
         );
       })}
     </div>
+  );
+}
+
+/** The leaf under each spread: the full story, the method step by step, why it works, variations, a note. */
+function Leaf({ d, p }: { d: BookDetail; p: Page }) {
+  const { pick, t } = usePrefs();
+  return (
+    <section className="cb-leaf" aria-label={`${pick(p.name)} · ${t("bookStory")}`}>
+      <div className="cb-leaf-story">
+        <h3>{t("bookStory")}</h3>
+        {d.history.map((x, i) => (
+          <p key={i} className={i === 0 ? "cb-lead" : undefined}>{pick(x)}</p>
+        ))}
+      </div>
+      <div className="cb-leaf-craft">
+        <h3>{t("bookMethod")}</h3>
+        <ol className="cb-steps">
+          {d.steps.map((x, i) => (
+            <li key={i}>{pick(x)}</li>
+          ))}
+        </ol>
+        <h3>{t("whyTitle")}</h3>
+        <p>{pick(d.why)}</p>
+        <h3>{t("bookVariations")}</h3>
+        <dl className="cb-vars">
+          {d.variations.map((x) => (
+            <div key={x.name}>
+              <dt lang="en">{x.name}</dt>
+              <dd>{pick(x.note)}</dd>
+            </div>
+          ))}
+        </dl>
+        <aside className="cb-tip">
+          <span>{t("bookTip")}</span>
+          <p>{pick(d.tip)}</p>
+        </aside>
+      </div>
+    </section>
   );
 }

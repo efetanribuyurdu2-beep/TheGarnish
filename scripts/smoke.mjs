@@ -18,7 +18,7 @@ const QUICK = process.argv.includes("--quick");
 const WORLDS = ["maison", "anatolia", "cosmos", "jazz", "sakura", "alchemist", "tiki", "boreal", "riviera"];
 const PAGES = QUICK
   ? ["/", "/worlds", "/cocktails", "/cocktails/martini", "/atelier", "/passport"]
-  : ["/", "/worlds", "/cocktails", "/cocktails/martini", "/r/negroni.jazz.en", "/book", "/cellar", "/cellar/gin", "/atelier", "/lineage", "/concierge", "/bar", "/glass-ice", "/games", "/passport", "/collection"];
+  : ["/", "/worlds", "/cocktails", "/cocktails/martini", "/r/negroni.jazz.en", "/book", "/cellar", "/cellar/gin", "/atelier", "/lineage", "/concierge", "/bar", "/party", "/secret", "/offline", "/glass-ice", "/games", "/passport", "/collection"];
 const VIEWPORTS = QUICK ? [{ width: 1440, height: 900 }] : [{ width: 390, height: 844 }, { width: 1440, height: 900 }];
 
 // English names that must never show a dotted İ: world names and cocktail names written with n("…")
@@ -28,7 +28,7 @@ const NAMES = [
   ...[...read("src/data/cocktails.ts").matchAll(/\bn\("([^"]+)"\)/g)].map((m) => m[1]),
 ].filter((s) => /i/.test(s));
 
-const prefs = (world) => ({ world, palette: "noir", lang: "tr", favourites: [], bar: [], creations: [], zero: false, stamps: {}, traveller: "", jazzKey: true });
+const prefs = (world) => ({ world, palette: "noir", lang: "tr", favourites: [], bar: [], creations: [], zero: false, stamps: {}, traveller: "", jazzKey: true, party: { guests: 12, hours: 4, drinks: [{ id: "negroni" }, { id: "whiskey-sour" }, { id: "mojito" }, { id: "french-75", n: 10 }] } });
 
 const problems = [];
 const report = (world, page, vp, kind, detail) => problems.push({ world, page, vp, kind, detail });

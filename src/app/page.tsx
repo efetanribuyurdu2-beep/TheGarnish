@@ -11,6 +11,10 @@ import type { UIKey } from "@/lib/ui";
 import { nameLang } from "@/lib/ui";
 import { Ornament } from "@/components/Ornament";
 import { Echo } from "@/components/Echo";
+import { SecretSeal } from "@/components/SecretSeal";
+import { daysLeft, weekId } from "@/lib/secret";
+import { GREETING, HOUR_LINE } from "@/lib/daytime";
+import { usePhase } from "@/lib/useDaytime";
 
 const FEATURES: [string, UIKey, UIKey, string][] = [
   ["/cellar", "nav_cellar", "cellarSub", "❦"],
@@ -37,7 +41,9 @@ const INVITE: Record<WorldId, L> = {
 };
 
 export default function Home() {
-  const { world, pick, t } = usePrefs();
+  const { world, pick, t, secrets } = usePrefs();
+  const week = weekId();
+  const phase = usePhase();
   const w = worldById(world ?? "maison");
   const signatures = COCKTAILS.filter((c) => c.world === w.id);
   const pool = [...signatures, ...COCKTAILS.filter((c) => c.world === "all")];
@@ -53,6 +59,10 @@ export default function Home() {
           <Echo text={pick(w.tagline)} />
           <p>{pick(w.intro)}</p>
           <div className="hero-invite">
+            <p className="hero-hour">
+              <i aria-hidden>{phase === "day" ? "☀" : phase === "night" ? "☾" : phase === "dawn" ? "◒" : "◓"}</i>
+              <b>{pick(GREETING[phase])}.</b> {pick(HOUR_LINE[w.id][phase])}
+            </p>
             <p className="hero-invite-line">{pick(INVITE[w.id])}</p>
             <div className="row-gap hero-cta">
               <Link href="/cocktails" className="btn hero-menu-btn">
@@ -68,6 +78,16 @@ export default function Home() {
           <LogoFull />
         </div>
       </section>
+
+      <Link href="/secret" className={`secret-teaser ${secrets?.[week] ? "done" : ""}`}>
+        <SecretSeal week={week} world={w.id} size={74} uid="home" />
+        <span>
+          <span className="eyebrow">{t("nav_secret")}</span>
+          <b>{secrets?.[week] ? t("secretDone") : t("secretTeaser")}</b>
+          <small className="muted">{t(daysLeft() === 1 ? "secretLastDay" : "secretDays", { n: daysLeft() })}</small>
+        </span>
+        <span className="secret-teaser-go">{t("secretOpen")} →</span>
+      </Link>
 
       <section className="section">
         <div className="page-head" style={{ marginBottom: 24 }}>

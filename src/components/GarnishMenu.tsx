@@ -9,6 +9,7 @@ import type { L } from "@/lib/types";
 import { nameLang, type UIKey } from "@/lib/ui";
 import { LogoMark } from "./Logo";
 import { LangToggle } from "./WorldGate";
+import { OfflineKit } from "./Offline";
 
 /**
  * Every page of the site in one place, opened from the GARNISH logo (or the menu
@@ -28,6 +29,7 @@ const GROUPS: { title: L; items: Item[] }[] = [
       ["/book", "nav_book", l("Herkesin bildiği klasikler", "The classics everyone knows")],
       ["/atelier", "nav_atelier", l("Kendi kokteylini yap", "Make your own cocktail")],
       ["/bar", "nav_bar", l("Evdeki şişelerle ne yapılır", "What your bottles can make")],
+      ["/party", "nav_party", l("Kalabalığa toplu tarif ve alışveriş listesi", "Batches and a shopping list for a crowd")],
     ],
   },
   {
@@ -37,6 +39,7 @@ const GROUPS: { title: L; items: Item[] }[] = [
       ["/lineage", "nav_lineage", l("Kokteyllerin soy ağacı", "The family tree of cocktails")],
       ["/glass-ice", "nav_glass", l("Kadeh, buz ve garnitür", "Glass, ice and garnish")],
       ["/concierge", "nav_concierge", l("Ruh haline göre öneri", "A suggestion for your mood")],
+      ["/secret", "nav_secret", l("Mühürlü zarf, her pazartesi yenisi", "A sealed envelope, a new one every Monday")],
     ],
   },
   {
@@ -123,6 +126,7 @@ export function GarnishMenu({ open, onClose }: { open: boolean; onClose: () => v
             </section>
           ))}
         </nav>
+        <OfflineKit />
       </div>
     </div>
   );

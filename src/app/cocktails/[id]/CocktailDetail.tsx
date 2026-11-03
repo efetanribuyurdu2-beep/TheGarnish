@@ -16,6 +16,7 @@ import { isZeroCocktail, pour } from "@/lib/zero";
 import { Echo } from "@/components/Echo";
 import { SharePanel } from "@/components/SharePanel";
 import type { Cocktail } from "@/lib/types";
+import { explain, ROLE_LABEL } from "@/lib/why";
 
 /** `shared`: a recipe that arrived by link (see /r/[code]); `initialZero`: the version it was shared in. */
 export function CocktailDetail({ id, shared, initialZero }: { id: string; shared?: Cocktail; initialZero?: boolean }) {
@@ -120,6 +121,8 @@ export function CocktailDetail({ id, shared, initialZero }: { id: string; shared
           </li>
         </ol>
 
+        <WhyItWorks c={c} a={a} />
+
         <h2 style={{ marginTop: 32 }}>{t("nav_lineage")}</h2>
         <p>
           <span className="eyebrow">{t("family")}</span>
@@ -155,5 +158,30 @@ function ShareIcon() {
       <path d="M12 3 V15 M7 8 L12 3 L17 8" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
       <path d="M5 12 V19 A2 2 0 0 0 7 21 H17 A2 2 0 0 0 19 19 V12" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
     </svg>
+  );
+}
+
+/** "Neden işe yarıyor?": the recipe's roles as a proportion bar, then why it balances. */
+function WhyItWorks({ c, a }: { c: Cocktail; a: ReturnType<typeof analyse> }) {
+  const { pick, t } = usePrefs();
+  const { segments, points } = explain(c, a);
+  const total = segments.reduce((s, x) => s + x.ml, 0) || 1;
+  return (
+    <section className="why">
+      <h2>{t("whyTitle")}</h2>
+      <div className="why-bar" role="img" aria-label={segments.map((s) => `${pick(ROLE_LABEL[s.role])} ${Math.round((s.ml / total) * 100)}%`).join(", ")}>
+        {segments.map((s) => (
+          <span key={s.role} className={`why-seg r-${s.role}`} style={{ flexGrow: s.ml }} title={s.names.map((id) => pick(ingredientById(id)!.name)).join(", ")}>
+            <b>{pick(ROLE_LABEL[s.role])}</b>
+            <small>{s.names.map((id) => pick(ingredientById(id)!.name)).join(" · ")}</small>
+          </span>
+        ))}
+      </div>
+      <ul className="why-points">
+        {points.map((p, i) => (
+          <li key={i}>{pick(p)}</li>
+        ))}
+      </ul>
+    </section>
   );
 }
