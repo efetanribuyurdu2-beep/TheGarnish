@@ -7,6 +7,7 @@ import { Nazar } from "@/components/WorldBackdrop";
 import { PALETTES, WORLDS, type World } from "@/data/worlds";
 import { usePrefs } from "@/lib/prefs";
 import type { PaletteId, WorldId } from "@/lib/types";
+import { SfxToggle } from "@/components/SfxToggle";
 
 const ICON: Record<WorldId, string> = {
   maison: "◆",
@@ -62,6 +63,9 @@ export default function WorldsPage() {
         <h1>{t("nav_worlds")}</h1>
         <Echo text={t("nav_worlds")} />
         <p>{t("chooseWorldSub")}</p>
+        <div className="row-gap">
+          <SfxToggle />
+        </div>
       </header>
 
       <div className="portals">
