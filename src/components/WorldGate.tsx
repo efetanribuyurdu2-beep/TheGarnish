@@ -94,7 +94,7 @@ export function WorldGate() {
                   style={{ "--c0": w.swatch[0], "--c1": w.swatch[1], "--c2": w.swatch[2] } as React.CSSProperties}
                 >
                   <span className="wc-icon">{w.id === "anatolia" ? <Nazar size={30} /> : ICON[w.id]}</span>
-                  <span className="wc-name">{pick(w.name)}</span>
+                  <span className="wc-name" lang="en">{pick(w.name)}</span>
                   <span className="wc-tag">{pick(w.tagline)}</span>
                   <span className="wc-swatch">
                     {w.swatch.map((c) => (

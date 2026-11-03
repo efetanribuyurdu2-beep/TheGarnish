@@ -143,7 +143,7 @@ export function WorldTransition() {
       <Panels to={to} />
       <Particles to={to} />
       <div className="wt-title">
-        <span className="wc-name">{pick(w.name)}</span>
+        <span className="wc-name" lang="en">{pick(w.name)}</span>
         <small>{pick(w.tagline)}</small>
       </div>
     </div>
