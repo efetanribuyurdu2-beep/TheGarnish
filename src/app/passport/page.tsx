@@ -7,7 +7,10 @@ import { LogoMark } from "@/components/Logo";
 import { Ornament } from "@/components/Ornament";
 import { INK, PassportStamp } from "@/components/PassportStamp";
 import { WORLDS } from "@/data/worlds";
+import { SecretSeal } from "@/components/SecretSeal";
+import { ingredientById } from "@/data/ingredients";
 import { STAMP_KINDS, usePrefs } from "@/lib/prefs";
+import { nameLang } from "@/lib/ui";
 
 const ascii = (s: string) =>
   s
@@ -16,7 +19,7 @@ const ascii = (s: string) =>
     .replace(/[^A-Z]+/g, "<");
 
 export default function PassportPage() {
-  const { t, pick, lang, stamps, traveller, set, world } = usePrefs();
+  const { t, pick, lang, stamps, traveller, set, world, secrets } = usePrefs();
   const book = useRef<HTMLDivElement>(null);
   const [page, setPage] = useState(0);
   const total = WORLDS.length * STAMP_KINDS.length;
@@ -163,6 +166,29 @@ export default function PassportPage() {
           </section>
         ))}
 
+        {/* the weekly secret ingredient seals */}
+        <section className="pp-page pp-secrets" id="seals">
+          <header className="pp-head"><span>{t("secretSeals")}</span><span>{Object.keys(secrets ?? {}).length}</span></header>
+          {Object.keys(secrets ?? {}).length === 0 ? (
+            <p className="pp-secrets-empty">{t("secretNone")}</p>
+          ) : (
+            <div className="pp-secrets-grid">
+              {Object.entries(secrets ?? {}).sort().map(([k, v]) => {
+                const ing = ingredientById(v.ing);
+                return (
+                  <div key={k} className="pp-secret">
+                    <SecretSeal week={k} world={world ?? "maison"} size={76} uid={`s${k}`} />
+                    <small>{k.replace("-W", " · ")}</small>
+                    {ing && <b lang={nameLang(ing.name)}>{pick(ing.name)}</b>}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+          <Link className="link pp-go" href="/secret">{t("nav_secret")} →</Link>
+          <footer className="pp-folio">{WORLDS.length + 2}</footer>
+        </section>
+
         {/* the golden seal */}
         <section className={`pp-page pp-seal ${complete ? "done" : ""}`}>
           <header className="pp-head"><span>{t("sealTitle")}</span><span>{earned}/{total}</span></header>
@@ -188,7 +214,7 @@ export default function PassportPage() {
           </svg>
           <p className="pp-seal-text">{complete ? t("sealDone") : t("sealLocked")}</p>
           <div className="pp-progress"><i style={{ width: `${(earned / total) * 100}%` }} /></div>
-          <footer className="pp-folio">{WORLDS.length + 2}</footer>
+          <footer className="pp-folio">{WORLDS.length + 3}</footer>
         </section>
       </div>
     </>

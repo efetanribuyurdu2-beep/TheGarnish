@@ -11,6 +11,8 @@ import type { UIKey } from "@/lib/ui";
 import { nameLang } from "@/lib/ui";
 import { Ornament } from "@/components/Ornament";
 import { Echo } from "@/components/Echo";
+import { SecretSeal } from "@/components/SecretSeal";
+import { daysLeft, weekId } from "@/lib/secret";
 
 const FEATURES: [string, UIKey, UIKey, string][] = [
   ["/cellar", "nav_cellar", "cellarSub", "❦"],
@@ -37,7 +39,8 @@ const INVITE: Record<WorldId, L> = {
 };
 
 export default function Home() {
-  const { world, pick, t } = usePrefs();
+  const { world, pick, t, secrets } = usePrefs();
+  const week = weekId();
   const w = worldById(world ?? "maison");
   const signatures = COCKTAILS.filter((c) => c.world === w.id);
   const pool = [...signatures, ...COCKTAILS.filter((c) => c.world === "all")];
@@ -68,6 +71,16 @@ export default function Home() {
           <LogoFull />
         </div>
       </section>
+
+      <Link href="/secret" className={`secret-teaser ${secrets?.[week] ? "done" : ""}`}>
+        <SecretSeal week={week} world={w.id} size={74} uid="home" />
+        <span>
+          <span className="eyebrow">{t("nav_secret")}</span>
+          <b>{secrets?.[week] ? t("secretDone") : t("secretTeaser")}</b>
+          <small className="muted">{t(daysLeft() === 1 ? "secretLastDay" : "secretDays", { n: daysLeft() })}</small>
+        </span>
+        <span className="secret-teaser-go">{t("secretOpen")} →</span>
+      </Link>
 
       <section className="section">
         <div className="page-head" style={{ marginBottom: 24 }}>

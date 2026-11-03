@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { BalanceGauge } from "@/components/BalanceGauge";
 import { Bottle } from "@/components/Bottle";
 import { formatAmount } from "@/components/CocktailCard";
@@ -16,6 +16,7 @@ import { usePrefs } from "@/lib/prefs";
 import type { Cocktail, Glass, Ice, IngredientCategory, Method, Part, Root } from "@/lib/types";
 import { GLASS_LABEL, ICE_LABEL, SPECIAL_VESSELS, WORLD_VESSELS, nameLang } from "@/lib/ui";
 import { pour } from "@/lib/zero";
+import { secretFor, weekId } from "@/lib/secret";
 import { Echo } from "@/components/Echo";
 
 const METHODS: Method[] = ["shake", "dryshake", "stir", "build", "swizzle", "blend"];
@@ -32,7 +33,10 @@ const chunk = <T,>(a: T[], n: number) => Array.from({ length: Math.ceil(a.length
 const GARNISH_KEYS = Object.keys(GARNISHES).filter((g) => g !== "none");
 
 export default function AtelierPage() {
-  const { pick, t, lang, world, set, creations, zero, stamp } = usePrefs();
+  const { pick, t, lang, world, set, creations, zero, stamp, secrets, sealSecret } = usePrefs();
+  const week = weekId();
+  const secret = secretFor(week);
+  const secretOpen = !secrets?.[week];
   const w = worldById(world ?? "maison");
   const router = useRouter();
   const [name, setName] = useState("");
@@ -44,6 +48,10 @@ export default function AtelierPage() {
   const [root, setRoot] = useState<Root>("daiquiri");
   const [parent, setParent] = useState<string | undefined>();
   const [shelf, setShelf] = useState<IngredientCategory | "zero">(zero ? "zero" : "spirit");
+  // arriving from the secret envelope: open the shelf it stands on
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).has("secret")) setShelf(secretFor(weekId()).category);
+  }, []);
 
   const a = useMemo(() => analyse(parts, method), [parts, method]);
   const ownVessels = WORLD_VESSELS[w.id] as Glass[];
@@ -93,6 +101,7 @@ export default function AtelierPage() {
     };
     set({ creations: [...creations, c] });
     stamp(w.id, "master");
+    if (parts.some((p) => p.id === secret.id)) sealSecret(week, secret.id);
     router.push(`/cocktails/${c.id}`);
   };
 
@@ -129,6 +138,12 @@ export default function AtelierPage() {
               {t("zeroShelf")}
             </button>
           </div>
+          {secretOpen && (
+            <p className="secret-shelf">
+              <span aria-hidden>✉</span> {t("secretShelf", { name: pick(secret.name) })}
+              {shelf !== secret.category && <button className="link" onClick={() => setShelf(secret.category)}>{t("secretShow")} →</button>}
+            </p>
+          )}
           <div className="shelves">
             {chunk(INGREDIENTS.filter((i) => (shelf === "zero" ? i.zero : i.category === shelf && !i.zero)), 10).map((row, r) => (
               <div key={r} className="shelf-row">
@@ -136,7 +151,7 @@ export default function AtelierPage() {
                   {row.map((i) => (
                     <button
                       key={i.id}
-                      className={`bottle-btn ${inRecipe.has(i.id) ? "in" : ""} ${i.world === w.id ? "local" : ""}`}
+                      className={`bottle-btn ${inRecipe.has(i.id) ? "in" : ""} ${i.world === w.id ? "local" : ""} ${secretOpen && i.id === secret.id ? "secret" : ""}`}
                       onClick={() => toggleBottle(i.id)}
                       aria-pressed={inRecipe.has(i.id)}
                       title={pick(i.name)}

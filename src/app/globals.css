@@ -4771,3 +4771,107 @@ body.sheet-open { overflow: hidden; }
   .pt-menu li .pt-stepper { grid-area: s; justify-self: start; }
   .pt-remove { grid-area: x; }
 }
+
+/* ─────────────────────────────── SECRET OF THE WEEK */
+.secret-week { letter-spacing: 0.12em; font-size: 0.85rem; }
+.envelope {
+  --paper: color-mix(in srgb, var(--accent) 16%, var(--surface2));
+  --paper2: color-mix(in srgb, var(--accent) 26%, var(--surface));
+  position: relative; width: min(560px, 100%); aspect-ratio: 1.55; margin: 120px auto 70px;
+  perspective: 1200px;
+}
+.env-back, .env-front, .env-flap { position: absolute; inset: 0; border-radius: 6px; }
+.env-back { background: var(--paper2); box-shadow: 0 40px 80px -30px #000, inset 0 0 0 1px var(--line); }
+.env-card {
+  position: absolute; left: 7%; right: 7%; top: -34%; height: 92%;
+  padding: 22px 26px; background: linear-gradient(180deg, color-mix(in srgb, var(--ink) 92%, var(--bg)), color-mix(in srgb, var(--ink) 80%, var(--bg)));
+  color: var(--bg); border-radius: 4px; box-shadow: 0 10px 30px -12px #000;
+  transition: transform 0.9s cubic-bezier(0.2, 0.75, 0.15, 1) 0.35s;
+}
+.env-card .eyebrow { color: color-mix(in srgb, var(--accent) 60%, var(--bg)); }
+.env-clues { margin: 6px 0 0; padding-left: 20px; font-family: var(--font-prose, var(--font-display)); font-style: italic; font-size: clamp(0.92rem, 2.6vw, 1.08rem); line-height: 1.5; }
+.env-front {
+  background:
+    linear-gradient(to top right, transparent 49.6%, color-mix(in srgb, #000 12%, var(--paper)) 50%) left bottom / 50% 100% no-repeat,
+    linear-gradient(to top left, transparent 49.6%, color-mix(in srgb, #000 12%, var(--paper)) 50%) right bottom / 50% 100% no-repeat,
+    var(--paper);
+  clip-path: polygon(0 34%, 50% 70%, 100% 34%, 100% 100%, 0 100%);
+}
+.env-front::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 12px; background: var(--band) repeat-x left center / auto 12px; opacity: 0.9; border-radius: 0 0 6px 6px; }
+.env-flap {
+  background: linear-gradient(180deg, var(--paper), color-mix(in srgb, #000 8%, var(--paper)));
+  clip-path: polygon(0 0, 100% 0, 50% 62%);
+  transform-origin: top center; transition: transform 0.8s cubic-bezier(0.5, 0, 0.3, 1) 0.25s;
+  z-index: 2;
+}
+.env-seal {
+  position: absolute; left: 50%; top: 62%; z-index: 3; transform: translate(-50%, -50%);
+  background: none; border: 0; padding: 0; cursor: pointer; border-radius: 50%;
+  animation: seal-breathe 3.2s ease-in-out infinite;
+}
+.env-seal:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; }
+.env-hint { position: absolute; left: 0; right: 0; bottom: -46px; text-align: center; font-size: 0.75rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); }
+.secret-seal .seal-l { transform-origin: 50% 50%; transition: transform 0.6s ease, opacity 0.6s ease; }
+.envelope.breaking .env-seal { animation: none; }
+.envelope.breaking .secret-seal .seal-l { transform: scale(1.08) rotate(-8deg); opacity: 0; transition-delay: 0.15s; }
+.envelope.breaking .env-flap { transform: rotateX(180deg); z-index: 0; }
+.envelope.breaking .env-card { transform: translateY(-22%); }
+.envelope.breaking .env-hint { opacity: 0; }
+@keyframes seal-breathe { 50% { transform: translate(-50%, -50%) scale(1.05); } }
+
+.secret-reveal {
+  display: grid; grid-template-columns: 160px 1fr; gap: 20px 40px; align-items: start;
+  max-width: 880px; margin: 30px auto 0; animation: share-rise 0.8s cubic-bezier(0.2, 0.75, 0.15, 1) both;
+}
+.secret-bottle { display: grid; place-items: center; padding: 20px 0; background: radial-gradient(circle at 50% 70%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 65%); }
+.secret-text h2 { font-size: clamp(2rem, 5vw, 3rem); margin: 4px 0 10px; }
+.secret-story { font-family: var(--font-prose, var(--font-display)); font-style: italic; font-size: 1.05rem; }
+.secret-notes { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px 20px; margin: 14px 0; }
+.secret-notes dt { font-size: 0.7rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--accent); }
+.secret-notes dd { margin: 2px 0 0; }
+.secret-challenge { position: relative; grid-column: 1 / -1; display: flex; gap: 22px; align-items: center; }
+.secret-challenge p { margin: 4px 0 12px; }
+.secret-challenge:not(.done) .secret-seal { filter: grayscale(1); opacity: 0.45; }
+.secret-past { display: flex; flex-wrap: wrap; gap: 14px; }
+.secret-past-item { display: flex; align-items: center; gap: 12px; padding: 10px 16px 10px 10px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); color: var(--ink); }
+.secret-past-item span { display: flex; flex-direction: column; }
+
+.secret-teaser {
+  position: relative; display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+  max-width: 760px; margin: 10px auto 0; padding: 16px 24px 16px 18px;
+  background: linear-gradient(100deg, color-mix(in srgb, var(--accent) 12%, var(--surface)), var(--surface));
+  border: 1px solid var(--line); border-radius: var(--radius); color: var(--ink);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.secret-teaser:hover { transform: translateY(-2px); box-shadow: 0 16px 40px -24px var(--accent); }
+.secret-teaser > span:nth-child(2) { display: flex; flex-direction: column; gap: 2px; flex: 1 1 240px; min-width: 0; }
+.secret-teaser b { font-family: var(--font-display); font-weight: var(--display-weight, 500); letter-spacing: var(--display-spacing); font-size: 1.25rem; }
+.secret-teaser-go { color: var(--accent); font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; }
+.secret-teaser .secret-seal { flex: none; animation: seal-breathe-s 3.2s ease-in-out infinite; }
+.secret-teaser.done .secret-seal { animation: none; }
+@keyframes seal-breathe-s { 50% { transform: scale(1.05); } }
+
+.secret-shelf { margin: 0 0 10px; font-size: 0.85rem; color: var(--accent); display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; }
+.bottle-btn.secret { position: relative; }
+.bottle-btn.secret::before {
+  content: ""; position: absolute; left: 50%; bottom: 18px; width: 70px; height: 70px; transform: translateX(-50%);
+  border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--accent) 45%, transparent), transparent 70%);
+  animation: secret-glow 2.4s ease-in-out infinite; pointer-events: none;
+}
+@keyframes secret-glow { 50% { opacity: 0.35; } }
+
+.pp-secrets-grid { display: flex; flex-wrap: wrap; gap: 14px 18px; justify-content: center; margin-top: 18px; }
+.pp-secret { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 96px; text-align: center; }
+.pp-secret small { font-size: 0.65rem; letter-spacing: 0.1em; opacity: 0.7; }
+.pp-secret b { font-size: 0.78rem; font-weight: 500; line-height: 1.2; }
+.pp-secrets-empty { text-align: center; font-style: italic; opacity: 0.75; margin: 40px 20px; }
+
+@media (max-width: 600px) {
+  .envelope { margin-top: 100px; }
+  .env-card { padding: 14px 16px; top: -38%; height: 96%; }
+  .secret-reveal { grid-template-columns: 1fr; }
+  .secret-challenge { flex-direction: column; align-items: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .env-seal, .secret-teaser .secret-seal, .bottle-btn.secret::before { animation: none; }
+}

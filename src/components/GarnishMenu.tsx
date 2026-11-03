@@ -38,6 +38,7 @@ const GROUPS: { title: L; items: Item[] }[] = [
       ["/lineage", "nav_lineage", l("Kokteyllerin soy ağacı", "The family tree of cocktails")],
       ["/glass-ice", "nav_glass", l("Kadeh, buz ve garnitür", "Glass, ice and garnish")],
       ["/concierge", "nav_concierge", l("Ruh haline göre öneri", "A suggestion for your mood")],
+      ["/secret", "nav_secret", l("Mühürlü zarf, her pazartesi yenisi", "A sealed envelope, a new one every Monday")],
     ],
   },
   {
