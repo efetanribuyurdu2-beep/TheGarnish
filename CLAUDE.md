@@ -38,7 +38,9 @@ npm install · npm run dev · npm run build · npm run lint (tsc) · npm run smo
 | `src/components/Logo.tsx`, `Ornament.tsx`, `FlavorRadar.tsx`, `Echo.tsx` | Logo, dividers, 6-axis taste radar, script echo |
 | `src/components/MusicButton.tsx` | World instrument icon that toggles `music.ts` |
 | `src/components/PassportStamp.tsx`, `StampToast.tsx` | Passport stamp art (`INK` per world) and the "new stamp" toast |
-| `src/components/GlassArt.tsx` | Realistic glassware + world vessels; world-specific glass craft |
+| `src/components/GlassArt.tsx`, `glassSvg.tsx` | Realistic glassware + world vessels; world-specific glass craft. The drawing (`GlassSvg`) is hook-free in `glassSvg.tsx` so the server can render it into share cards; `GlassArt` is the client wrapper |
+| `src/lib/share.ts`, `card.tsx`, `svgString.ts` | Recipe sharing: share codes (`shareCode`/`readShare`), the world-styled card image (next/og), React SVG → string |
+| `src/components/SharePanel.tsx` | "Paylaş" sheet on the cocktail page: card preview, landscape/portrait, copy link, native share, download PNG, WhatsApp, X |
 | `src/components/Bottle.tsx` | 13 bottle silhouettes (by ingredient `shape`) × world label/cap styling |
 | `src/components/BalanceGauge.tsx` | Balance dial, a different design per world |
 | `src/components/WorldBackdrop.tsx` | Animated world backgrounds |
@@ -99,7 +101,7 @@ The logo wordmark and nav brand use a fixed `--font-brand` (Cormorant Garamond) 
 `/cocktails` opens on the world's printed menu (`WorldMenu.tsx`); "Tüm tarifler" (`#all`) shows the old grid with search and filters, and the back button returns to the menu. Per world: Maison Art Deco carte (No. I, II…), Anatolia meyhane list under a mihrab arch (Arabic-Indic numerals, kilim rules), Cosmos flight manifest (star coordinates), Jazz speakeasy card (prices in cents by strength), Sakura vertical oshinagaki (kanji numerals, hanko seal), Alchemist formulary on parchment (planet sign per family, wax seal), Tiki grog log in a bamboo frame (mana dots = strength), Boreal birch-bark scroll (❄ degrees = ABV), Riviera bistro chalkboard (vintage year). Marks live in `MARK`, kicker and footer lines in `HEAD`; skins in `globals.css` → "WORLD MENUS".
 
 ## Pages
-`/` home · `/cocktails` + `/cocktails/[id]` · `/cellar` + `/cellar/[id]` · `/atelier` (the world's bar: 3D bottle shelves, counter, vessel & garnish pickers, gauge, save signature) · `/lineage` (family tree) · `/concierge` · `/bar` (what can I make) · `/glass-ice` · `/games` · `/passport` · `/worlds` · `/book` (Cocktail Book) · `/collection` (printable menu).
+`/` home · `/cocktails` + `/cocktails/[id]` · `/cellar` + `/cellar/[id]` · `/atelier` (the world's bar: 3D bottle shelves, counter, vessel & garnish pickers, gauge, save signature) · `/lineage` (family tree) · `/concierge` · `/bar` (what can I make) · `/glass-ice` · `/games` · `/passport` · `/worlds` · `/book` (Cocktail Book) · `/collection` (printable menu) · `/r/[code]` (shared recipe) · `/api/card` (card image).
 
 ## How to add things
 - **Ingredient**: add a row to `ingredientsMore.ts` (look string: `"tint[,o][,shape][,glassTint][,capColor]"`, profile = 6 digits sweet/sour/bitter/strong/fresh/aromatic).
@@ -116,6 +118,12 @@ The logo wordmark and nav brand use a fixed `--font-brand` (Cormorant Garamond) 
 - Owner did not want: the old scale, flat bottles and glasses, the busy bright çini wall, the turquoise band on Anatolia glasses. (Same reason Riviera's counter is travertine with only a thin majolica edge.)
 - Backdrops are `position: fixed`; full-page screenshots only show them in the first viewport. That is expected.
 
+## Recipe sharing
+- "Paylaş" on every cocktail page opens `SharePanel`. The link is `/r/<code>`: `negroni.jazz.en` (site cocktail · world, `maison-bordeaux` for a palette · lang · `.0` alcohol-free) or `~<base64url JSON>` for the visitor's own creation (it only lives in their browser, so the link carries the recipe; validated on read, the sharer's passport name rides along as `by`).
+- `/r/[code]` (dynamic) shows a banner (who shared it, which world; "Bu dünyaya git", Jazz still asks for its password; "İmzalarıma ekle" for creations) above the normal `CocktailDetail`.
+- `/api/card?c=<code>&f=wide|tall` renders the card (1200×630 or 1080×1350) with `next/og`: world wall + band + corners from `themeKit`, the same `GlassSvg`, world fonts fetched from Google Fonts subset to the card's text (the `ImageResponse` needs truetype). It is the og:image for `/r/…` and `/cocktails/[id]`, the panel's preview and the download. Satori rules: every multi-child div `display:flex`, borders only solid/dashed. `metadataBase` comes from `VERCEL_PROJECT_PRODUCTION_URL`.
+- Locally, Node's fetch ignores the proxy: start the server with `NODE_USE_ENV_PROXY=1` or the card falls back to the default font.
+
 ## Cocktail Book (`/book`)
 - `src/data/book.ts`: `BOOK_FROM_SITE` (41 site cocktails: the canon, golden-age, tiki, spritz, alcohol-free classics) + `BOOK_EXTRAS` (12 famous drinks written only for the book: Cosmopolitan, Caipirinha, Bloody Mary, Pisco Sour, Mint Julep, White Russian, Bellini, Clover Club, Penicillin, Paper Plane, Dark 'n' Stormy, Brandy Alexander) = 53 pages. `CocktailBook.tsx` renders cover, contents and one two-page spread per drink.
 - Effect: the photo (or, until there is one, the glass drawn large) sits faded and grey; when the spread is in view (`IntersectionObserver` → `.lit`) or hovered it comes up to full colour, and the text page brightens with it.
@@ -123,7 +131,7 @@ The logo wordmark and nav brand use a fixed `--font-brand` (Cormorant Garamond) 
 - **Photos: still to do.** `src/data/bookPhotos.ts` is empty; a page uses its photo as soon as an entry exists. Unsplash only (Pexels blocks automated access). Use the official API with `UNSPLASH_ACCESS_KEY` from the environment (`Authorization: Client-ID …`); never scrape, never spoof a browser. Hotlink `urls.raw` (the page adds size params), call the photo's `links.download_location` once when you choose it, and keep the credit (photographer + Unsplash, with links; the page renders it). Check every photo by eye: the right drink, no logos, no faces. This is the only exception to "no image files".
 
 ## Next up
-Recipe sharing (link + world-styled card + social preview) → party planner (batch maths, pre-dilution, shopping list from the bar) → Haftanın Gizli Malzemesi (weekly ingredient + passport stamp) → time-of-day worlds + "Neden işe yarıyor?" on cocktail pages → offline/PWA. One PR each.
+Party planner (batch maths, pre-dilution, shopping list from the bar) → Haftanın Gizli Malzemesi (weekly ingredient + passport stamp) → time-of-day worlds + "Neden işe yarıyor?" on cocktail pages → offline/PWA. One PR each.
 
 ## Ideas parked for later
-Haftanın Gizli Malzemesi (weekly challenge), party planner (batch maths, shopping list), user accounts and sharing (would need a backend, e.g. Supabase), photo-real assets.
+Haftanın Gizli Malzemesi (weekly challenge), party planner (batch maths, shopping list), user accounts (would need a backend, e.g. Supabase), photo-real assets.

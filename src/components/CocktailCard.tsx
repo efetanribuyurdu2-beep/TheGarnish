@@ -45,12 +45,4 @@ export function CocktailCard({ c: original, note }: { c: Cocktail; note?: React.
   );
 }
 
-export function formatAmount(ml: number, lang: "tr" | "en", top?: boolean, ingCategory?: string) {
-  if (ml === 0) return lang === "tr" ? "bir avuç" : "a handful";
-  if (ingCategory === "bitters" || (ml <= 3 && ingCategory !== "citrus")) {
-    const d = Math.round(ml);
-    return lang === "tr" ? `${d} dash` : `${d} dash${d > 1 ? "es" : ""}`;
-  }
-  const s = `${Number.isInteger(ml) ? ml : ml.toFixed(1)} ml`;
-  return top ? (lang === "tr" ? `${s} (üzerine)` : `top ${s}`) : s;
-}
+export { formatAmount } from "@/lib/ui";

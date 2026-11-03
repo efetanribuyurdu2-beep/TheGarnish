@@ -4,7 +4,11 @@ import { Shell } from "@/components/Shell";
 import { themeCSS } from "@/lib/themeKit";
 import "./globals.css";
 
+// absolute URLs for social previews (og:image); Vercel names the production host
+const host = process.env.VERCEL_PROJECT_PRODUCTION_URL ?? process.env.VERCEL_URL;
+
 export const metadata: Metadata = {
+  metadataBase: new URL(host ? `https://${host}` : "http://localhost:3100"),
   title: "Garnish — Cocktail Worlds",
   description: "A luxury cocktail atlas: seven worlds, a sommelier-style ingredient cellar and an atelier to design your own signature.",
   icons: { icon: "/icon.svg" },

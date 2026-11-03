@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { formatAmount } from "@/components/CocktailCard";
 import { FlavorRadar } from "@/components/FlavorRadar";
 import { GlassArt } from "@/components/GlassArt";
@@ -14,11 +14,16 @@ import { usePrefs } from "@/lib/prefs";
 import { GLASS_LABEL, ICE_LABEL, METHOD_STEPS, nameLang } from "@/lib/ui";
 import { isZeroCocktail, pour } from "@/lib/zero";
 import { Echo } from "@/components/Echo";
+import { SharePanel } from "@/components/SharePanel";
+import type { Cocktail } from "@/lib/types";
 
-export function CocktailDetail({ id }: { id: string }) {
+/** `shared`: a recipe that arrived by link (see /r/[code]); `initialZero`: the version it was shared in. */
+export function CocktailDetail({ id, shared, initialZero }: { id: string; shared?: Cocktail; initialZero?: boolean }) {
   const { pick, t, lang, creations, favourites, toggleFav, world, zero } = usePrefs();
-  const [choice, setChoice] = useState<boolean | null>(null);
-  const original = findCocktail(id, creations);
+  const [choice, setChoice] = useState<boolean | null>(initialZero ?? null);
+  const [sharing, setSharing] = useState(false);
+  const closeShare = useCallback(() => setSharing(false), []);
+  const original = shared ?? findCocktail(id, creations);
   if (!original) {
     return (
       <div className="page-head">
@@ -42,13 +47,21 @@ export function CocktailDetail({ id }: { id: string }) {
       <aside className="detail-art">
         <GlassArt glass={c.glass} color={a.color} opaque={a.opaque} ice={c.ice} method={c.method} garnish={c.garnish} size={200} />
         <FlavorRadar profile={a.profile} size={230} />
-        <button className={`btn ${fav ? "" : "ghost"}`} onClick={() => toggleFav(c.id)}>
-          {fav ? "♥ " + t("saved") : "♡ " + t("save")}
-        </button>
+        <div className="detail-actions">
+          {!shared?.author && (
+            <button className={`btn ${fav ? "" : "ghost"}`} onClick={() => toggleFav(c.id)}>
+              {fav ? "♥ " + t("saved") : "♡ " + t("save")}
+            </button>
+          )}
+          <button className="btn ghost share-btn" onClick={() => setSharing(true)} aria-haspopup="dialog">
+            <ShareIcon /> {t("share")}
+          </button>
+        </div>
       </aside>
+      {sharing && <SharePanel cocktail={original} zero={wantZero && !native} onClose={closeShare} />}
       <div>
         <span className="eyebrow">
-          {c.author ? t("creations") : c.world === "all" ? t("classics") : pick(worldById(c.world).collection)}
+          {c.author === "shared" ? t("signature") : c.author ? t("creations") : c.world === "all" ? t("classics") : pick(worldById(c.world).collection)}
         </span>
         <h1 lang={nameLang(c.name)}>{pick(c.name)}</h1>
         <Echo text={pick(c.name)} />
@@ -133,5 +146,14 @@ export function CocktailDetail({ id }: { id: string }) {
         )}
       </div>
     </article>
+  );
+}
+
+function ShareIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden className="share-icon">
+      <path d="M12 3 V15 M7 8 L12 3 L17 8" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M5 12 V19 A2 2 0 0 0 7 21 H17 A2 2 0 0 0 19 19 V12" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    </svg>
   );
 }
