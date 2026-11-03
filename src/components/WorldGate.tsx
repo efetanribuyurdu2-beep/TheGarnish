@@ -6,6 +6,7 @@ import { usePrefs } from "@/lib/prefs";
 import type { PaletteId } from "@/lib/types";
 import { LogoFull } from "./Logo";
 import { Nazar } from "./WorldBackdrop";
+import { SfxToggle } from "./SfxToggle";
 
 const ICON: Record<string, string> = {
   maison: "◆",
@@ -67,7 +68,10 @@ export function WorldGate() {
             ← {t("back")}
           </button>
         )}
-        <LangToggle />
+        <span className="gate-tools">
+          <SfxToggle />
+          <LangToggle />
+        </span>
       </div>
       <div className="gate-inner">
         <div className="gate-logo">

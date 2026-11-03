@@ -9,6 +9,8 @@ const dict = {
     en: "Every world has its own colours, motifs and exclusive cocktails. You can switch at any time.",
   },
   enter: { tr: "Gir", en: "Enter" },
+  sfxOn: { tr: "Geçiş sesleri açık", en: "Transition sounds on" },
+  sfxOff: { tr: "Geçiş sesleri kapalı", en: "Transition sounds off" },
   changeWorld: { tr: "Dünya değiştir", en: "Change world" },
   palette: { tr: "Renk", en: "Palette" },
   password: { tr: "Parola?", en: "Password?" },
