@@ -114,5 +114,14 @@ The logo wordmark and nav brand use a fixed `--font-brand` (Cormorant Garamond) 
 - Owner did not want: the old scale, flat bottles and glasses, the busy bright çini wall, the turquoise band on Anatolia glasses. (Same reason Riviera's counter is travertine with only a thin majolica edge.)
 - Backdrops are `position: fixed`; full-page screenshots only show them in the first viewport. That is expected.
 
+## Next up: the Cocktail Book (agreed with the owner, not built yet)
+Remaining plan, in order: **Cocktail Book** → recipe sharing (link + world-styled card + social preview) → party planner (batch maths, pre-dilution, shopping list from the bar) → Haftanın Gizli Malzemesi (weekly ingredient + passport stamp) → time-of-day worlds + "Neden işe yarıyor?" on cocktail pages → offline/PWA. One PR each.
+
+Cocktail Book spec (owner's words: real photos, faded in the background, bright when you reach it, with information; the book's shape changes per world):
+- Content: the 21 classics plus famous cocktails not yet on the site, based on the IBA official list (about 40–50 in all: Mojito, Margarita, Cosmopolitan, Aperol Spritz, Espresso Martini, Piña Colada, Mai Tai, Caipirinha, Bloody Mary, Long Island, Last Word…). Each page: photo, name, origin and year, short story, recipe, glass, garnish.
+- Photos: **Unsplash only** (Pexels blocks automated access). Use the official API with `UNSPLASH_ACCESS_KEY` from the environment (`Authorization: Client-ID …`); never scrape, never spoof a browser. Follow Unsplash API rules: hotlink `images.unsplash.com` URLs from the API response (with `w=`/`q=` params), trigger the photo's `download_location` when it is chosen, and credit "Photo: <name> / Unsplash" with links. Store chosen photo id, URL, photographer and links in a data file; check each photo visually (the right drink, no logos or people) before keeping it. This is the first exception to "no image files"; keep it to the book.
+- Effect: page photo sits faded (low opacity, desaturated) behind its text and brightens to full colour when the page is in view or hovered.
+- Book form per world: Maison leather-and-gilt volume, Anatolia illuminated manuscript (tezhip borders), Cosmos holographic star atlas, Jazz black speakeasy ledger, Sakura orihon accordion fold, Alchemist grimoire with clasp, Tiki bamboo-bound scrapbook, Boreal birch-bark book with Selbu clasp, Riviera herbarium / cellar notebook.
+
 ## Ideas parked for later
 Haftanın Gizli Malzemesi (weekly challenge), party planner (batch maths, shopping list), user accounts and sharing (would need a backend, e.g. Supabase), photo-real assets.
