@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { BalanceGauge } from "@/components/BalanceGauge";
 import { Bottle } from "@/components/Bottle";
 import { formatAmount } from "@/components/CocktailCard";
@@ -17,6 +17,9 @@ import type { Cocktail, Glass, Ice, IngredientCategory, Method, Part, Root } fro
 import { GLASS_LABEL, ICE_LABEL, SPECIAL_VESSELS, WORLD_VESSELS, nameLang } from "@/lib/ui";
 import { pour } from "@/lib/zero";
 import { secretFor, weekId } from "@/lib/secret";
+import { drawCocktail } from "@/lib/randomizer";
+import { glassGeometry } from "@/components/glassSvg";
+import type { Ingredient } from "@/lib/types";
 import { Echo } from "@/components/Echo";
 
 const METHODS: Method[] = ["shake", "dryshake", "stir", "build", "swizzle", "blend"];
@@ -33,7 +36,7 @@ const chunk = <T,>(a: T[], n: number) => Array.from({ length: Math.ceil(a.length
 const GARNISH_KEYS = Object.keys(GARNISHES).filter((g) => g !== "none");
 
 export default function AtelierPage() {
-  const { pick, t, lang, world, set, creations, zero, stamp, secrets, sealSecret } = usePrefs();
+  const { pick, t, lang, world, set, creations, zero, stamp, secrets, sealSecret, bar } = usePrefs();
   const week = weekId();
   const secret = secretFor(week);
   const secretOpen = !secrets?.[week];
@@ -58,6 +61,19 @@ export default function AtelierPage() {
   const classic = (Object.keys(GLASS_LABEL) as Glass[]).filter((g) => !SPECIAL_VESSELS.includes(g) && !ownVessels.includes(g));
   const inRecipe = new Set(parts.map((p) => p.id));
 
+  // the bottle that is pouring into the glass right now (a queue, so a draw pours one by one)
+  const [pours, setPours] = useState<{ key: number; id: string }[]>([]);
+  const pourKey = useRef(0);
+  const pourInto = (ids: string[]) => {
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    setPours((q) => [...q, ...ids.slice(0, 6).map((id) => ({ key: ++pourKey.current, id }))]);
+  };
+  useEffect(() => {
+    if (!pours.length) return;
+    const timer = setTimeout(() => setPours((q) => q.slice(1)), pours.length > 1 ? 760 : 1250);
+    return () => clearTimeout(timer);
+  }, [pours]);
+
   const toggleBottle = (id: string) => {
     if (inRecipe.has(id)) {
       setParts(parts.filter((p) => p.id !== id));
@@ -66,6 +82,24 @@ export default function AtelierPage() {
     const ing = ingredientById(id)!;
     const ml = ing.category === "bitters" ? 2 : ing.category === "spirit" ? 45 : ing.category === "mixer" ? 60 : 20;
     setParts([...parts, { id, ml }]);
+    pourInto([id]);
+  };
+
+  // "Şansına": a random cocktail that still balances
+  const [rolling, setRolling] = useState(false);
+  const roll = () => {
+    const d = drawCocktail(w.id, bar, zero);
+    setRolling(true);
+    setTimeout(() => setRolling(false), 700);
+    setParts(d.parts);
+    setMethod(d.method);
+    setGlass(d.glass);
+    setIce(d.ice);
+    setGarnish(d.garnish);
+    setRoot(d.root);
+    setParent(undefined);
+    setName(pick(d.name));
+    pourInto(d.parts.map((p) => p.id));
   };
 
   const startFrom = (id: string) => {
@@ -171,6 +205,7 @@ export default function AtelierPage() {
         </div>
         <div className="counter">
           <div className="counter-glass">
+            {pours[0] && <PourFx key={pours[0].key} ing={ingredientById(pours[0].id)} glass={glass} quick={pours.length > 1} />}
             <GlassArt key={glass + parts.length} glass={glass} color={parts.length ? a.color : "transparent"} opaque={a.opaque} ice={ice} method={method} garnish={garnish} size={170} />
           </div>
           <div className="counter-reflection" aria-hidden>
@@ -186,6 +221,9 @@ export default function AtelierPage() {
               {t("name")}
               <input className="input" value={name} onChange={(e) => setName(e.target.value)} placeholder="…" />
             </label>
+            <button className={`btn ghost dice-btn ${rolling ? "rolling" : ""}`} onClick={roll} title={t("diceHint")}>
+              <DiceIcon /> {t("dice")}
+            </button>
             <label>
               {t("startFrom")}
               <select className="input" value="" onChange={(e) => startFrom(e.target.value)}>
@@ -316,5 +354,38 @@ export default function AtelierPage() {
         </aside>
       </div>
     </>
+  );
+}
+
+const GLASS_PX = 170 / 120; // the counter glass is drawn at 170 px wide
+
+/** A bottle glides in beside the glass, tips, pours a thin stream of its colour and withdraws. */
+function PourFx({ ing, glass, quick }: { ing?: Ingredient; glass: Glass; quick: boolean }) {
+  if (!ing) return null;
+  const g = glassGeometry(glass);
+  const tipX = (g.rimX - g.rimW * 0.3) * GLASS_PX;
+  const tipY = g.rimY * GLASS_PX - 12;
+  // neck of a 52 px bottle tipped 115°: 47 px right of and 22 px below its centre
+  const left = tipX - 47 - 26;
+  const top = tipY - 22 - 52;
+  const fall = Math.max(24, g.top * GLASS_PX - tipY + 8);
+  return (
+    <div className={`pour-fx ${quick ? "quick" : ""}`} aria-hidden>
+      <span className="pour-bottle" style={{ left, top }}>
+        <Bottle ing={ing} size={52} />
+      </span>
+      <i className="pour-stream" style={{ left: tipX - 1.5, top: tipY, height: fall, background: ing.color }} />
+    </div>
+  );
+}
+
+function DiceIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden className="dice-icon">
+      <rect x="3.5" y="3.5" width="17" height="17" rx="3.5" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      {[[8.5, 8.5], [15.5, 8.5], [12, 12], [8.5, 15.5], [15.5, 15.5]].map(([x, y]) => (
+        <circle key={`${x}${y}`} cx={x} cy={y} r="1.4" fill="currentColor" />
+      ))}
+    </svg>
   );
 }

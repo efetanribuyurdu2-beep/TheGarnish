@@ -49,6 +49,9 @@ const SHAPES: Record<Glass, Shape> = {
   terracotta: { bowl: "M34 72 H86 L82 140 Q82 145 77 145 H43 Q38 145 38 140 Z", liquid: "M34 72 H86 L82 140 Q82 145 77 145 H43 Q38 145 38 140 Z", top: 73, bottom: 143, rim: [60, 72, 26], band: [90, 98] },
 };
 
+/** Rim and liquid top of a vessel, in its 120×160 drawing units (for the Atelier's pour). */
+export const glassGeometry = (g: Glass) => ({ rimX: SHAPES[g].rim[0], rimY: SHAPES[g].rim[1], rimW: SHAPES[g].rim[2], top: SHAPES[g].top });
+
 const OPAQUE_VESSELS = new Set<Glass>(["fincan", "ochoko", "masu", "teacup", "coconut", "pineapple", "kuksa", "kylix", "terracotta"]);
 
 /** Porcelain, ceramic, wood and fruit vessels: only the drink's surface shows. */

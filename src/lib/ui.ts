@@ -191,6 +191,8 @@ const dict = {
   bookMethod: { tr: "Adım adım", en: "Step by step" },
   bookVariations: { tr: "Varyasyonlar", en: "Variations" },
   bookTip: { tr: "Barmenin notu", en: "The bartender's note" },
+  dice: { tr: "Şansına", en: "Surprise me" },
+  diceHint: { tr: "Rastgele ama dengeli bir kokteyl: bu dünyanın şişeleri ve senin barın öncelikli.", en: "A random but balanced cocktail: this world's bottles and your bar come first." },
   whyTitle: { tr: "Neden işe yarıyor?", en: "Why it works" },
   // weekly secret ingredient
   secretTitle: { tr: "Haftanın Gizli Malzemesi", en: "The Secret of the Week" },
