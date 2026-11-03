@@ -5,6 +5,7 @@ import { Bottle } from "@/components/Bottle";
 import { ingredientById } from "@/data/ingredients";
 import { usePrefs } from "@/lib/prefs";
 import { BEST, GameFrame, shuffle, useBest } from "./common";
+import { nameLang } from "@/lib/ui";
 
 const PAIRS = ["raki", "pomegranate", "sumac", "pistachio-liqueur", "mastic", "turkish-coffee", "rose", "salgam"];
 const deal = () => shuffle([...PAIRS, ...PAIRS]).map((id, i) => ({ key: i, id }));
@@ -71,7 +72,7 @@ export function NazarMemory() {
                 <span className="mem-back" />
                 <span className="mem-face">
                   <Bottle ing={ing} size={34} />
-                  <small>{pick(ing.name)}</small>
+                  <small lang={nameLang(ing.name)}>{pick(ing.name)}</small>
                 </span>
               </span>
             </button>

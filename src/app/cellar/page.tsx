@@ -8,6 +8,7 @@ import type { IngredientCategory } from "@/lib/types";
 import { Ornament } from "@/components/Ornament";
 import { Bottle } from "@/components/Bottle";
 import { Echo } from "@/components/Echo";
+import { nameLang } from "@/lib/ui";
 
 const ORDER = Object.keys(CATEGORY_LABEL) as IngredientCategory[];
 
@@ -49,7 +50,7 @@ export default function CellarPage() {
             <Bottle ing={i} size={40} />
             <span>
               {i.world === world && <span className="badge" style={{ marginBottom: 6 }}>✦</span>}
-              <h3>{pick(i.name)}</h3>
+              <h3 lang={nameLang(i.name)}>{pick(i.name)}</h3>
               <p>
                 {pick(i.origin)} · {i.abv > 0 ? `${Math.round(i.abv * 100)}%` : i.zero ? "0.0%" : "0%"}
               </p>
