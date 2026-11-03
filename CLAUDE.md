@@ -59,6 +59,9 @@ npm install · npm run dev · npm run build · npm run lint (tsc)
 | Boreal (Scandinavia + Russia) | aurora, snow, pine ridge, Selbu star, Gzhel blue, birch bark; fonts Ruslan Display + Jost | Aurora Hall | frosted ryumka, birch kuksa, glass of ice | frosted compass | kantele | Frozen Lake (ice-slide, BFS-checked levels) |
 | Riviera (French cellars, Italian/Greek gardens) | meander, vine & grapes, lemons, majolica, cellar brick vault, wax-sealed bottles; fonts Aboreto + Lora | La Cave Riviera | wine glass, kylix, terracotta cup | sundial | mandolin | Majolica (sliding tile 3×3 / 4×4) |
 
+## World UI kit
+`globals.css` → "WORLD UI KIT" (end of file): buttons (`.btn`, `.btn.ghost`), `.chip`, `.input`, nav underline, eyebrow glyph, scrollbar, focus ring and selection are drawn differently per world (Maison gilded double rule, Anatolia madder red with gold thread and kilim nav band, Cosmos neon pill, Jazz brass marquee and ticket-stub chips, Sakura vermilion hanko and brush stroke, Alchemist riveted brass and apothecary-label chips, Tiki bamboo with rope underline, Boreal frosted ice with aurora line, Riviera majolica tile with cobalt). Shared hooks: `--ui-thumb --ui-nav --ui-nav-h --ui-eyebrow --ui-field-focus`. New controls should use these classes so they follow the world.
+
 ## Typography
 The owner found the first fonts generic ("AI-looking"). Each world now has a characterful display font (`--font-display`) and a readable `--font-prose` for long italic text (story, greeting, tips):
 | World | Display | Prose |

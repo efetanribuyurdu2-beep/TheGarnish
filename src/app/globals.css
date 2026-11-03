@@ -3883,8 +3883,8 @@ select.input:focus {
   --ui-eyebrow: "♪";
 }
 [data-world="jazz"] .btn {
-  font-family: var(--font-display);
-  letter-spacing: 0.14em;
+  letter-spacing: 0.18em;
+  font-weight: 600;
   background: linear-gradient(180deg, #f0d38e, #c79a45 55%, #8a6a2c);
   border: 0;
   border-radius: 0;
@@ -3948,7 +3948,7 @@ select.input:focus {
   color: #1d150a;
   box-shadow: inset 0 1px 0 rgba(255, 240, 200, 0.5), 0 2px 0 #3a2b14;
 }
-[data-world="alchemist"] .btn.ghost { background: rgba(230, 217, 189, 0.06); color: var(--accent); border: 1px solid var(--accent); box-shadow: inset 0 0 0 3px var(--bg), inset 0 0 0 4px var(--line); }
+[data-world="alchemist"] .btn.ghost { background: rgba(230, 217, 189, 0.06); color: #e0b866; font-weight: 600; border: 1px solid var(--accent); box-shadow: inset 0 0 0 3px var(--bg), inset 0 0 0 4px var(--line); }
 /* apothecary label: clipped corners */
 [data-world="alchemist"] .chip {
   border-radius: 0;
@@ -3973,7 +3973,10 @@ select.input:focus {
 }
 [data-world="tiki"] .nav-links a::after { border-radius: 4px; }
 [data-world="tiki"] .btn {
-  background: repeating-linear-gradient(90deg, transparent 0 46px, rgba(70, 45, 15, 0.55) 46px 48px, rgba(255, 230, 170, 0.35) 48px 49px), linear-gradient(180deg, #f2cd7d, #d39a43 55%, #a06c22);
+  /* bamboo: a node near each end, the grain running along the pole */
+  background: linear-gradient(90deg, transparent 10px, rgba(70, 45, 15, 0.6) 10px 12px, rgba(255, 230, 170, 0.4) 12px 13px, transparent 13px calc(100% - 13px), rgba(255, 230, 170, 0.4) calc(100% - 13px) calc(100% - 12px), rgba(70, 45, 15, 0.6) calc(100% - 12px) calc(100% - 10px), transparent calc(100% - 10px)),
+    repeating-linear-gradient(180deg, transparent 0 3px, rgba(120, 80, 25, 0.12) 3px 4px), linear-gradient(180deg, #f2cd7d, #d39a43 55%, #a06c22);
+  padding-inline: 32px;
   border: 2px solid #4a2f10;
   border-radius: 14px;
   color: #2a1807;

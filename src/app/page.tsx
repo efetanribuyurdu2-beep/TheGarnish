@@ -41,7 +41,7 @@ export default function Home() {
             <Link href="/cocktails" className="btn">
               {t("enterWorld")}
             </Link>
-            <Link href="/atelier" className="btn ghost">
+            <Link href="/atelier" className="btn ghost" lang="en">
               {t("nav_atelier")}
             </Link>
           </div>
