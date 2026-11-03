@@ -4140,8 +4140,9 @@ select.input:focus {
   aspect-ratio: 3 / 4;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  opacity: 0.13;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400'%3E%3Cg fill='none' stroke='%23d4a94a' stroke-width='3' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M150 250 C 92 236 66 176 78 104 C 102 132 124 140 136 128 C 128 92 134 56 150 28 C 166 56 172 92 164 128 C 176 140 198 132 222 104 C 234 176 208 236 150 250 Z' fill='%23d4a94a' fill-opacity='0.35'/%3E%3Cpath d='M150 250 C 132 210 128 166 136 128 M150 250 C 168 210 172 166 164 128 M150 250 V 70'/%3E%3Cpath d='M150 250 C 148 300 150 340 152 390'/%3E%3Cpath d='M151 320 C 118 312 92 290 78 254 C 112 258 138 280 151 320 Z' fill='%23d4a94a' fill-opacity='0.25'/%3E%3Cpath d='M151 350 C 186 340 212 316 226 280 C 192 286 164 308 151 350 Z' fill='%23d4a94a' fill-opacity='0.25'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
+  opacity: 0.17;
+  /* tulip: pink petals, green stem and leaves, a thin gold line around them */
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 400'%3E%3Cg stroke-width='3' stroke-linejoin='round' stroke-linecap='round'%3E%3Cpath d='M150 250 C 148 300 150 340 152 390' fill='none' stroke='%235f9a6a' stroke-width='5'/%3E%3Cpath d='M151 320 C 118 312 92 290 78 254 C 112 258 138 280 151 320 Z' fill='%235f9a6a' stroke='%23d4a94a'/%3E%3Cpath d='M151 350 C 186 340 212 316 226 280 C 192 286 164 308 151 350 Z' fill='%235f9a6a' stroke='%23d4a94a'/%3E%3Cpath d='M150 250 C 92 236 66 176 78 104 C 102 132 124 140 136 128 C 128 92 134 56 150 28 C 166 56 172 92 164 128 C 176 140 198 132 222 104 C 234 176 208 236 150 250 Z' fill='%23e8899f' stroke='%23d4a94a'/%3E%3Cpath d='M150 250 C 132 210 128 166 136 128 M150 250 C 168 210 172 166 164 128' fill='none' stroke='%23b8506a'/%3E%3Cpath d='M150 250 V 70' fill='none' stroke='%23f4b8c6' stroke-width='2'/%3E%3C/g%3E%3C/svg%3E") center / contain no-repeat;
 }
 .wmenu-anatolia .wm-corner.tl,
 .wmenu-anatolia .wm-corner.tr { display: none; }
