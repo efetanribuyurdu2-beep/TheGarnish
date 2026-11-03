@@ -7,6 +7,7 @@ import { isZeroCocktail, pour } from "@/lib/zero";
 import type { Cocktail } from "@/lib/types";
 import { ingredientById } from "@/data/ingredients";
 import { GlassArt } from "./GlassArt";
+import { nameLang } from "@/lib/ui";
 
 export function CocktailCard({ c: original, note }: { c: Cocktail; note?: React.ReactNode }) {
   const { pick, favourites, toggleFav, t, zero } = usePrefs();
@@ -25,7 +26,7 @@ export function CocktailCard({ c: original, note }: { c: Cocktail; note?: React.
         </div>
         {c.world !== "all" && <span className="badge">{c.author ? t("creations") : t("signature")}</span>}
         {(native || swapped) && <span className="badge zero" title={native ? t("zeroNative") : t("zeroVersion")}>0%</span>}
-        <h3>{pick(c.name)}</h3>
+        <h3 lang={nameLang(c.name)}>{pick(c.name)}</h3>
         <p className="card-ings">
           {c.parts
             .filter((p) => p.ml > 0 && p.ml >= 5)

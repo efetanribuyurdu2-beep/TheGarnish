@@ -75,7 +75,9 @@ function Particles({ to }: { to: WorldId }) {
       return (
         <div className="wt-fronds">
           {[0, 1, 2, 3, 4, 5].map((i) => (
-            <svg key={i} className={`frond f${i}`} viewBox="0 0 400 120" aria-hidden>
+            <svg key={i} className={`frond f${i}`} viewBox="0 0 400 140" aria-hidden>
+              {/* baked-in shadow: a CSS drop-shadow on six large moving SVGs made this transition the slowest */}
+              <path d="M0 78 C120 8 300 8 400 78 C300 148 120 148 0 78Z" fill="#000" opacity="0.35" />
               <path d="M0 60 C120 -10 300 -10 400 60 C300 130 120 130 0 60Z" fill={i % 2 ? "#2a6b45" : "#1f5a3a"} />
               <path d="M0 60 H400" stroke="#0c1a14" strokeWidth="4" />
               {Array.from({ length: 14 }, (_, j) => (

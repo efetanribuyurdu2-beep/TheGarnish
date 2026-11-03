@@ -7,6 +7,7 @@ import { COCKTAILS } from "@/data/cocktails";
 import { worldById } from "@/data/worlds";
 import { usePrefs } from "@/lib/prefs";
 import type { UIKey } from "@/lib/ui";
+import { nameLang } from "@/lib/ui";
 import { Ornament } from "@/components/Ornament";
 import { Echo } from "@/components/Echo";
 
@@ -33,7 +34,7 @@ export default function Home() {
     <>
       <section className="hero">
         <div>
-          <span className="eyebrow">{pick(w.name)}</span>
+          <span className="eyebrow" lang={nameLang(w.name)}>{pick(w.name)}</span>
           <h1>{pick(w.tagline)}</h1>
           <Echo text={pick(w.tagline)} />
           <p>{pick(w.intro)}</p>
