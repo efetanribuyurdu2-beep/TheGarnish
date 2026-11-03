@@ -33,7 +33,7 @@ export function LangToggle() {
 }
 
 export function WorldGate() {
-  const { t, pick, set, world, palette, openGate } = usePrefs();
+  const { t, pick, world, palette, openGate, travel, jazzKey } = usePrefs();
   const firstVisit = world === null;
   const [adult, setAdult] = useState(!firstVisit);
   const [step, setStep] = useState<{ kind: "list" } | { kind: "palette"; w: World } | { kind: "door"; w: World }>({ kind: "list" });
@@ -41,16 +41,12 @@ export function WorldGate() {
   const [wrong, setWrong] = useState(false);
   const [chosenPalette, setChosenPalette] = useState<PaletteId>(palette);
 
-  const enter = (w: World, p?: PaletteId) => {
-    set({ world: w.id, ...(p ? { palette: p } : {}) });
-    openGate(false);
-    window.scrollTo({ top: 0 });
-  };
+  const enter = (w: World, p?: PaletteId) => travel(w.id, { ...(p ? { palette: p } : {}), ...(w.password ? { jazzKey: true } : {}) });
 
   const choose = (w: World) => {
     if (!adult) return;
     if (w.id === "maison") setStep({ kind: "palette", w });
-    else if (w.password && world !== "jazz") setStep({ kind: "door", w });
+    else if (w.password && world !== "jazz" && !jazzKey) setStep({ kind: "door", w });
     else enter(w);
   };
 

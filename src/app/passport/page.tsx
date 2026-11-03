@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { Echo } from "@/components/Echo";
 import { LogoMark } from "@/components/Logo";
@@ -15,7 +16,7 @@ const ascii = (s: string) =>
     .replace(/[^A-Z]+/g, "<");
 
 export default function PassportPage() {
-  const { t, pick, lang, stamps, traveller, set, openGate, world } = usePrefs();
+  const { t, pick, lang, stamps, traveller, set, world } = usePrefs();
   const book = useRef<HTMLDivElement>(null);
   const [page, setPage] = useState(0);
   const total = WORLDS.length * STAMP_KINDS.length;
@@ -156,7 +157,7 @@ export default function PassportPage() {
               })}
             </div>
             {w.id !== world && (
-              <button className="link pp-go" onClick={() => openGate(true)}>{t("goWorld")} →</button>
+              <Link className="link pp-go" href={`/worlds#${w.id}`}>{t("goWorld")} →</Link>
             )}
             <footer className="pp-folio">{i + 2}</footer>
           </section>
