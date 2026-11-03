@@ -16,7 +16,7 @@ import { isZeroCocktail, pour } from "@/lib/zero";
 import { Echo } from "@/components/Echo";
 
 export function CocktailDetail({ id }: { id: string }) {
-  const { pick, t, lang, creations, favourites, toggleFav, world, openGate, zero } = usePrefs();
+  const { pick, t, lang, creations, favourites, toggleFav, world, zero } = usePrefs();
   const [choice, setChoice] = useState<boolean | null>(null);
   const original = findCocktail(id, creations);
   if (!original) {
@@ -63,7 +63,7 @@ export function CocktailDetail({ id }: { id: string }) {
         {otherWorld && (
           <p className="hint">
             {pick(worldById(c.world as never).name)} ·{" "}
-            <button className="link" onClick={() => openGate(true)}>{t("changeWorld")} →</button>
+            <Link className="link" href={`/worlds#${c.world}`}>{t("changeWorld")} →</Link>
           </p>
         )}
         <p className="story">{pick(c.story)}</p>

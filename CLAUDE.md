@@ -55,8 +55,8 @@ npm install · npm run dev · npm run build · npm run lint (tsc)
 | Sakura | seigaiha, kumiko, kintsugi, shoji, hinoki, tategaki, karesansui | Bar Hanami 花見 | ochoko, masu | sensu fan | fūrin | Kintsugi |
 | Alchemist | alchemy glyphs, parchment, brass | The Apothecary | beaker, flask | astrolabe | music box | Secret Elixir (mastermind) |
 | Tiki | tapa, bamboo, palm leaves, torches | The Lagoon Hut | coconut, pineapple, tiki mug | rope dial | ukulele | Fruit Rain |
-| Boreal (Scandinavia + Russia) | aurora, snow, pine ridge, Selbu star, Gzhel blue, birch bark; fonts Forum + Jost | Aurora Hall | frosted ryumka, birch kuksa, glass of ice | frosted compass | kantele | Frozen Lake (ice-slide, BFS-checked levels) |
-| Riviera (French cellars, Italian/Greek gardens) | meander, vine & grapes, lemons, majolica, cellar brick vault, wax-sealed bottles; fonts Italiana + Lora | La Cave Riviera | wine glass, kylix, terracotta cup | sundial | mandolin | Majolica (sliding tile 3×3 / 4×4) |
+| Boreal (Scandinavia + Russia) | aurora, snow, pine ridge, Selbu star, Gzhel blue, birch bark; fonts Ruslan Display + Jost | Aurora Hall | frosted ryumka, birch kuksa, glass of ice | frosted compass | kantele | Frozen Lake (ice-slide, BFS-checked levels) |
+| Riviera (French cellars, Italian/Greek gardens) | meander, vine & grapes, lemons, majolica, cellar brick vault, wax-sealed bottles; fonts Aboreto + Lora | La Cave Riviera | wine glass, kylix, terracotta cup | sundial | mandolin | Majolica (sliding tile 3×3 / 4×4) |
 
 ## Typography
 The owner found the first fonts generic ("AI-looking"). Each world now has a characterful display font (`--font-display`) and a readable `--font-prose` for long italic text (story, greeting, tips):
@@ -74,6 +74,11 @@ The owner found the first fonts generic ("AI-looking"). Each world now has a cha
 The logo wordmark and nav brand use a fixed `--font-brand` (Cormorant Garamond) so the owner's logo never changes.
 **Script echoes** (`src/lib/scripts.ts`, `<Echo>`): page titles are repeated letter by letter in Elder Futhark runes (Boreal), Old Turkic / Orkhon, right to left (Anatolia) and Greek capitals (Riviera).
 
+## Worlds & transitions
+- `/worlds` is the world switcher: one "portal" card per world (its wall, band, emblem, font). Maison asks for the palette and Jazz for the password inside the card; once the password is right `prefs.jazzKey` remembers it. `/worlds#id` opens a card (used by the passport and cocktail pages). The globe pill in the header links here at every screen size.
+- Always change worlds with `travel(id, patch)` from prefs, never `set({ world })`: it plays `WorldTransition` (cover 750 ms → world swaps → reveal 1050 ms). Boreal blizzard, Sakura petal storm, Anatolia kilim curtains + nazar, Jazz velvet curtains, Riviera shutters, Cosmos light-speed, Maison golden fan, Alchemist smoke + glyphs, Tiki palm fronds. Skipped under `prefers-reduced-motion`.
+- Keep transitions light: no CSS `filter: blur` on many animated layers (it froze the Alchemist smoke).
+
 ## Cocktail Passport (`/passport`)
 - 3 stamps per world in `prefs.stamps` (`"world:kind"` → date): **arrival** (entering the world), **tasting** (saving one of its signatures), **master** (finishing its game via `useBest().submit`, or saving a creation in its Atelier).
 - `prefs.stamp()` sets `fresh`, shown by `StampToast`. Stamp art: `PassportStamp.tsx` (ink, outline and motif per world).
@@ -85,7 +90,7 @@ The logo wordmark and nav brand use a fixed `--font-brand` (Cormorant Garamond) 
 - Atelier and Cellar have an "Alkolsüz 0%" shelf/filter (`ingredient.zero`). Adding an alcoholic ingredient? Add it to `MAP` in `zero.ts` (category fallbacks exist).
 
 ## Pages
-`/` home · `/cocktails` + `/cocktails/[id]` · `/cellar` + `/cellar/[id]` · `/atelier` (the world's bar: 3D bottle shelves, counter, vessel & garnish pickers, gauge, save signature) · `/lineage` (family tree) · `/concierge` · `/bar` (what can I make) · `/glass-ice` · `/games` · `/passport` · `/collection` (printable menu).
+`/` home · `/cocktails` + `/cocktails/[id]` · `/cellar` + `/cellar/[id]` · `/atelier` (the world's bar: 3D bottle shelves, counter, vessel & garnish pickers, gauge, save signature) · `/lineage` (family tree) · `/concierge` · `/bar` (what can I make) · `/glass-ice` · `/games` · `/passport` · `/worlds` · `/collection` (printable menu).
 
 ## How to add things
 - **Ingredient**: add a row to `ingredientsMore.ts` (look string: `"tint[,o][,shape][,glassTint][,capColor]"`, profile = 6 digits sweet/sour/bitter/strong/fresh/aromatic).
@@ -97,7 +102,7 @@ The logo wordmark and nav brand use a fixed `--font-brand` (Cormorant Garamond) 
 - Turkish `text-transform: uppercase` turns i into İ: set `lang="en"` on English names.
 - SVG arcs over 180° need the large-arc flag (see `BalanceGauge`).
 - Grid children with horizontal scrollers need `min-width: 0`, or the page widens.
-- Nav collapses to the burger menu under 1480px (10 links).
+- Nav collapses to the burger menu under 1720px (11 links).
 - Owner did not want: the old scale, flat bottles and glasses, the busy bright çini wall, the turquoise band on Anatolia glasses. (Same reason Riviera's counter is travertine with only a thin majolica edge.)
 - Backdrops are `position: fixed`; full-page screenshots only show them in the first viewport. That is expected.
 

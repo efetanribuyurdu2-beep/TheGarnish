@@ -9,10 +9,12 @@ import type { UIKey } from "@/lib/ui";
 import { LogoMark } from "./Logo";
 import { MusicButton } from "./MusicButton";
 import { StampToast } from "./StampToast";
+import { WorldTransition } from "./WorldTransition";
 import { WorldBackdrop } from "./WorldBackdrop";
 import { LangToggle, WorldGate } from "./WorldGate";
 
 const LINKS: [string, UIKey][] = [
+  ["/worlds", "nav_worlds"],
   ["/cocktails", "nav_cocktails"],
   ["/cellar", "nav_cellar"],
   ["/atelier", "nav_atelier"],
@@ -26,7 +28,7 @@ const LINKS: [string, UIKey][] = [
 ];
 
 export function Shell({ children }: { children: React.ReactNode }) {
-  const { ready, world, gate, openGate, t, pick, palette, set, zero } = usePrefs();
+  const { ready, world, gate, t, pick, palette, set, zero } = usePrefs();
   const path = usePathname();
   const [menu, setMenu] = useState(false);
   useEffect(() => setMenu(false), [path]);
@@ -38,6 +40,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
   return (
     <>
       <WorldBackdrop world={w} />
+      <WorldTransition />
       {showGate ? (
         <WorldGate />
       ) : (
@@ -78,9 +81,14 @@ export function Shell({ children }: { children: React.ReactNode }) {
               </button>
               <MusicButton />
               <LangToggle />
-              <button className="btn ghost small" onClick={() => openGate(true)}>
-                {t("changeWorld")}
-              </button>
+              <Link href="/worlds" className={`world-btn ${path.startsWith("/worlds") ? "on" : ""}`} title={t("changeWorld")} aria-label={t("changeWorld")}>
+                <svg viewBox="0 0 24 24" aria-hidden>
+                  <circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" strokeWidth="1.4" />
+                  <ellipse cx="12" cy="12" rx="4.2" ry="9.5" fill="none" stroke="currentColor" strokeWidth="1.1" />
+                  <path d="M2.5 12 H21.5 M4.5 6.5 H19.5 M4.5 17.5 H19.5" stroke="currentColor" strokeWidth="1.1" />
+                </svg>
+                <span>{t("nav_worlds")}</span>
+              </Link>
               <button className="burger" aria-label={t("menu")} aria-expanded={menu} onClick={() => setMenu((m) => !m)}>
                 <span />
                 <span />
