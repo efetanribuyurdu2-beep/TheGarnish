@@ -17,7 +17,7 @@ import { usePhase } from "@/lib/useDaytime";
 import { useOnline } from "./Offline";
 
 export function Shell({ children }: { children: React.ReactNode }) {
-  const { ready, world, gate, t, pick, palette, set, zero } = usePrefs();
+  const { ready, world, gate, t, pick, palette, set, zero, transit } = usePrefs();
   const path = usePathname();
   const [menu, setMenu] = useState(false);
   useEffect(() => setMenu(false), [path]);
@@ -33,7 +33,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
     <>
       <WorldBackdrop world={w} />
       {/* the light of the hour over the world (see "TIME OF DAY" in globals.css) */}
-      <div className="daylight" aria-hidden />
+      <div className={`daylight ${transit ? "off" : ""}`} aria-hidden />
       <WorldTransition />
       {showGate ? (
         <WorldGate />

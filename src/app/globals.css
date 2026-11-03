@@ -4879,7 +4879,9 @@ body.sheet-open { overflow: hidden; }
 /* ─────────────────────────────── TIME OF DAY
    <html data-time="dawn|day|dusk|night"> from the visitor's clock. One still layer
    (.daylight) over each world's backdrop: no animation, no filter, so it costs nothing. */
-.daylight { position: fixed; inset: 0; z-index: 0; pointer-events: none; transition: background 2s ease; }
+.daylight { position: fixed; inset: 0; z-index: 0; pointer-events: none; transition: opacity 1.2s ease; }
+/* off while a world transition plays: the curtain covers the screen anyway, and the layer would cost frames */
+.daylight.off { visibility: hidden; opacity: 0; transition: none; }
 /* generic light, then each world in its own colours */
 [data-time="dawn"] .daylight { background: linear-gradient(180deg, rgba(255, 170, 150, 0.14), transparent 45%); }
 [data-time="day"] .daylight { background: radial-gradient(120% 70% at 70% -10%, rgba(255, 244, 214, 0.12), transparent 60%); }
@@ -4961,3 +4963,35 @@ body.sheet-open { overflow: hidden; }
 .offline-bar { display: block; height: 3px; background: var(--line); border-radius: 2px; overflow: hidden; }
 .offline-bar b { display: block; height: 100%; background: var(--accent); transition: width 0.3s; }
 @media print { .offline-note { display: none; } }
+
+/* ─────────────────────────────── COCKTAIL BOOK · THE LEAF (story, method, variations) */
+.cb-entry { max-width: 1080px; margin: 0 auto 48px; }
+.cb-entry .cb-spread { margin-bottom: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.cb-leaf {
+  position: relative; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 0 clamp(28px, 4vw, 56px);
+  padding: clamp(26px, 4vw, 48px) clamp(24px, 4vw, 60px) clamp(28px, 4vw, 46px);
+  background: var(--cb-paper); color: var(--cb-ink);
+  border-top: 1px dashed color-mix(in srgb, var(--cb-rule) 50%, transparent);
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 1px 0 var(--cb-edge), 0 3px 0 -1px var(--cb-edge), 0 40px 70px -40px #000;
+}
+.cb-leaf h3 { margin: 18px 0 8px; font-size: 0.74rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--cb-rule); font-family: var(--font-body); font-weight: 600; }
+.cb-leaf h3:first-child { margin-top: 0; }
+.cb-leaf p { margin: 0 0 12px; line-height: 1.7; font-size: 0.98rem; }
+.cb-leaf-story p { font-family: var(--font-prose, var(--font-display)); font-size: 1.04rem; }
+.cb-lead::first-letter { float: left; font-family: var(--font-display); font-size: 3.4em; line-height: 0.82; margin: 0.06em 0.1em 0 0; color: var(--cb-rule); }
+.cb-steps { margin: 0 0 8px; padding-left: 0; list-style: none; counter-reset: step; }
+.cb-steps li { position: relative; padding: 0 0 8px 34px; line-height: 1.55; counter-increment: step; }
+.cb-steps li::before { content: counter(step); position: absolute; left: 0; top: 0.05em; width: 22px; height: 22px; display: grid; place-items: center; border: 1px solid var(--cb-rule); border-radius: 50%; font-size: 0.72rem; color: var(--cb-rule); }
+.cb-vars { margin: 0 0 6px; display: grid; gap: 8px; }
+.cb-vars dt { font-family: var(--font-display); font-size: 1.02rem; }
+.cb-vars dd { margin: 0; font-size: 0.9rem; color: var(--cb-soft, inherit); line-height: 1.5; }
+.cb-tip { margin-top: 18px; padding: 14px 18px; border: 1px solid color-mix(in srgb, var(--cb-rule) 55%, transparent); border-radius: 3px; background: color-mix(in srgb, var(--cb-rule) 8%, transparent); }
+.cb-tip span { display: block; font-size: 0.68rem; letter-spacing: 0.26em; text-transform: uppercase; color: var(--cb-rule); margin-bottom: 4px; }
+.cb-tip p { margin: 0; font-style: italic; font-family: var(--font-prose, var(--font-display)); }
+.cbook-cosmos .cb-leaf { border-radius: 0 0 18px 18px; border: 1px solid rgba(155, 123, 255, 0.35); border-top: 1px dashed rgba(127, 230, 255, 0.4); }
+.cbook-sakura .cb-leaf { border-radius: 0; }
+@media (max-width: 760px) {
+  .cb-leaf { grid-template-columns: minmax(0, 1fr); }
+  .cb-leaf-craft { margin-top: 8px; }
+}

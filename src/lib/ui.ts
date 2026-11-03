@@ -187,6 +187,10 @@ const dict = {
   offlineReady: { tr: "Çevrimdışı hazır", en: "Ready offline" },
   offlineSaving: { tr: "Sayfalar kaydediliyor · {done}/{total}", en: "Saving pages · {done}/{total}" },
   offlineNow: { tr: "Çevrimdışısın: kayıtlı sayfalar açık, paylaşım kartı ve PDF bağlantı gelince.", en: "You are offline: saved pages are open; share cards and PDFs when you are back." },
+  bookStory: { tr: "Hikâyesi", en: "The story" },
+  bookMethod: { tr: "Adım adım", en: "Step by step" },
+  bookVariations: { tr: "Varyasyonlar", en: "Variations" },
+  bookTip: { tr: "Barmenin notu", en: "The bartender's note" },
   whyTitle: { tr: "Neden işe yarıyor?", en: "Why it works" },
   // weekly secret ingredient
   secretTitle: { tr: "Haftanın Gizli Malzemesi", en: "The Secret of the Week" },
