@@ -3757,3 +3757,281 @@ input[type="range"].themed:active::-webkit-slider-thumb {
 .portal-step .input { max-width: 240px; }
 .portal-step.shake { animation: shake 0.5s; }
 .portal-step .hint { color: #f3eee2; opacity: 0.75; margin: 0; text-align: center; }
+
+/* ═════════════════════════════════════════════ WORLD UI KIT
+   The basic interface (buttons, chips, fields, nav underline, scrollbar, focus
+   ring, selection, eyebrow rule) is restyled per world, so changing worlds
+   changes the lines and the hand of the whole site, not only its colours. */
+
+/* shared hooks every world can override */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) transparent; /* Firefox takes colours only, the gradients below are for Chromium/Safari */
+}
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--ui-track, transparent); }
+::-webkit-scrollbar-thumb {
+  background: var(--ui-thumb, var(--accent));
+  border: 2px solid var(--bg);
+  border-radius: var(--ui-thumb-r, 999px);
+}
+.nav-links a { position: relative; border-bottom: 0; }
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  bottom: -2px;
+  height: var(--ui-nav-h, 1px);
+  background: var(--ui-nav, var(--accent));
+  transform: scaleX(0);
+  transform-origin: var(--ui-nav-origin, center);
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.nav-links a:hover::after,
+.nav-links a.active::after { transform: scaleX(1); }
+.eyebrow::before {
+  content: var(--ui-eyebrow, none);
+  margin-right: 0.7em;
+  letter-spacing: 0;
+}
+.input:focus,
+select.input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: var(--ui-field-focus, 0 0 0 1px var(--accent));
+}
+
+/* ── Maison: Art Deco. Gilded metal, double rules, sharp corners */
+[data-world="maison"] {
+  --ui-thumb: linear-gradient(180deg, #f3e3b3, #b8954a);
+  --ui-thumb-r: 0;
+  --ui-nav: linear-gradient(var(--accent), var(--accent)) top / 100% 1px no-repeat, linear-gradient(var(--accent), var(--accent)) bottom / 100% 1px no-repeat;
+  --ui-nav-h: 4px;
+  --ui-eyebrow: "◆";
+}
+[data-world="maison"] .btn {
+  background: linear-gradient(180deg, #f3e3b3 0%, var(--accent) 45%, #9c7b38 100%);
+  border: 0;
+  border-radius: 0;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35), inset 0 0 0 3px var(--accent), inset 0 0 0 4px rgba(0, 0, 0, 0.35);
+  color: #120f08;
+}
+[data-world="maison"] .btn.ghost {
+  background: transparent;
+  color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent), inset 0 0 0 3px var(--bg), inset 0 0 0 4px var(--line);
+}
+[data-world="maison"] .chip { border-radius: 0; letter-spacing: 0.08em; }
+[data-world="maison"] .chip.on { background: transparent; color: var(--accent); box-shadow: inset 0 0 0 3px var(--bg), inset 0 0 0 4px var(--accent); }
+[data-world="maison"] .input,
+[data-world="maison"] select.input { background: transparent; border-width: 0 0 1px; border-radius: 0; }
+[data-world="maison"] :focus-visible { outline: 1px solid var(--accent); outline-offset: 4px; box-shadow: 0 0 0 6px var(--bg), 0 0 0 7px var(--line); }
+
+/* ── Anatolia: woven kilim, madder red, gold thread, rounded arch tops */
+[data-world="anatolia"] {
+  --ui-thumb: linear-gradient(180deg, #c8323c, #8e1f27);
+  --ui-nav: var(--band) repeat-x left center / auto 6px;
+  --ui-nav-h: 6px;
+  --ui-nav-origin: left;
+  --ui-eyebrow: "❖";
+  --ui-field-focus: 0 0 0 3px rgba(212, 169, 74, 0.25);
+}
+[data-world="anatolia"] .btn {
+  background: linear-gradient(180deg, #c8323c, #8e1f27);
+  border: 1px solid var(--gold);
+  color: #f5ecd9;
+  border-radius: 18px 18px 6px 6px;
+  box-shadow: inset 0 -5px 0 -2px rgba(212, 169, 74, 0.55), inset 0 0 0 3px rgba(10, 28, 54, 0.35);
+}
+[data-world="anatolia"] .btn.ghost { background: transparent; color: var(--gold); box-shadow: inset 0 -3px 0 -1px rgba(212, 169, 74, 0.5); }
+[data-world="anatolia"] .chip { border-style: dashed; border-color: rgba(212, 169, 74, 0.45); }
+[data-world="anatolia"] .chip.on { background: #a3262e; border: 1px solid var(--gold); color: #f5ecd9; }
+[data-world="anatolia"] .input,
+[data-world="anatolia"] select.input { border-color: rgba(212, 169, 74, 0.45); box-shadow: inset 0 0 0 3px var(--surface), inset 0 0 0 4px rgba(212, 169, 74, 0.18); }
+[data-world="anatolia"] :focus-visible { outline: 2px dashed var(--gold); outline-offset: 3px; }
+[data-world="anatolia"] ::selection { background: #c8323c; color: #f5ecd9; }
+
+/* ── Cosmos: neon glass, glowing rails */
+[data-world="cosmos"] {
+  --ui-thumb: linear-gradient(180deg, #9b7bff, #ff7ac8);
+  --ui-nav: linear-gradient(90deg, transparent, #9b7bff, #ff7ac8, transparent);
+  --ui-nav-h: 2px;
+  --ui-eyebrow: "✦";
+  --ui-field-focus: 0 0 0 1px #9b7bff, 0 0 18px rgba(155, 123, 255, 0.45);
+}
+[data-world="cosmos"] .btn {
+  background: linear-gradient(90deg, #7b5cff, #c46bff 55%, #ff7ac8);
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25) inset, 0 0 22px rgba(155, 123, 255, 0.45);
+}
+[data-world="cosmos"] .btn:hover { box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.4) inset, 0 0 34px rgba(255, 122, 200, 0.55); }
+[data-world="cosmos"] .btn.ghost { background: rgba(20, 20, 56, 0.5); color: #e8ecff; box-shadow: 0 0 0 1px #9b7bff inset, 0 0 14px rgba(155, 123, 255, 0.3); backdrop-filter: blur(6px); }
+[data-world="cosmos"] .chip { background: rgba(20, 20, 56, 0.45); backdrop-filter: blur(6px); }
+[data-world="cosmos"] .chip.on { background: rgba(155, 123, 255, 0.25); color: #fff; box-shadow: 0 0 14px rgba(155, 123, 255, 0.5); }
+[data-world="cosmos"] .input,
+[data-world="cosmos"] select.input { border-radius: 999px; background: rgba(8, 9, 26, 0.6); }
+[data-world="cosmos"] :focus-visible { outline: 0; box-shadow: 0 0 0 2px #9b7bff, 0 0 18px rgba(255, 122, 200, 0.6); border-radius: 12px; }
+
+/* ── Jazz: brass marquee, ticket stubs, piano black */
+[data-world="jazz"] {
+  --ui-thumb: linear-gradient(90deg, #8a6a2c, #e9c97a, #8a6a2c);
+  --ui-thumb-r: 0;
+  --ui-nav: radial-gradient(circle, var(--accent) 1.2px, transparent 1.6px) 0 50% / 7px 4px repeat-x;
+  --ui-nav-h: 4px;
+  --ui-eyebrow: "♪";
+}
+[data-world="jazz"] .btn {
+  letter-spacing: 0.18em;
+  font-weight: 600;
+  background: linear-gradient(180deg, #f0d38e, #c79a45 55%, #8a6a2c);
+  border: 0;
+  border-radius: 0;
+  color: #120e07;
+  box-shadow: inset 0 0 0 1px #2a2013, inset 0 0 0 3px #e9c97a, 0 0 18px -6px rgba(217, 178, 95, 0.7);
+}
+[data-world="jazz"] .btn.ghost { background: transparent; color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent), inset 0 0 0 4px var(--bg), inset 0 0 0 5px rgba(217, 178, 95, 0.4); }
+/* ticket stub: notched sides */
+[data-world="jazz"] .chip {
+  border-radius: 0;
+  -webkit-mask: radial-gradient(circle 5px at 0 50%, transparent 98%, #000) left / 51% 100% no-repeat, radial-gradient(circle 5px at 100% 50%, transparent 98%, #000) right / 51% 100% no-repeat;
+  mask: radial-gradient(circle 5px at 0 50%, transparent 98%, #000) left / 51% 100% no-repeat, radial-gradient(circle 5px at 100% 50%, transparent 98%, #000) right / 51% 100% no-repeat;
+  padding-inline: 18px;
+}
+[data-world="jazz"] .chip.on { background: var(--accent); color: #120e07; }
+[data-world="jazz"] .input,
+[data-world="jazz"] select.input { background: #050403; border-width: 0 0 2px; border-color: var(--accent); border-radius: 0; }
+[data-world="jazz"] :focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; box-shadow: 0 0 14px rgba(217, 178, 95, 0.5); }
+
+/* ── Sakura: vermilion hanko, ink brush strokes, washi */
+[data-world="sakura"] {
+  --ui-thumb: #f2a7bb;
+  --ui-nav: linear-gradient(90deg, transparent, #c8102e 12%, #e8495f 60%, rgba(200, 16, 46, 0.4) 88%, transparent);
+  --ui-nav-h: 3px;
+  --ui-nav-origin: left;
+  --ui-eyebrow: "❀";
+}
+[data-world="sakura"] .nav-links a::after { border-radius: 50% 40% 60% 30% / 100%; }
+[data-world="sakura"] .btn {
+  background: #c8102e;
+  border: 0;
+  color: #fff6f2;
+  border-radius: 4px 9px 3px 8px;
+  box-shadow: inset 0 0 0 2px rgba(255, 246, 242, 0.25), 0 6px 18px -10px #c8102e;
+}
+[data-world="sakura"] .btn.ghost {
+  background: linear-gradient(90deg, transparent 4%, rgba(242, 167, 187, 0.9) 10%, rgba(242, 167, 187, 0.7) 85%, transparent 96%) bottom / 100% 2px no-repeat;
+  color: var(--accent);
+  box-shadow: none;
+  border-radius: 0;
+}
+[data-world="sakura"] .chip { border-radius: 2px; background: rgba(247, 238, 240, 0.04); }
+[data-world="sakura"] .chip.on { background: #f7eef0; color: #c8102e; border-color: #f7eef0; }
+[data-world="sakura"] .input,
+[data-world="sakura"] select.input { background: rgba(247, 238, 240, 0.04); border-width: 0 0 1px; border-radius: 0; }
+[data-world="sakura"] :focus-visible { outline: 2px solid #c8102e; outline-offset: 3px; }
+[data-world="sakura"] ::selection { background: #c8102e; color: #fff6f2; }
+
+/* ── Alchemist: riveted brass plaques, apothecary labels */
+[data-world="alchemist"] {
+  --ui-thumb: linear-gradient(90deg, #6b4f22, #c39245, #6b4f22);
+  --ui-thumb-r: 2px;
+  --ui-nav: linear-gradient(var(--accent), var(--accent)) center / 100% 1px no-repeat, radial-gradient(circle, var(--accent) 2px, transparent 2.5px) left center / 5px 5px no-repeat, radial-gradient(circle, var(--accent) 2px, transparent 2.5px) right center / 5px 5px no-repeat;
+  --ui-nav-h: 5px;
+  --ui-eyebrow: "☿";
+}
+[data-world="alchemist"] .btn {
+  background: radial-gradient(circle at 7px 50%, #3a2b14 2px, transparent 2.5px), radial-gradient(circle at calc(100% - 7px) 50%, #3a2b14 2px, transparent 2.5px), linear-gradient(180deg, #e0b866, #b07f35 60%, #7b5520);
+  border: 1px solid #3a2b14;
+  border-radius: 3px;
+  color: #1d150a;
+  box-shadow: inset 0 1px 0 rgba(255, 240, 200, 0.5), 0 2px 0 #3a2b14;
+}
+[data-world="alchemist"] .btn.ghost { background: rgba(230, 217, 189, 0.06); color: #e0b866; font-weight: 600; border: 1px solid var(--accent); box-shadow: inset 0 0 0 3px var(--bg), inset 0 0 0 4px var(--line); }
+/* apothecary label: clipped corners */
+[data-world="alchemist"] .chip {
+  border-radius: 0;
+  clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 8px 100%, 0 50%);
+  background: rgba(230, 217, 189, 0.07);
+  border: 0;
+  padding-inline: 18px;
+}
+[data-world="alchemist"] .chip.on { background: #e6d9bd; color: #1d150a; }
+[data-world="alchemist"] .input,
+[data-world="alchemist"] select.input { background: rgba(230, 217, 189, 0.05); border-style: double; border-width: 3px; }
+[data-world="alchemist"] :focus-visible { outline: 1px dashed var(--accent2); outline-offset: 4px; }
+
+/* ── Tiki: bamboo poles, rope, chunky carved shapes */
+[data-world="tiki"] {
+  --ui-thumb: repeating-linear-gradient(180deg, #c99a4e 0 22px, #7a5a26 22px 24px);
+  --ui-thumb-r: 6px;
+  --ui-nav: repeating-linear-gradient(115deg, #f0a04b 0 4px, #7a5a26 4px 7px);
+  --ui-nav-h: 4px;
+  --ui-nav-origin: left;
+  --ui-eyebrow: "✺";
+}
+[data-world="tiki"] .nav-links a::after { border-radius: 4px; }
+[data-world="tiki"] .btn {
+  /* bamboo: a node near each end, the grain running along the pole */
+  background: linear-gradient(90deg, transparent 10px, rgba(70, 45, 15, 0.6) 10px 12px, rgba(255, 230, 170, 0.4) 12px 13px, transparent 13px calc(100% - 13px), rgba(255, 230, 170, 0.4) calc(100% - 13px) calc(100% - 12px), rgba(70, 45, 15, 0.6) calc(100% - 12px) calc(100% - 10px), transparent calc(100% - 10px)),
+    repeating-linear-gradient(180deg, transparent 0 3px, rgba(120, 80, 25, 0.12) 3px 4px), linear-gradient(180deg, #f2cd7d, #d39a43 55%, #a06c22);
+  padding-inline: 32px;
+  border: 2px solid #4a2f10;
+  border-radius: 14px;
+  color: #2a1807;
+  font-weight: 700;
+  box-shadow: 0 3px 0 #4a2f10, inset 0 2px 0 rgba(255, 240, 200, 0.5);
+}
+[data-world="tiki"] .btn:hover { transform: translateY(-2px) rotate(-0.6deg); }
+[data-world="tiki"] .btn.ghost { background: transparent; color: var(--accent); border: 2px dashed var(--accent); box-shadow: none; }
+[data-world="tiki"] .chip { border-width: 2px; font-weight: 600; }
+[data-world="tiki"] .chip.on { background: #e2574c; border-color: #4a2f10; color: #fff4e0; box-shadow: 0 2px 0 #4a2f10; }
+[data-world="tiki"] .input,
+[data-world="tiki"] select.input { border-width: 2px; border-radius: 14px; }
+[data-world="tiki"] :focus-visible { outline: 3px dashed var(--accent); outline-offset: 3px; }
+
+/* ── Boreal: frosted ice, aurora edge, snow-crust highlight */
+[data-world="boreal"] {
+  --ui-thumb: linear-gradient(180deg, #e8f1f6, #7fe3c4);
+  --ui-nav: linear-gradient(90deg, transparent, #7fe3c4, #b7d4ff, #c9a6ff, transparent);
+  --ui-nav-h: 2px;
+  --ui-eyebrow: "❄";
+  --ui-field-focus: 0 0 0 1px #b7d4ff, 0 0 16px rgba(127, 227, 196, 0.35);
+}
+[data-world="boreal"] .btn {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), #dbe9f2 45%, #a9c6da);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  color: #10233a;
+  box-shadow: inset 0 2px 0 #fff, 0 0 0 1px rgba(127, 227, 196, 0.4), 0 8px 22px -12px #7fe3c4;
+}
+[data-world="boreal"] .btn.ghost { background: rgba(232, 241, 246, 0.06); color: #e8f1f6; border: 1px solid rgba(183, 212, 255, 0.5); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35); backdrop-filter: blur(6px); }
+[data-world="boreal"] .chip { background: rgba(232, 241, 246, 0.05); border-color: rgba(183, 212, 255, 0.35); }
+[data-world="boreal"] .chip.on { background: #e8f1f6; color: #10233a; border-color: #fff; box-shadow: 0 0 0 1px #7fe3c4; }
+[data-world="boreal"] .input,
+[data-world="boreal"] select.input { background: rgba(232, 241, 246, 0.05); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12); }
+[data-world="boreal"] :focus-visible { outline: 0; box-shadow: 0 0 0 2px #e8f1f6, 0 0 0 4px rgba(127, 227, 196, 0.6); border-radius: 6px; }
+
+/* ── Riviera: majolica tile edge, cobalt and lemon, engraved caps */
+[data-world="riviera"] {
+  --ui-thumb: linear-gradient(180deg, #e3b341, #b8862a);
+  --ui-nav: var(--band) repeat-x left center / auto 6px;
+  --ui-nav-h: 6px;
+  --ui-eyebrow: "❦";
+}
+[data-world="riviera"] .btn {
+  background: #f1e6cc;
+  border: 0;
+  border-radius: 2px;
+  color: #23407a;
+  box-shadow: inset 0 0 0 2px #23407a, inset 0 0 0 4px #f1e6cc, inset 0 0 0 5px #e3b341;
+}
+[data-world="riviera"] .btn:hover { box-shadow: inset 0 0 0 2px #23407a, inset 0 0 0 4px #f1e6cc, inset 0 0 0 5px #e3b341, 0 8px 24px -10px #e3b341; }
+[data-world="riviera"] .btn.ghost { background: transparent; color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent), inset 0 0 0 3px var(--bg), inset 0 0 0 4px rgba(125, 143, 58, 0.6); }
+[data-world="riviera"] .chip { border-radius: 2px; }
+[data-world="riviera"] .chip.on { background: #23407a; border-color: #e3b341; color: #f4ead6; }
+[data-world="riviera"] .input,
+[data-world="riviera"] select.input { border-radius: 2px; box-shadow: inset 0 0 0 3px var(--surface), inset 0 0 0 4px rgba(125, 143, 58, 0.35); }
+[data-world="riviera"] :focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; box-shadow: 0 0 0 5px rgba(35, 64, 122, 0.6); }
