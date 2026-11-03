@@ -45,6 +45,8 @@ npm install · npm run dev · npm run build · npm run lint (tsc) · npm run smo
 | `src/components/SharePanel.tsx` | "Paylaş" sheet on the cocktail page: card preview, landscape/portrait, copy link, native share, download PNG, WhatsApp, X |
 | `src/lib/party.ts`, `src/app/party/page.tsx` | Party planner: drinks per guest/hour, batch per method (stir pre-diluted, shake citrus same day, egg/cream/mint per glass, bubbles at serving), shopping list in bottles/fruit/packs with a 10% margin (owned items from `prefs.bar` last), ice, garnishes, timeline. Plan saved in `prefs.party` |
 | `src/lib/secret.ts`, `src/app/secret/page.tsx`, `SecretSeal.tsx` | Haftanın Gizli Malzemesi: one ingredient per ISO week from `POOL` (same for everyone), three clues in a wax-sealed envelope ("Mührü kır"), then the bottle, notes, drinks with it and the task: save an Atelier signature containing it → `sealSecret(week, id)` stores `prefs.secrets[week]` (separate from the 27 passport stamps; shown on the passport's "Gizli malzeme mühürleri" page, `#seals`). The Atelier marks the bottle on its shelf; the home page has a teaser |
+| `src/lib/daytime.ts`, `useDaytime.ts` | Time-of-day worlds: local hour → `dawn/day/dusk/night` on `<html data-time>` (boot script before paint, then `usePhase()` every 5 min). One still `.daylight` layer over the backdrop lights each world for the hour ("TIME OF DAY" in globals.css: no animation, no filter). Home greets with `GREETING` + `HOUR_LINE[world][phase]` |
+| `src/lib/why.ts` | "Neden işe yarıyor?" on cocktail pages: each ingredient's role (base, modifier, sour, sweet, texture, accent, lengthener) as a proportion bar, then the family frame, sugar/acid ratio, dilution by method, final volume/ABV, bitters and peel oils, all from `analyse()` |
 | `src/components/Bottle.tsx` | 13 bottle silhouettes (by ingredient `shape`) × world label/cap styling |
 | `src/components/BalanceGauge.tsx` | Balance dial, a different design per world |
 | `src/components/WorldBackdrop.tsx` | Animated world backgrounds |
@@ -135,7 +137,7 @@ The logo wordmark and nav brand use a fixed `--font-brand` (Cormorant Garamond) 
 - **Photos: still to do.** `src/data/bookPhotos.ts` is empty; a page uses its photo as soon as an entry exists. Unsplash only (Pexels blocks automated access). Use the official API with `UNSPLASH_ACCESS_KEY` from the environment (`Authorization: Client-ID …`); never scrape, never spoof a browser. Hotlink `urls.raw` (the page adds size params), call the photo's `links.download_location` once when you choose it, and keep the credit (photographer + Unsplash, with links; the page renders it). Check every photo by eye: the right drink, no logos, no faces. This is the only exception to "no image files".
 
 ## Next up
-Time-of-day worlds + "Neden işe yarıyor?" on cocktail pages → offline/PWA. One PR each.
+Offline/PWA. One PR each.
 
 ## Ideas parked for later
 User accounts (would need a backend, e.g. Supabase), photo-real assets.

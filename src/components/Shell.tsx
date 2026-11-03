@@ -13,6 +13,7 @@ import { StampToast } from "./StampToast";
 import { WorldTransition } from "./WorldTransition";
 import { WorldBackdrop } from "./WorldBackdrop";
 import { LangToggle, WorldGate } from "./WorldGate";
+import { usePhase } from "@/lib/useDaytime";
 
 export function Shell({ children }: { children: React.ReactNode }) {
   const { ready, world, gate, t, pick, palette, set, zero } = usePrefs();
@@ -20,6 +21,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
   const [menu, setMenu] = useState(false);
   useEffect(() => setMenu(false), [path]);
   const closeMenu = useCallback(() => setMenu(false), []);
+  usePhase(); // keeps <html data-time> in step with the clock
 
   if (!ready) return <div className="boot" />;
   const showGate = world === null || gate;
@@ -28,6 +30,8 @@ export function Shell({ children }: { children: React.ReactNode }) {
   return (
     <>
       <WorldBackdrop world={w} />
+      {/* the light of the hour over the world (see "TIME OF DAY" in globals.css) */}
+      <div className="daylight" aria-hidden />
       <WorldTransition />
       {showGate ? (
         <WorldGate />

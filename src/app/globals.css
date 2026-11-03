@@ -4875,3 +4875,81 @@ body.sheet-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .env-seal, .secret-teaser .secret-seal, .bottle-btn.secret::before { animation: none; }
 }
+
+/* ─────────────────────────────── TIME OF DAY
+   <html data-time="dawn|day|dusk|night"> from the visitor's clock. One still layer
+   (.daylight) over each world's backdrop: no animation, no filter, so it costs nothing. */
+.daylight { position: fixed; inset: 0; z-index: 0; pointer-events: none; transition: background 2s ease; }
+/* generic light, then each world in its own colours */
+[data-time="dawn"] .daylight { background: linear-gradient(180deg, rgba(255, 170, 150, 0.14), transparent 45%); }
+[data-time="day"] .daylight { background: radial-gradient(120% 70% at 70% -10%, rgba(255, 244, 214, 0.12), transparent 60%); }
+[data-time="dusk"] .daylight { background: linear-gradient(0deg, rgba(255, 120, 60, 0.12), transparent 50%); }
+[data-time="night"] .daylight { background: radial-gradient(130% 90% at 50% 40%, transparent 40%, rgba(0, 0, 0, 0.38)); }
+
+[data-world="maison"][data-time="dawn"] .daylight { background: linear-gradient(180deg, rgba(240, 190, 170, 0.12), transparent 50%); }
+[data-world="maison"][data-time="day"] .daylight { background: linear-gradient(115deg, rgba(255, 240, 205, 0.12) 0 18%, transparent 18% 24%, rgba(255, 240, 205, 0.08) 24% 36%, transparent 36%); }
+[data-world="maison"][data-time="dusk"] .daylight { background: radial-gradient(60% 40% at 50% 0%, rgba(255, 196, 110, 0.18), transparent 70%); }
+[data-world="maison"][data-time="night"] .daylight { background: radial-gradient(40% 30% at 50% 0%, rgba(255, 200, 120, 0.12), transparent 70%), radial-gradient(130% 90% at 50% 40%, transparent 45%, rgba(0, 0, 0, 0.45)); }
+
+[data-world="anatolia"][data-time="dawn"] .daylight { background: linear-gradient(180deg, rgba(255, 176, 140, 0.16), rgba(255, 210, 160, 0.05) 40%, transparent 60%); }
+[data-world="anatolia"][data-time="day"] .daylight { background: radial-gradient(90% 60% at 80% 0%, rgba(255, 228, 170, 0.14), transparent 65%); }
+[data-world="anatolia"][data-time="dusk"] .daylight { background: linear-gradient(0deg, rgba(200, 50, 60, 0.2), rgba(230, 120, 60, 0.08) 35%, transparent 60%); }
+[data-world="anatolia"][data-time="night"] .daylight { background: radial-gradient(18% 14% at 82% 12%, rgba(240, 236, 210, 0.2), transparent 70%), radial-gradient(130% 90% at 50% 40%, transparent 45%, rgba(4, 10, 30, 0.45)); }
+
+[data-world="cosmos"][data-time="dawn"] .daylight { background: radial-gradient(80% 40% at 0% 100%, rgba(255, 140, 90, 0.18), transparent 70%); }
+[data-world="cosmos"][data-time="day"] .daylight { background: radial-gradient(40% 40% at 90% 8%, rgba(255, 250, 230, 0.18), transparent 65%); }
+[data-world="cosmos"][data-time="dusk"] .daylight { background: linear-gradient(0deg, rgba(155, 123, 255, 0.18), transparent 55%); }
+[data-world="cosmos"][data-time="night"] .daylight { background: radial-gradient(130% 90% at 50% 40%, transparent 50%, rgba(0, 0, 0, 0.5)); }
+
+[data-world="jazz"][data-time="dawn"] .daylight { background: linear-gradient(180deg, rgba(120, 140, 170, 0.12), transparent 50%); }
+[data-world="jazz"][data-time="day"] .daylight { background: linear-gradient(90deg, rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.15) 50%, rgba(0, 0, 0, 0.35)); }
+[data-world="jazz"][data-time="dusk"] .daylight { background: radial-gradient(30% 50% at 50% 0%, rgba(217, 178, 95, 0.16), transparent 75%); }
+[data-world="jazz"][data-time="night"] .daylight { background: radial-gradient(22% 45% at 22% 0%, rgba(255, 210, 140, 0.14), transparent 75%), radial-gradient(22% 45% at 78% 0%, rgba(255, 210, 140, 0.14), transparent 75%); }
+
+[data-world="sakura"][data-time="dawn"] .daylight { background: linear-gradient(180deg, rgba(255, 220, 230, 0.16), rgba(255, 255, 255, 0.04) 50%, transparent 70%); }
+[data-world="sakura"][data-time="day"] .daylight { background: linear-gradient(180deg, rgba(255, 250, 240, 0.1), transparent 60%); }
+[data-world="sakura"][data-time="dusk"] .daylight { background: radial-gradient(25% 25% at 12% 70%, rgba(255, 150, 70, 0.16), transparent 70%), radial-gradient(25% 25% at 88% 70%, rgba(255, 150, 70, 0.16), transparent 70%); }
+[data-world="sakura"][data-time="night"] .daylight { background: radial-gradient(20% 16% at 78% 14%, rgba(230, 236, 255, 0.18), transparent 70%), linear-gradient(0deg, rgba(20, 24, 60, 0.3), transparent 70%); }
+
+[data-world="alchemist"][data-time="dawn"] .daylight { background: linear-gradient(180deg, rgba(200, 170, 120, 0.1), transparent 50%); }
+[data-world="alchemist"][data-time="day"] .daylight { background: linear-gradient(120deg, transparent 30%, rgba(255, 230, 170, 0.14) 38%, rgba(255, 230, 170, 0.05) 46%, transparent 52%); }
+[data-world="alchemist"][data-time="dusk"] .daylight { background: radial-gradient(35% 30% at 50% 100%, rgba(255, 170, 70, 0.16), transparent 75%); }
+[data-world="alchemist"][data-time="night"] .daylight { background: radial-gradient(28% 26% at 12% 86%, rgba(255, 170, 70, 0.16), transparent 75%), radial-gradient(130% 90% at 50% 40%, transparent 45%, rgba(0, 0, 0, 0.48)); }
+
+[data-world="tiki"][data-time="dawn"] .daylight { background: linear-gradient(180deg, rgba(255, 200, 160, 0.14), transparent 55%); }
+[data-world="tiki"][data-time="day"] .daylight { background: radial-gradient(70% 50% at 50% -10%, rgba(255, 245, 200, 0.16), transparent 65%); }
+[data-world="tiki"][data-time="dusk"] .daylight { background: linear-gradient(0deg, rgba(240, 90, 120, 0.2), rgba(240, 160, 75, 0.12) 35%, transparent 65%); }
+[data-world="tiki"][data-time="night"] .daylight { background: radial-gradient(20% 30% at 6% 100%, rgba(255, 140, 50, 0.2), transparent 75%), radial-gradient(20% 30% at 94% 100%, rgba(255, 140, 50, 0.2), transparent 75%), linear-gradient(0deg, transparent, rgba(0, 10, 20, 0.3)); }
+
+[data-world="boreal"][data-time="dawn"] .daylight { background: linear-gradient(180deg, rgba(80, 120, 200, 0.2), transparent 60%); }
+[data-world="boreal"][data-time="day"] .daylight { background: linear-gradient(0deg, rgba(240, 248, 255, 0.2), rgba(220, 235, 255, 0.1) 55%, rgba(220, 235, 255, 0.04)); }
+[data-world="boreal"][data-time="dusk"] .daylight { background: linear-gradient(180deg, rgba(150, 110, 220, 0.18), transparent 55%); }
+[data-world="boreal"][data-time="night"] .daylight { background: radial-gradient(80% 40% at 40% 0%, rgba(127, 227, 196, 0.16), transparent 70%), radial-gradient(60% 30% at 80% 5%, rgba(160, 120, 255, 0.1), transparent 70%); }
+
+[data-world="riviera"][data-time="dawn"] .daylight { background: linear-gradient(180deg, rgba(255, 225, 180, 0.12), transparent 55%); }
+[data-world="riviera"][data-time="day"] .daylight { background: repeating-linear-gradient(100deg, rgba(255, 220, 140, 0.1) 0 26px, transparent 26px 60px); mask-image: linear-gradient(180deg, #000, transparent 70%); -webkit-mask-image: linear-gradient(180deg, #000, transparent 70%); }
+[data-world="riviera"][data-time="dusk"] .daylight { background: linear-gradient(0deg, rgba(230, 120, 130, 0.18), rgba(255, 190, 140, 0.08) 40%, transparent 65%); }
+[data-world="riviera"][data-time="night"] .daylight { background: radial-gradient(30% 30% at 50% 100%, rgba(255, 190, 110, 0.14), transparent 75%), radial-gradient(130% 90% at 50% 40%, transparent 45%, rgba(0, 0, 0, 0.45)); }
+
+.hero-hour { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin: 0 0 8px; font-family: var(--font-prose, var(--font-display)); font-style: italic; color: var(--muted); }
+.hero-hour b { font-style: normal; font-family: var(--font-display); font-weight: var(--display-weight, 500); color: var(--accent); letter-spacing: var(--display-spacing); }
+.hero-hour i { font-style: normal; color: var(--accent); }
+@media print { .daylight { display: none; } }
+
+/* ─────────────────────────────── WHY IT WORKS */
+.why { margin-top: 32px; }
+.why-bar { display: flex; gap: 3px; min-height: 64px; margin: 10px 0 16px; border-radius: var(--radius); overflow: hidden; }
+.why-seg { flex-basis: 0; min-width: 56px; display: flex; flex-direction: column; justify-content: center; gap: 2px; padding: 8px 10px; overflow: hidden; color: var(--bg); }
+.why-seg b { font-size: 0.66rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; }
+.why-seg small { font-size: 0.72rem; line-height: 1.25; opacity: 0.85; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.why-seg.r-base { background: var(--accent); }
+.why-seg.r-modifier { background: color-mix(in srgb, var(--accent) 70%, var(--accent2)); }
+.why-seg.r-sour { background: color-mix(in srgb, #e9e27a 80%, var(--accent)); }
+.why-seg.r-sweet { background: color-mix(in srgb, #f0c27a 70%, var(--accent2)); }
+.why-seg.r-texture { background: color-mix(in srgb, var(--ink) 85%, var(--accent)); }
+.why-seg.r-accent { background: color-mix(in srgb, var(--accent2) 75%, #000); color: var(--ink); }
+.why-seg.r-length { background: color-mix(in srgb, var(--ink) 30%, var(--surface2)); color: var(--ink); }
+.why-points { margin: 0; padding-left: 20px; }
+.why-points li { margin: 8px 0; line-height: 1.55; }
+.why-points li::marker { color: var(--accent); content: var(--ui-eyebrow, "◆") "  "; font-size: 0.75em; }
+@media (max-width: 600px) { .why-seg small { display: none; } .why-seg { min-width: 44px; padding: 8px 6px; } .why-seg b { font-size: 0.58rem; letter-spacing: 0.1em; } }

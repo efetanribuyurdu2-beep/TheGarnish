@@ -180,6 +180,7 @@ const dict = {
   goWorld: { tr: "Bu dünyaya git", en: "Travel here" },
   prevPage: { tr: "Önceki sayfa", en: "Previous page" },
   nextPage: { tr: "Sonraki sayfa", en: "Next page" },
+  whyTitle: { tr: "Neden işe yarıyor?", en: "Why it works" },
   // weekly secret ingredient
   secretTitle: { tr: "Haftanın Gizli Malzemesi", en: "The Secret of the Week" },
   secretSub: { tr: "Her pazartesi mühürlü bir zarf gelir. İçinde bir malzeme ve bir görev var: onunla kendi imzanı yarat, haftanın mührünü pasaportuna bas.", en: "Every Monday a sealed envelope arrives. Inside: one ingredient and a task. Make your own signature with it and press the week's seal into your passport." },
