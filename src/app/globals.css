@@ -2674,7 +2674,7 @@ input[type="range"].themed:active::-webkit-slider-thumb {
   flex-direction: column;
   align-items: center;
   gap: 0;
-  padding: 30px 20px 0;
+  padding: 58px 20px 0; /* room above the glass for the pouring bottle */
   overflow: hidden;
 }
 .counter-reflection {
@@ -4995,3 +4995,29 @@ body.sheet-open { overflow: hidden; }
   .cb-leaf { grid-template-columns: minmax(0, 1fr); }
   .cb-leaf-craft { margin-top: 8px; }
 }
+
+/* ─────────────────────────────── ATELIER · POUR AND DICE */
+.counter-glass { position: relative; }
+.pour-fx { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.pour-bottle { position: absolute; width: 52px; animation: pour-bottle 1.25s cubic-bezier(0.45, 0, 0.25, 1) both; transform-origin: 50% 50%; filter: none; }
+.pour-bottle svg { display: block; }
+.pour-stream { position: absolute; width: 3px; border-radius: 2px; opacity: 0.9; animation: pour-stream 1.25s linear both; box-shadow: 0 0 6px rgba(255, 255, 255, 0.25); }
+.pour-fx.quick .pour-bottle, .pour-fx.quick .pour-stream { animation-duration: 0.76s; }
+@keyframes pour-bottle {
+  0% { transform: translate(-70px, 6px) rotate(15deg); opacity: 0; }
+  18% { transform: translate(0, 0) rotate(20deg); opacity: 1; }
+  38% { transform: rotate(115deg); }
+  74% { transform: rotate(115deg); opacity: 1; }
+  90% { transform: translate(-24px, -4px) rotate(25deg); opacity: 1; }
+  100% { transform: translate(-70px, 6px) rotate(15deg); opacity: 0; }
+}
+@keyframes pour-stream {
+  0%, 36% { clip-path: inset(0 0 100% 0); }
+  46% { clip-path: inset(0 0 0 0); }
+  72% { clip-path: inset(0 0 0 0); }
+  84%, 100% { clip-path: inset(100% 0 0 0); }
+}
+.dice-btn { align-self: end; white-space: nowrap; }
+.dice-btn .dice-icon { transition: transform 0.6s cubic-bezier(0.3, 1.5, 0.4, 1); }
+.dice-btn.rolling .dice-icon { transform: rotate(540deg) scale(1.15); }
+@media (prefers-reduced-motion: reduce) { .pour-fx { display: none; } }
