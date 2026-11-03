@@ -14,7 +14,7 @@ import { worldById } from "@/data/worlds";
 import { analyse } from "@/lib/balance";
 import { usePrefs } from "@/lib/prefs";
 import type { Cocktail, Glass, Ice, IngredientCategory, Method, Part, Root } from "@/lib/types";
-import { GLASS_LABEL, ICE_LABEL, SPECIAL_VESSELS, WORLD_VESSELS } from "@/lib/ui";
+import { GLASS_LABEL, ICE_LABEL, SPECIAL_VESSELS, WORLD_VESSELS, nameLang } from "@/lib/ui";
 import { pour } from "@/lib/zero";
 import { Echo } from "@/components/Echo";
 
@@ -142,7 +142,7 @@ export default function AtelierPage() {
                       title={pick(i.name)}
                     >
                       <Bottle ing={i} size={64} />
-                      <span>{pick(i.name)}</span>
+                      <span lang={nameLang(i.name)}>{pick(i.name)}</span>
                     </button>
                   ))}
                 </div>
@@ -193,7 +193,7 @@ export default function AtelierPage() {
                 <Bottle ing={ing} size={28} />
                 <div className="pour-main">
                   <div className="pour-head">
-                    <span>{pick(ing.name)}</span>
+                    <span lang={nameLang(ing.name)}>{pick(ing.name)}</span>
                     <span className="part-ml">{formatAmount(p.ml, lang, p.top, ing.category)}</span>
                   </div>
                   <input

@@ -10,6 +10,7 @@ import { usePrefs } from "@/lib/prefs";
 import type { Cocktail } from "@/lib/types";
 import { Ornament } from "@/components/Ornament";
 import { Echo } from "@/components/Echo";
+import { nameLang } from "@/lib/ui";
 
 export default function CollectionPage() {
   const { favourites, creations, pick, t, lang, set } = usePrefs();
@@ -65,7 +66,7 @@ export default function CollectionPage() {
             <div className="grid wide" style={{ marginTop: 20 }}>
               {menu.map((c) => (
                 <div key={c.id} className="card" style={{ textAlign: "center" }}>
-                  <h3>{pick(c.name)}</h3>
+                  <h3 lang={nameLang(c.name)}>{pick(c.name)}</h3>
                   <p className="muted" style={{ fontSize: ".85rem" }}>
                     {c.parts
                       .map((p) => {

@@ -11,7 +11,7 @@ import { worldById } from "@/data/worlds";
 import { analyse } from "@/lib/balance";
 import { childrenOf, findCocktail, visibleCocktails } from "@/lib/catalog";
 import { usePrefs } from "@/lib/prefs";
-import { GLASS_LABEL, ICE_LABEL, METHOD_STEPS } from "@/lib/ui";
+import { GLASS_LABEL, ICE_LABEL, METHOD_STEPS, nameLang } from "@/lib/ui";
 import { isZeroCocktail, pour } from "@/lib/zero";
 import { Echo } from "@/components/Echo";
 
@@ -50,7 +50,7 @@ export function CocktailDetail({ id }: { id: string }) {
         <span className="eyebrow">
           {c.author ? t("creations") : c.world === "all" ? t("classics") : pick(worldById(c.world).collection)}
         </span>
-        <h1>{pick(c.name)}</h1>
+        <h1 lang={nameLang(c.name)}>{pick(c.name)}</h1>
         <Echo text={pick(c.name)} />
         {native ? (
           <p><span className="badge zero">0% · {t("zeroNative")}</span></p>
@@ -87,7 +87,7 @@ export function CocktailDetail({ id }: { id: string }) {
             return (
               <li key={p.id + (p.top ? "-top" : "")}>
                 <span>
-                  <Link href={`/cellar/${ing.id}`}>{pick(ing.name)}</Link>
+                  <Link href={`/cellar/${ing.id}`} lang={nameLang(ing.name)}>{pick(ing.name)}</Link>
                   {from && <small className="instead">{t("insteadOf", { name: from })}</small>}
                 </span>
                 <span>{formatAmount(p.ml, lang, p.top, ing.category)}</span>
@@ -117,7 +117,7 @@ export function CocktailDetail({ id }: { id: string }) {
         {parent && (
           <p>
             <span className="eyebrow">{t("descendsFrom")}</span>
-            <Link href={`/cocktails/${parent.id}`}>{pick(parent.name)} →</Link>
+            <Link href={`/cocktails/${parent.id}`} lang={nameLang(parent.name)}>{pick(parent.name)} →</Link>
           </p>
         )}
         {kids.length > 0 && (
@@ -126,7 +126,7 @@ export function CocktailDetail({ id }: { id: string }) {
             {kids.map((k, i) => (
               <span key={k.id}>
                 {i > 0 && " · "}
-                <Link href={`/cocktails/${k.id}`}>{pick(k.name)}</Link>
+                <Link href={`/cocktails/${k.id}`} lang={nameLang(k.name)}>{pick(k.name)}</Link>
               </span>
             ))}
           </p>

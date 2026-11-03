@@ -938,6 +938,7 @@ select.input {
   align-items: center;
   min-height: 62vh;
 }
+.hero > * { min-width: 0; } /* the one-line script echo must not widen the grid on phones */
 .hero h1 {
   font-size: clamp(2.3rem, 5vw, 4rem);
   animation: fadeUp 1s ease both;
@@ -3619,7 +3620,7 @@ input[type="range"].themed:active::-webkit-slider-thumb {
   width: 80vw;
   max-width: 900px;
   z-index: 2;
-  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.6));
+  will-change: transform;
 }
 .frond.f0 { left: -10vw; top: -6%; --rot: 20deg; --from: -100%; }
 .frond.f1 { left: -14vw; top: 30%; --rot: -6deg; --from: -100%; }
@@ -4357,4 +4358,12 @@ select.input:focus {
 @media (prefers-reduced-motion: reduce) {
   .wm-card { animation: none; }
   .wmenu-jazz .wm-head::before { animation: none; }
+}
+
+/* ═════════════════════════════════════════════ TRANSITION SOUNDS (toggle) */
+.sfx-toggle { display: inline-flex; align-items: center; gap: 8px; }
+.sfx-toggle svg { flex-shrink: 0; }
+.gate-tools { display: inline-flex; align-items: center; gap: 10px; }
+@media (max-width: 520px) {
+  .gate-tools .sfx-toggle span { display: none; }
 }

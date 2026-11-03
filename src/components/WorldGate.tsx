@@ -6,6 +6,8 @@ import { usePrefs } from "@/lib/prefs";
 import type { PaletteId } from "@/lib/types";
 import { LogoFull } from "./Logo";
 import { Nazar } from "./WorldBackdrop";
+import { SfxToggle } from "./SfxToggle";
+import { nameLang } from "@/lib/ui";
 
 const ICON: Record<string, string> = {
   maison: "◆",
@@ -67,7 +69,10 @@ export function WorldGate() {
             ← {t("back")}
           </button>
         )}
-        <LangToggle />
+        <span className="gate-tools">
+          <SfxToggle />
+          <LangToggle />
+        </span>
       </div>
       <div className="gate-inner">
         <div className="gate-logo">
@@ -109,7 +114,7 @@ export function WorldGate() {
 
         {step.kind === "palette" && (
           <div className="gate-step">
-            <h2 className="gate-title">{pick(step.w.name)}</h2>
+            <h2 className="gate-title" lang={nameLang(step.w.name)}>{pick(step.w.name)}</h2>
             <p className="gate-sub">{t("palette")}</p>
             <div className="palette-row">
               {PALETTES.map((p) => (

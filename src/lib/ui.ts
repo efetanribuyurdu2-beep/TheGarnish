@@ -1,4 +1,4 @@
-import type { Lang } from "./types";
+import type { L, Lang } from "./types";
 
 const dict = {
   brand: { tr: "GARNISH", en: "GARNISH" },
@@ -9,6 +9,8 @@ const dict = {
     en: "Every world has its own colours, motifs and exclusive cocktails. You can switch at any time.",
   },
   enter: { tr: "Gir", en: "Enter" },
+  sfxOn: { tr: "Geçiş sesleri açık", en: "Transition sounds on" },
+  sfxOff: { tr: "Geçiş sesleri kapalı", en: "Transition sounds off" },
   changeWorld: { tr: "Dünya değiştir", en: "Change world" },
   palette: { tr: "Renk", en: "Palette" },
   password: { tr: "Parola?", en: "Password?" },
@@ -249,3 +251,7 @@ export const ICE_LABEL: Record<string, { tr: string; en: string }> = {
   crushed: { tr: "Kırık buz", en: "Crushed ice" },
   collins: { tr: "Uzun buz sütunu", en: "Collins spear" },
 };
+
+/** lang for a name that is the same in both languages (an English or foreign proper name).
+ * Turkish uppercase would otherwise turn its i into İ ("MARTİNİ"). */
+export const nameLang = (l: L): "en" | undefined => (l.tr === l.en ? "en" : undefined);

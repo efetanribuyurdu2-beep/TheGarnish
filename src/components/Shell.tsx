@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { PALETTES, worldById } from "@/data/worlds";
 import { usePrefs } from "@/lib/prefs";
 import type { UIKey } from "@/lib/ui";
+import { nameLang } from "@/lib/ui";
 import { LogoMark } from "./Logo";
 import { MusicButton } from "./MusicButton";
 import { StampToast } from "./StampToast";
@@ -50,7 +51,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
               <LogoMark size={38} />
               <span className="brand-text">
                 <b>GARNISH</b>
-                <small>{pick(worldById(w).name)}</small>
+                <small lang={nameLang(worldById(w).name)}>{pick(worldById(w).name)}</small>
               </span>
             </Link>
             <nav className={`nav-links ${menu ? "open" : ""}`} aria-label="Main">

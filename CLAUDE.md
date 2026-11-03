@@ -6,7 +6,7 @@ Read this first. It is the hand-off for any new session.
 - The owner writes in **Turkish**. Reply in Turkish, keep the site bilingual (TR/EN).
 - Taste: **luxury**, immersive, crafted. Avoid anything that looks cheap or flat; every world must *feel* like a real place.
 - Workflow: develop on a branch, push, open a PR; the owner merges on GitHub and **Vercel** auto-deploys `main`.
-- Always verify visually: `npm run build`, `npx next start`, Playwright screenshots (Chromium is preinstalled).
+- Always verify visually: `npm run build`, `npx next start -p 3100`, then `npm run smoke` (every page × every world × phone and desktop: console errors, overflow, dotted İ in names, transition fps; `-- --quick` for a short pass) and Playwright screenshots (Chromium is preinstalled).
 
 ## Stack
 Next.js 16 (App Router) + React 19 + TypeScript. No UI library, no image files: **every visual is hand-written inline SVG**.
@@ -14,7 +14,7 @@ Preferences (world, palette, lang, favourites, bar, creations) live in `localSto
 Fonts load from Google Fonts in `src/app/layout.tsx`. Every display font must have the **latin-ext** subset (ğ ş ı İ); check before adding one.
 
 ```
-npm install · npm run dev · npm run build · npm run lint (tsc)
+npm install · npm run dev · npm run build · npm run lint (tsc) · npm run smoke (needs a server on :3100)
 ```
 
 ## Map of the code
@@ -81,7 +81,8 @@ The logo wordmark and nav brand use a fixed `--font-brand` (Cormorant Garamond) 
 ## Worlds & transitions
 - `/worlds` is the world switcher: one "portal" card per world (its wall, band, emblem, font). Maison asks for the palette and Jazz for the password inside the card; once the password is right `prefs.jazzKey` remembers it. `/worlds#id` opens a card (used by the passport and cocktail pages). The globe pill in the header links here at every screen size.
 - Always change worlds with `travel(id, patch)` from prefs, never `set({ world })`: it plays `WorldTransition` (cover 750 ms → world swaps → reveal 1050 ms). Boreal blizzard, Sakura petal storm, Anatolia kilim curtains + nazar, Jazz velvet curtains, Riviera shutters, Cosmos light-speed, Maison golden fan, Alchemist smoke + glyphs, Tiki palm fronds. Skipped under `prefers-reduced-motion`.
-- Keep transitions light: no CSS `filter: blur` on many animated layers (it froze the Alchemist smoke).
+- **Transition sounds** (`src/lib/sfx.ts`): one Web Audio cue per world, timed to the cover (0–0.75 s) and reveal. Maison glass arpeggio + champagne chord, Anatolia cloth + darbuka, Cosmos warp, Jazz velvet + Dm9 piano, Sakura wind + fūrin + koto, Alchemist bubbles + gong, Tiki rustle + log drum + ukulele, Boreal blizzard + ice chimes, Riviera shutter clacks + mandolin. Played from `travel()` when `prefs.sfx` (default on), independent of the music; `SfxToggle` on `/worlds` and the gate. `LEVEL` trims each cue to the same loudness (measured with an OfflineAudioContext; keep RMS ≈ 0.014 when changing a cue).
+- Keep transitions light: no CSS `filter` (blur, drop-shadow) on large or many animated layers (it froze the Alchemist smoke and halved Tiki's frame rate); bake shadows into the SVG instead.
 
 ## Cocktail Passport (`/passport`)
 - 3 stamps per world in `prefs.stamps` (`"world:kind"` → date): **arrival** (entering the world), **tasting** (saving one of its signatures), **master** (finishing its game via `useBest().submit`, or saving a creation in its Atelier).
@@ -106,7 +107,7 @@ The logo wordmark and nav brand use a fixed `--font-brand` (Cormorant Garamond) 
 
 ## Decisions & gotchas
 - Logo: owner's design, fine-line martini with olive; wordmark **GARNISH** / COCKTAIL WORLDS (`Logo.tsx`).
-- Turkish `text-transform: uppercase` turns i into İ: set `lang="en"` on English names (world names `.wc-name` already have it, else RİVİERA).
+- Turkish `text-transform: uppercase` turns i into İ: set `lang={nameLang(x.name)}` (`src/lib/ui.ts`: "en" when the name is the same in TR and EN) wherever a name is rendered, else MARTİNİ / RİVİERA. `npm run smoke` catches misses.
 - SVG arcs over 180° need the large-arc flag (see `BalanceGauge`).
 - Grid children with horizontal scrollers need `min-width: 0`, or the page widens.
 - Nav collapses to the burger menu under 1720px (11 links).

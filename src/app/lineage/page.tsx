@@ -7,6 +7,7 @@ import { usePrefs } from "@/lib/prefs";
 import type { Cocktail } from "@/lib/types";
 import { Ornament } from "@/components/Ornament";
 import { Echo } from "@/components/Echo";
+import { nameLang } from "@/lib/ui";
 
 function Branch({ nodes, all, depth, family }: { nodes: Cocktail[]; all: Cocktail[]; depth: number; family: string }) {
   const { pick } = usePrefs();
@@ -50,7 +51,7 @@ export default function LineagePage() {
                 <span className="planet-dot" />
                 {pick(r.formula)}
               </span>
-              <h3>{pick(r.name)}</h3>
+              <h3 lang={nameLang(r.name)}>{pick(r.name)}</h3>
               <Branch nodes={tops} all={members.concat(all.filter((c) => c.root !== r.id && members.some((m) => m.id === c.parent)))} depth={0} family={r.id} />
             </section>
           );
