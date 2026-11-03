@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { PALETTES, worldById } from "@/data/worlds";
 import { usePrefs } from "@/lib/prefs";
-import type { UIKey } from "@/lib/ui";
 import { nameLang } from "@/lib/ui";
+import { GarnishMenu } from "./GarnishMenu";
 import { LogoMark } from "./Logo";
 import { MusicButton } from "./MusicButton";
 import { StampToast } from "./StampToast";
@@ -14,26 +14,12 @@ import { WorldTransition } from "./WorldTransition";
 import { WorldBackdrop } from "./WorldBackdrop";
 import { LangToggle, WorldGate } from "./WorldGate";
 
-const LINKS: [string, UIKey][] = [
-  ["/worlds", "nav_worlds"],
-  ["/cocktails", "nav_cocktails"],
-  ["/book", "nav_book"],
-  ["/cellar", "nav_cellar"],
-  ["/atelier", "nav_atelier"],
-  ["/lineage", "nav_lineage"],
-  ["/concierge", "nav_concierge"],
-  ["/bar", "nav_bar"],
-  ["/glass-ice", "nav_glass"],
-  ["/games", "nav_games"],
-  ["/passport", "nav_passport"],
-  ["/collection", "nav_collection"],
-];
-
 export function Shell({ children }: { children: React.ReactNode }) {
   const { ready, world, gate, t, pick, palette, set, zero } = usePrefs();
   const path = usePathname();
   const [menu, setMenu] = useState(false);
   useEffect(() => setMenu(false), [path]);
+  const closeMenu = useCallback(() => setMenu(false), []);
 
   if (!ready) return <div className="boot" />;
   const showGate = world === null || gate;
@@ -48,20 +34,15 @@ export function Shell({ children }: { children: React.ReactNode }) {
       ) : (
         <>
           <header className="nav">
-            <Link href="/" className="brand" aria-label="Garnish">
+            {/* the logo opens the menu: every page lives in one place, not in a row of tabs */}
+            <button className="brand" aria-haspopup="dialog" aria-expanded={menu} onClick={() => setMenu(true)} title={t("menu")}>
               <LogoMark size={38} />
               <span className="brand-text">
                 <b>GARNISH</b>
                 <small lang={nameLang(worldById(w).name)}>{pick(worldById(w).name)}</small>
               </span>
-            </Link>
-            <nav className={`nav-links ${menu ? "open" : ""}`} aria-label="Main">
-              {LINKS.map(([href, key]) => (
-                <Link key={href} href={href} className={path.startsWith(href) ? "active" : ""}>
-                  {t(key)}
-                </Link>
-              ))}
-            </nav>
+              <span className="brand-caret" aria-hidden />
+            </button>
             <div className="nav-tools">
               {w === "maison" && (
                 <div className="palette-mini" role="group" aria-label={t("palette")}>
@@ -91,13 +72,14 @@ export function Shell({ children }: { children: React.ReactNode }) {
                 </svg>
                 <span>{t("nav_worlds")}</span>
               </Link>
-              <button className="burger" aria-label={t("menu")} aria-expanded={menu} onClick={() => setMenu((m) => !m)}>
+              <button className="burger" aria-label={t("menu")} aria-haspopup="dialog" aria-expanded={menu} onClick={() => setMenu(true)}>
                 <span />
                 <span />
                 <span />
               </button>
             </div>
           </header>
+          <GarnishMenu open={menu} onClose={closeMenu} />
           <main className="main">{children}</main>
           <StampToast />
           <footer className="footer">

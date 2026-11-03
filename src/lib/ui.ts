@@ -33,6 +33,9 @@ const dict = {
   gamesSub: { tr: "Her dünyanın kendi oyunu var: bilmeceler, bulmacalar ve bir parça eğlence.", en: "Every world has its own game: riddles, puzzles and a little play." },
   nav_collection: { tr: "Koleksiyonum", en: "My Collection" },
   menu: { tr: "Menü", en: "Menu" },
+  close: { tr: "Kapat", en: "Close" },
+  openMenu: { tr: "Menüyü aç", en: "Open the menu" },
+  orBrowse: { tr: "ya da sitenin tamamı için GARNISH'e dokun", en: "or tap GARNISH for everything else" },
   // sections
   cellarSub: { tr: "Malzemeler, bir şarap mahzeni gibi: tadım notları, kökenler ve hikâyeler.", en: "Ingredients, like a wine cellar: tasting notes, origins and stories." },
   cocktailsSub: { tr: "Klasikler her dünyada; imzalar yalnızca kendi dünyasında.", en: "Classics in every world; signatures only in their own." },

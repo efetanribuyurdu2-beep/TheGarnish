@@ -412,7 +412,15 @@ h3,
   gap: 12px;
   color: var(--accent);
   flex-shrink: 0;
+  background: none;
+  border: 0;
+  padding: 4px 8px 4px 0;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
 }
+.brand-caret { width: 7px; height: 7px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: rotate(45deg) translate(-2px, -2px); opacity: 0.7; transition: transform 0.3s, opacity 0.3s; }
+.brand:hover .brand-caret { opacity: 1; transform: rotate(45deg) translate(0, 0); }
 .brand-text {
   display: flex;
   flex-direction: column;
@@ -505,37 +513,12 @@ h3,
   background: var(--ink);
   margin: 5px 0;
 }
-@media (max-width: 1860px) {
-  .burger {
-    display: block;
-  }
-  .nav {
-    flex-wrap: wrap;
-    padding: 10px 16px;
-  }
-  .nav-tools {
-    margin-left: auto;
-  }
-  .nav-links {
-    display: none;
-    order: 3;
-    flex-basis: 100%;
-    flex-direction: column;
-    padding: 8px 0;
-  }
-  .nav-links.open {
-    display: flex;
-  }
-  .nav-links a {
-    padding: 10px 4px;
-    font-size: 1rem;
-  }
-  .nav-tools .btn.small {
-    display: none;
-  }
-  .nav-links.open::after {
-    content: "";
-  }
+/* the tabs are gone: everything opens from the GARNISH logo (GarnishMenu) */
+.burger { display: block; }
+.nav-tools { margin-left: auto; }
+@media (max-width: 600px) {
+  .nav { padding: 10px 14px; gap: 10px; }
+  .nav-tools { gap: 6px; }
 }
 
 /* ─────────────────────────────── Layout */
@@ -4540,3 +4523,72 @@ select.input:focus {
 .cbook-boreal .cb-cover .btn.ghost { color: #2a5d9f; border-color: #2a5d9f; background: rgba(42, 93, 159, 0.06); box-shadow: none; backdrop-filter: none; }
 .cbook-cosmos .cb-title { font-size: clamp(1.35rem, 5.2vw, 3.3rem); }
 .cb-cover > * { max-width: 100%; }
+
+/* ═════════════════════════════════════════════ GARNISH MENU (opened from the logo)
+   A panel drawn in the world's hand: its band runs down the edge, theme-kit
+   corners, the world's glyph before every section, its bar at the head. */
+.gm { position: fixed; inset: 0; z-index: 60; pointer-events: none; }
+.gm.open { pointer-events: auto; }
+.gm-scrim { position: absolute; inset: 0; border: 0; background: rgba(0, 0, 0, 0.55); opacity: 0; transition: opacity 0.4s; cursor: pointer; }
+.gm.open .gm-scrim { opacity: 1; }
+.gm-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: min(440px, 92vw);
+  overflow-y: auto;
+  padding: 26px 34px 40px 46px;
+  background: linear-gradient(180deg, var(--surface2), var(--surface));
+  color: var(--ink);
+  box-shadow: 30px 0 80px -30px #000;
+  transform: translateX(-104%);
+  transition: transform 0.55s cubic-bezier(0.2, 0.75, 0.15, 1);
+}
+.gm.open .gm-panel { transform: none; }
+.gm-edge { position: absolute; left: 0; top: 0; bottom: 0; width: 14px; background: var(--bandV) repeat-y center top / 14px auto; opacity: 0.95; }
+.gm-panel .wm-corner { width: 40px; height: 40px; opacity: 0.85; }
+.gm-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.gm-home { display: flex; align-items: center; gap: 12px; color: var(--accent); }
+.gm-home b { display: block; font-family: var(--font-brand); font-weight: 500; letter-spacing: 0.32em; font-size: 1.1rem; color: var(--ink); }
+.gm-home small { display: block; font-family: var(--font-display); font-size: 0.95rem; letter-spacing: var(--display-spacing); text-transform: var(--display-case); color: var(--accent); }
+.gm-close { background: none; border: 1px solid var(--line); color: var(--ink); width: 36px; height: 36px; border-radius: var(--radius); cursor: pointer; font-size: 0.9rem; }
+.gm-greeting { font-family: var(--font-prose, var(--font-display)); font-style: italic; color: var(--muted); margin: 0 0 22px; font-size: 0.95rem; }
+.gm-group + .gm-group { margin-top: 22px; }
+.gm-group-title { font-size: 0.72rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px; display: flex; align-items: center; gap: 10px; font-family: var(--font-body); }
+.gm-group-title::before { content: var(--ui-eyebrow, "◆"); letter-spacing: 0; }
+.gm-group-title::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.gm-group ul { list-style: none; margin: 0; padding: 0; }
+.gm-group a { display: block; padding: 8px 0 8px 12px; border-left: 2px solid transparent; transition: border-color 0.25s, background 0.25s, padding 0.25s; }
+.gm-group a:hover,
+.gm-group a.on { border-left-color: var(--accent); background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 12%, transparent), transparent); padding-left: 16px; }
+.gm-name { display: block; font-family: var(--font-display); font-size: 1.25rem; letter-spacing: var(--display-spacing); text-transform: var(--display-case); line-height: 1.2; }
+.gm-sub { display: block; font-size: 0.78rem; color: var(--muted); margin-top: 2px; }
+/* links arrive one after another as the panel opens */
+.gm.open .gm-group li { animation: gmIn 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.gm.open .gm-group:nth-child(1) li { animation-delay: 0.12s; }
+.gm.open .gm-group:nth-child(2) li { animation-delay: 0.2s; }
+.gm.open .gm-group:nth-child(3) li { animation-delay: 0.28s; }
+@keyframes gmIn { from { opacity: 0; transform: translateX(-12px); } }
+/* a few worlds bind the panel more strongly */
+.gm-maison .gm-panel { box-shadow: inset -1px 0 0 var(--accent), inset -6px 0 0 var(--surface), inset -7px 0 0 var(--line), 30px 0 80px -30px #000; }
+.gm-jazz .gm-panel { background: radial-gradient(120% 60% at 0 0, #1b1710, #070605 70%); }
+.gm-sakura .gm-panel { background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 30%), #f4ece4; color: #2a1a1f; --ink: #2a1a1f; --muted: #6d5a60; --accent: #c8102e; --line: rgba(200, 16, 46, 0.25); }
+.gm-alchemist .gm-panel { background: radial-gradient(120% 90% at 50% 20%, #efe2c3, #d6c39a 80%); color: #2b2014; --ink: #2b2014; --muted: #5c4a30; --accent: #7b3f12; --line: rgba(123, 63, 18, 0.3); }
+.gm-boreal .gm-panel { background: linear-gradient(90deg, #f1efe8, #e2ded2 50%, #f4f2ec); color: #10233a; --ink: #10233a; --muted: #4b5d70; --accent: #2a5d9f; --line: rgba(42, 93, 159, 0.3); }
+.gm-tiki .gm-panel { background: repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.06) 0 2px, transparent 2px 22px), linear-gradient(180deg, #3a2412, #24160a); }
+.gm-riviera .gm-panel { background: radial-gradient(120% 80% at 30% 20%, #2f3a33, #1d2521 70%); }
+.gm-cosmos .gm-panel { background: linear-gradient(160deg, rgba(30, 24, 80, 0.96), rgba(8, 9, 26, 0.98)); box-shadow: 0 0 60px rgba(155, 123, 255, 0.35); }
+.gm-anatolia .gm-panel { background: linear-gradient(180deg, #102a4c, #0a1c36 70%); }
+@media (prefers-reduced-motion: reduce) {
+  .gm-panel, .gm-scrim { transition: none; }
+  .gm.open .gm-group li { animation: none; }
+}
+
+/* ── the home page invites the visitor to open the world's menu */
+.hero-invite { margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--line); max-width: 520px; }
+.hero-invite-line { font-family: var(--font-prose, var(--font-display)); font-style: italic; font-size: 1.15rem; color: var(--ink); margin: 0 0 16px; animation: fadeUp 1s 0.3s ease both; }
+.hero-invite .hero-cta { justify-content: flex-start; margin-top: 0; }
+.hero-menu-btn { padding: 14px 32px; font-size: 0.85rem; animation: menuBeckon 2.8s 1.4s ease-in-out 2; }
+@keyframes menuBeckon { 50% { transform: translateY(-2px); box-shadow: 0 10px 30px -8px var(--accent); } }
+@media (prefers-reduced-motion: reduce) { .hero-menu-btn { animation: none; } }

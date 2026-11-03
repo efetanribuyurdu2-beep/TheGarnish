@@ -6,6 +6,7 @@ import { LogoFull } from "@/components/Logo";
 import { COCKTAILS } from "@/data/cocktails";
 import { worldById } from "@/data/worlds";
 import { usePrefs } from "@/lib/prefs";
+import type { L, WorldId } from "@/lib/types";
 import type { UIKey } from "@/lib/ui";
 import { nameLang } from "@/lib/ui";
 import { Ornament } from "@/components/Ornament";
@@ -21,6 +22,19 @@ const FEATURES: [string, UIKey, UIKey, string][] = [
   ["/games", "nav_games", "gamesSub", "♠"],
   ["/passport", "nav_passport", "passportSub", "✈"],
 ];
+
+/** The first thing a visitor hears on arriving: the host inviting them to open the menu. */
+const INVITE: Record<WorldId, L> = {
+  maison: { tr: "Masanız hazır. Le Grand Bar'ın menüsünü getirmemi ister misiniz?", en: "Your table is ready. Shall I bring you Le Grand Bar's menu?" },
+  anatolia: { tr: "Hoş geldiniz, buyurun oturun. Meyhanenin listesi masanızda; bir göz atmaz mısınız?", en: "Welcome, please sit. The meyhane's list is on your table; won't you take a look?" },
+  cosmos: { tr: "Kalkışa hazırız. Uçuş manifestosu açılmayı bekliyor, kaptan.", en: "Ready for launch. The flight manifest is waiting to be opened, captain." },
+  jazz: { tr: "Parola doğru. Kapı arkanızda kapandı; menü yalnızca üyeler için. Bir bakın.", en: "The password is right. The door has closed behind you; the menu is for members only. Take a look." },
+  sakura: { tr: "İrasshaimase. Oshinagaki'miz sizi bekliyor; bu akşamın mevsimini seçin.", en: "Irasshaimase. Our oshinagaki awaits; choose tonight's season." },
+  alchemist: { tr: "Formül kitabı açık, kazan ısınıyor. Hangi iksirin tarifini istersiniz?", en: "The formulary is open and the cauldron warming. Which elixir shall it be?" },
+  tiki: { tr: "Aloha! Grog defterimiz bambu tezgâhta; bir sayfa çevirin.", en: "Aloha! Our grog log is on the bamboo bar; turn a page." },
+  boreal: { tr: "Ateş yanıyor, kar dışarıda kaldı. Huş kabuğu menümüzü açın.", en: "The fire is lit and the snow left outside. Open our birch-bark menu." },
+  riviera: { tr: "Benvenuti. Kara tahtada bu akşamın spritzleri ve şarapları yazılı.", en: "Benvenuti. Tonight's spritzes and wines are on the chalkboard." },
+};
 
 export default function Home() {
   const { world, pick, t } = usePrefs();
@@ -38,13 +52,16 @@ export default function Home() {
           <h1>{pick(w.tagline)}</h1>
           <Echo text={pick(w.tagline)} />
           <p>{pick(w.intro)}</p>
-          <div className="row-gap hero-cta">
-            <Link href="/cocktails" className="btn">
-              {t("enterWorld")}
-            </Link>
-            <Link href="/atelier" className="btn ghost" lang="en">
-              {t("nav_atelier")}
-            </Link>
+          <div className="hero-invite">
+            <p className="hero-invite-line">{pick(INVITE[w.id])}</p>
+            <div className="row-gap hero-cta">
+              <Link href="/cocktails" className="btn hero-menu-btn">
+                {t("openMenu")} →
+              </Link>
+              <Link href="/book" className="btn ghost">
+                {t("nav_book")}
+              </Link>
+            </div>
           </div>
         </div>
         <div className="hero-art">
