@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { playTransitionSfx } from "./sfx";
 import { COCKTAILS } from "@/data/cocktails";
 import type { Cocktail, L, Lang, PaletteId, WorldId } from "./types";
+import { DEFAULT_PARTY, type PartyPlan } from "./party";
 import { tr as translate, type UIKey } from "./ui";
 
 interface Prefs {
@@ -18,12 +19,13 @@ interface Prefs {
   traveller: string; // name written in the passport
   jazzKey: boolean; // the speakeasy password was given once
   sfx: boolean; // transition sound effects (independent of the music)
+  party: PartyPlan; // the party planner's guest list and drinks
 }
 
 export type StampKind = "arrival" | "tasting" | "master";
 export const STAMP_KINDS: StampKind[] = ["arrival", "tasting", "master"];
 
-const DEFAULTS: Prefs = { world: null, palette: "noir", lang: "tr", favourites: [], bar: [], creations: [], zero: false, stamps: {}, traveller: "", jazzKey: false, sfx: true };
+const DEFAULTS: Prefs = { world: null, palette: "noir", lang: "tr", favourites: [], bar: [], creations: [], zero: false, stamps: {}, traveller: "", jazzKey: false, sfx: true, party: DEFAULT_PARTY };
 const KEY = "garnish:prefs:v1";
 
 interface Ctx extends Prefs {

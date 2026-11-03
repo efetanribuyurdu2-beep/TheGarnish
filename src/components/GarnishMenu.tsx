@@ -28,6 +28,7 @@ const GROUPS: { title: L; items: Item[] }[] = [
       ["/book", "nav_book", l("Herkesin bildiği klasikler", "The classics everyone knows")],
       ["/atelier", "nav_atelier", l("Kendi kokteylini yap", "Make your own cocktail")],
       ["/bar", "nav_bar", l("Evdeki şişelerle ne yapılır", "What your bottles can make")],
+      ["/party", "nav_party", l("Kalabalığa toplu tarif ve alışveriş listesi", "Batches and a shopping list for a crowd")],
     ],
   },
   {

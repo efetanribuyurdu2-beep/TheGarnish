@@ -149,6 +149,7 @@ const dict = {
   // passport
   nav_passport: { tr: "Pasaport", en: "Passport" },
   nav_book: { tr: "Kokteyl Kitabı", en: "The Cocktail Book" },
+  nav_party: { tr: "Parti Planlayıcı", en: "Party Planner" },
   bookSub: { tr: "Herkesin bildiği {n} kokteyl: hikâyeleri, tarifleri, kadehleri.", en: "{n} cocktails everyone knows: their stories, recipes and glasses." },
   openBook: { tr: "Kitabı aç", en: "Open the book" },
   contents: { tr: "İçindekiler", en: "Contents" },
